@@ -1,0 +1,154 @@
+html {
+  overflow:   scroll;
+}
+
+::-webkit-scrollbar-track
+{
+  /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+  /* background-color: #F5F5F5; */
+  background: transparent; /* make scrollbar transparent */
+}
+
+::-webkit-scrollbar
+{
+  width: 6px;
+  /* background-color: #F5F5F5; */
+  background: transparent; /* make scrollbar transparent */
+}
+
+::-webkit-scrollbar-thumb
+{
+  background-color: rgba(0,0,0,.2);
+  overflow:visible;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track:hover{
+   opacity: 0;
+  -webkit-transition: all .5s;
+}
+
+.cover-bar {
+  position: absolute;
+  background: #fff;;
+  height: 100%;
+  top: 0;
+  right: 0;
+  width: .4em;
+  -webkit-transition: all .5s;
+  opacity: 1;
+}
+
+.mt-auto:hover .cover-bar {
+   opacity: 0;
+  -webkit-transition: all .5s;
+}
+
+.progress-bar {
+color: black;
+}
+
+.skill {
+height: 10px;
+}
+
+.attribute_name{
+font-size: 14px;
+}
+
+.accuracy {
+      background-color: #a4c2f4 !important;
+      color: black;
+}
+.damage {
+      background-color: #f9cb9c !important;
+      color: black;
+}
+.dodge {
+      background-color: #ffe599 !important;
+      color: black;
+}
+.armor {
+      background-color: #b6d7a8 !important;
+      color: black;
+}
+
+.health {
+      background-color: #e06666 !important;
+      color: black;
+}
+.movement {
+      background-color: #b4a7d6 !important;
+}
+
+.agility {
+      background-color: #ffe599 !important;
+}
+
+.body {
+      background-color: #ea9999 !important;
+}
+
+.charisma {
+      background-color: #b4a7d6 !important;
+}
+
+.intelligence {
+      background-color: #9fc5e8 !important;
+}
+
+.willpower {
+      background-color: #b6d7a8 !important;
+}
+
+.card {
+/*   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
+  margin: auto;
+  text-align: center;
+}
+
+.title {
+  color: grey;
+  font-size: 14px;
+}
+
+.icon {
+height: 50px;
+width: 50px;
+}
+
+button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+a, .nav-link{
+  text-decoration: none;
+  font-size: 12px;
+}
+
+button:hover, a:hover, img:hover {
+  opacity: 0.7;
+}
+
+
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+
+  > .col,
+  > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
