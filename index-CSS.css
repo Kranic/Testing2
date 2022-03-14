@@ -152,3 +152,10 @@ button:hover, a:hover, img:hover {
   }
 }
 
+  .tab-pane:not(.active) {
+      display: none;
+  }
+
+.navpage {
+    display: inline-flex;
+}
