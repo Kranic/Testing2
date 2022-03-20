@@ -86,50 +86,36 @@
 <!----------------------------------DROPDOWN----------------------------------->
 <!----------------------------------------------------------------------------->
 
+<div>
+<div style="position: relative; top: 0; left: 0;">    
+    <img id="tamerImage" src="https://i.imgur.com/f0vkqrG.png" class="card-img-top" style="position: relative; top: 0; left: 0;">
+</div>
+
+
+<div>
+<hr>
 <div class="dropdown">
 <button class="display-6 btn btn-light dropdown-toggle" type="button" id="tamerName" data-bs-toggle="dropdown" aria-expanded="false">
     <div id="tamerName">Character Name</div>
 </button>
 
-<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><a class="dropdown-item" href="#">Character 1</a></li>
-    <li><a class="dropdown-item" href="#">Character 2</a></li>
-    <li><a class="dropdown-item" href="#">Character 3</a></li>
+<ul id="tamer-dropdownmenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 </ul>
 </div>
 
-<!----------------------------------------------------------------------------->
-<!----------------------------CHARACTER PROFILE-------------------------------->
-<!----------------------------------------------------------------------------->
-<hr>
-<footer id="tamerEpitaph" class="epitaph blockquote-footer">Epitaph</footer>
-
-<div>
-
-<div style="position: relative; top: 0; left: 0;">    
-    <img id="tamerImage" src="https://i.imgur.com/f0vkqrG.png" class="card-img-top" style="position: relative; top: 0; left: 0;">
-    <div style="position: absolute; bottom: 0px;  right: 10px;">
-        <img src="https://wikimon.net/images/d/d5/Bacomon.jpg" style="position: relative; width: 20%;border-radius: 50%;">
-
-    </div>    
 </div>
 
-
 <hr>
+
 <div class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
-    <small class="text-muted" style="margin: 0 auto;">
-        <div class="experience">19/20 Experience Used</div>
-        <div class="campaign">Campaign Type: Teenager</div>
-
-        <div class="partner"><a onclick="show_digimon(1)">Partners: Bacomon & Eyesmon </a></div>
-
-    </small>
-    <a id="characterSheetLink" class="character_info"> Character Sheet Link</a>
+    <div id="tamerinfo"></div>
 </div>
+
 
 </div>    
 
 <hr>
+
 
 
 <!----------------------------------------------------------------------------->
@@ -139,39 +125,10 @@
 
 <div style="margin-left:5%;margin-right:5%">
 
-<div id="human_stat_block_1">
-<div> 
-<div class="d-flex justify-content-between mx-auto"  style="display: flex;">
-<div>Wound boxes </div> 
-<div>3/3</div>
+<div id="tamer_stat_block_1">
 </div>
 
-<div class="progress" style="height:5px">
-<div class="progress-bar bg-danger" role="progressbar" style="width:100%"></div>
-</div>
-</div>
-
-<div>
-<div class="d-flex justify-content-between mx-auto"  style="display: flex;">
-<div>Inspiration </div> 
-<div>0/3</div>
-</div>
-
-<div class="progress" style="height:5px">
-<div class="progress-bar bg-dodge" role="progressbar" style="width:10%"></div>
-</div>
-</div>
-
-<div>
-<div class="d-flex justify-content-between mx-auto"  style="display: flex;">
-<div>Movement </div> 
-<div>5</div>
-</div>
-
-<div class="progress" style="height:5px"><div class="progress-bar bg-Movement" role="progressbar" style="width:50%"></div></div></div>
-
-</div>
-
+<hr>
 
 <!----------------------------------------------------------------------------->
 <!---------------------------------COMBAT STATS-------------------------------->
@@ -179,49 +136,7 @@
 
 <div class="combat_stats">
 
-<hr>
-
-<div >
-
-<div>
-<div class="d-flex justify-content-between mx-auto"  style="display: flex;">
-<div>Accuracy Pool</div>
-<div>4</div>
-</div>
-
-<div class="progress" style="height:5px">
-<div class="progress-bar accuracy" role="progressbar" style="width:40%"></div>
-</div>
-</div>
-
-
-
-<div>
-<div class="d-flex justify-content-between mx-auto"  style="display: flex;">
-<div>Damage</div>
-<div>3</div>
-</div>
-<div class="progress" style="height:5px">
-<div class="progress-bar damage" role="progressbar" style="width:30%"></div>
-</div></div>
-
-
-<div>
-<div class="d-flex justify-content-between mx-auto"  style="display: flex;">
-<div>Dodge Pool</div>
-<div>4</div>
-</div>
-<div class="progress" style="height:5px"><div class="progress-bar dodge" role="progressbar" style="width:40%"></div></div></div>
-
-<div>
-<div class="d-flex justify-content-between mx-auto"  style="display: flex;">
-<div>Armor</div>
-<div>3</div>
-</div>
-<div class="progress" style="height:5px">
-<div class="progress-bar armor" role="progressbar" style="width:30%"></div></div>
-</div>
-
+<div id="tamer_stat_block_2">
 </div>
 
 <hr>
@@ -230,190 +145,12 @@
 <!---------------------------------ATTRIBUTE & SKILLS-------------------------------->
 <!----------------------------------------------------------------------------->
 
-<div>
-<div class="d-flex justify-content-between mx-auto" style="display: flex;"> 
-<div>Agility<small class="text-muted"> (3d6 + 4)</small></div>
-<div style="text-align: right">4</div>  
-</div>
-<div class="progress" style="height: 10px">
-<div class="progress-bar agility role=" progressbar="" style="width:57.14285714285714%"></div></div>
+<div id="tamer_stat_block_3">
 </div>
 
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
 </div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
 </div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
 </div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div>
-<div class="d-flex justify-content-between mx-auto" style="display: flex;"> 
-<div>Agility<small class="text-muted"> (3d6 + 4)</small></div>
-<div style="text-align: right">4</div>  
-</div>
-<div class="progress" style="height: 10px">
-<div class="progress-bar agility role=" progressbar="" style="width:57.14285714285714%"></div></div>
-</div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-
-<div>
-<div class="d-flex justify-content-between mx-auto" style="display: flex;"> 
-<div>Agility<small class="text-muted"> (3d6 + 4)</small></div>
-<div style="text-align: right">4</div>  
-</div>
-<div class="progress" style="height: 10px">
-<div class="progress-bar agility role=" progressbar="" style="width:57.14285714285714%"></div></div>
-</div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-
-<div>
-<div class="d-flex justify-content-between mx-auto" style="display: flex;"> 
-<div>Agility<small class="text-muted"> (3d6 + 4)</small></div>
-<div style="text-align: right">4</div>  
-</div>
-<div class="progress" style="height: 10px">
-<div class="progress-bar agility role=" progressbar="" style="width:57.14285714285714%"></div></div>
-</div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-
-<div>
-<div class="d-flex justify-content-between mx-auto" style="display: flex;"> 
-<div>Agility<small class="text-muted"> (3d6 + 4)</small></div>
-<div style="text-align: right">4</div>  
-</div>
-<div class="progress" style="height: 10px">
-<div class="progress-bar agility role=" progressbar="" style="width:57.14285714285714%"></div></div>
-</div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-<div class="d-flex justify-content-between mx-auto" style="font-size: 12px">
-<div>Dodge <small class="text-muted">(3d6 + 3)</small></div>
-<div> 0 </div>
-</div>
-<div class="progress" style="height: 5px">
-<div class="progress-bar" role="progressbar" style="width:0%">
-</div></div>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
 
 <!----------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------->
@@ -422,6 +159,8 @@
 <!----------------------------------------------------------------------------->
 
 <div id="tamerCard" class="w-75" style="padding: 3px; margin-left: auto;">
+
+<div>
 <ul class="nav justify-content-center " role="tablist" style="width:100%">
 <li class="nav-item">
 <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#TamerCharacterTab" type="button">Character</a>
@@ -430,7 +169,7 @@
 <a class="nav-link"  data-bs-toggle="tab" data-bs-target="#TamerDigimonTab" type="button">Partner</a>
 </li>
 <li class="nav-item">
-<a class="nav-link"  data-bs-toggle="tab" data-bs-target="#TamerPlaylistTab" type="button">Playlist</a>
+<a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#TamerPlaylistTab" type="button">Playlist</a>
 </li>
 <li class="nav-item">
 <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#TamerNotesTab" type="button">Notes</a>
@@ -441,10 +180,14 @@
 </ul>
 
 
-
-
-
 <hr>
+
+</div>
+
+
+
+
+
 <div class="tab-content" id="nav-tabContent" style="width:60vw;max-width:800px">
 
 
@@ -456,58 +199,32 @@
 
 
 
-    <small>Female | Age: 15 | Height: 5'6"</small>
+    <!-- <small>Female | Age: 15 | Height: 5'6"</small> -->
     <div><small id="tamerSynopsis" >Synopsis</small></div>
 
 </div>
 
 <hr>
 <h5>Aspects</h5>
-<div id="majorAspect" style="padding:10px"> Major Aspect </div>
-<small id="majorDescription" style="padding:10px"> Description </small>
-<div id="minorAspect" style="padding:10px"> Minor Aspect </div>
-<small id="minorDescription" style="padding:10px"> Description </small>
+<div id="aspects" style="white-space: pre-line; font-size: 14px;" class="row">
+    abc
+</div>
+
 <hr>    
 <h5>Torments</h5>
-<div id="torment" style="padding:10px"> Torment </div>
-<small id="tormentDescription" style="padding:10px"> Torment Description </small>
-<hr> 
-<h5>Special Orders</h5>
-<div id="torment" style="padding:10px"> Special Order 1 </div>
-<small id="tormentDescription" style="padding:10px"> Special Order Description </small>
+<div id="torments" style="white-space: pre-line; font-size: 14px;" class="row">
+    abc
 </div>
+
+<hr>
+<h5>Special Orders</h5>
+<div id="special_orders" style="padding:10px"> Special Order 1 </div>
+</div>
+
 <div id="TamerDigimonTab" class="tab-pane fade" role="tabpanel">  
 <div>
     <h5>Digimon</h5>
-    <div class="list-group overflow-auto">
-        <li class="list-group-item list-group-item-action overflow-auto">
-            <img src="https://digisinobalichibi.s3.amazonaws.com/80+(1).png" style="width:15%;float:left;"> 
-            <div> Bacomon </div>
-            <div>Child/Rookie | Small | Unknown | Unknown | Unknown </div>
-            <div> Wound Boxes Movement / Qualities</div>
-            <div> Attacks</div>
-        </li>
-        <li class="list-group-item list-group-item-action overflow-auto">
-            <img src="https://digisinobalichibi.s3.amazonaws.com/80+(1).png" style="width:15%;float:left;"> 
-            <div> Bacomon </div>
-            <div>Child/Rookie | Small | Unknown | Unknown | Unknown </div>
-            <div> Wound Boxes Movement / Qualities</div>
-            <div> Attacks</div>
-        </li>
-        <li class="list-group-item list-group-item-action overflow-auto">
-            <img src="https://digisinobalichibi.s3.amazonaws.com/80+(1).png" style="width:15%;float:left;"> 
-            <div> Bacomon </div>
-            <div>Child/Rookie | Small | Unknown | Unknown | Unknown </div>
-            <div> Wound Boxes Movement / Qualities</div>
-            <div> Attacks</div>
-        </li>
-        <li class="list-group-item list-group-item-action overflow-auto">
-            <img src="https://digisinobalichibi.s3.amazonaws.com/80+(1).png" style="width:15%;float:left;"> 
-            <div> Bacomon </div>
-            <div>Child/Rookie | Small | Unknown | Unknown | Unknown </div>
-            <div> Wound Boxes Movement / Qualities</div>
-            <div> Attacks</div>
-        </li>
+    <div id="partner_forms" class="list-group overflow-auto">
 
     </div>
 </div>
@@ -540,7 +257,7 @@
 <div id="digimonName">Digimon Name</div>
 </button>
 
-<ul id="dropdownmenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+<ul id="digimon-dropdownmenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 
 </ul>
 </div>
@@ -637,7 +354,7 @@
 <a class="nav-link"  data-bs-toggle="tab" data-bs-target="#DigimonFormTab" type="button">Other Forms</a>
 </li>
 <li class="nav-item">
-<a class="nav-link"  data-bs-toggle="tab" data-bs-target="#DigimonPlaylistTab" type="button">Playlist</a>
+<a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#DigimonPlaylistTab" type="button">Playlist</a>
 </li>
 <li class="nav-item">
 <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#DigimonNotesTab" type="button">Notes</a>
