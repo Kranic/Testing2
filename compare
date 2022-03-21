@@ -1,0 +1,13 @@
+<div id="DigimonFormTab" class="tab-pane fade active show" role="tabpanel">  
+<div>
+<h5>Digimon</h5>
+<li id="other_forms" class="list-group overflow-auto">
+<li class="list-group-item list-group-item-action overflow-auto" digimon_id="0"><img src="https://digisinobalichibi.s3.amazonaws.com/80+(1).png" style="width:15%;float:left;"> 
+        <div> Bacomon </div>
+        <div> Child | Small | Unknown / Unknown / Unknown </div></li><li class="list-group-item list-group-item-action overflow-auto" digimon_id="1"><img src="https://i.imgur.com/sdQFBbb.png" style="width:15%;float:left;"> 
+        <div> Ginkakumon </div>
+        <div> Adult | Huge | Virus / Oni / Unknown </div></li><li class="list-group-item list-group-item-action overflow-auto" digimon_id="2"><img src="https://i.imgur.com/iAPVAK4.png" style="width:15%;float:left;"> 
+        <div> Charismon </div>
+        <div> Perfect | Huge | Virus / Unknown / Unknown </div></li></div>
+</div>
+</div>

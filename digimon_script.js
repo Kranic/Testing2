@@ -1,3 +1,6 @@
+
+function setup_digimon(all_digimon_forms){
+
 let selected_digimon = all_digimon_forms[0]
 let activeDigimon = localStorage.getItem('activeDigimon') 
 
@@ -52,8 +55,7 @@ other_forms.forEach(function(digimon){
     document.querySelector("#other_forms").append(new_element)
 
 })
-
-
+}
 
 // Functions --------------------------------------------------------------
 
@@ -61,7 +63,7 @@ other_forms.forEach(function(digimon){
 function update_digimon_tab(id){
     let digimon = all_digimon_forms.filter(function(x){ return x.id == id})[0]
     let selected_digimon = digimon
-    document.querySelector('#digimonEpitaph').textContent = digimon['epitaph']
+    // document.querySelector('#digimonEpitaph').textContent = digimon['epitaph']
     document.querySelector('#digimonImage').src = digimon['image']
     document.querySelector('#digimonName').textContent = digimon['name']
     document.querySelector('#DigimonSynopsis').textContent = digimon['synopsis']
@@ -207,3 +209,5 @@ function create_attack_div(digimon){
         document.querySelector(`${target_id}`).append(new_element)
 })
 }
+
+setup_digimon(all_digimon_forms)
