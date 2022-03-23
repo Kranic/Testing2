@@ -536,20 +536,7 @@ align-items: center;  height: 55vh;">
 <script src="human_script.js"></script>
 <script src="digimon_script.js"></script>
 <script src="playlist.js"></script>
-<script>
-
-    let api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
-    let spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
-
-    fetch("https://api.sheetson.com/v2/sheets/tamer", {
-  headers: {
-    "Authorization": `Bearer ${api_key}`,
-    "X-Spreadsheet-Id": spreadsheet_id
-  }
-}).then(r => r.json())
-.then(result => load_page(result))
-
-</script>
+<script src="setup.js"></script>
 </body>
 </html>
 

@@ -1,518 +1,288 @@
+let api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
+let spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
+let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
+console.log(stored_character_data)
+load_page(stored_character_data)
+
+Promise.all([
+  fetch("https://api.sheetson.com/v2/sheets/tamer", {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+  fetch("https://api.sheetson.com/v2/sheets/torments", {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+  fetch("https://api.sheetson.com/v2/sheets/digimon", {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+])
+.then(([tamer, torment, digimon]) => {
+    console.log(tamer)
+    console.log(torment)
+    console.log(digimon)
+    return {
+        "tamers": tamer.results,
+        "torments": torment.results,
+        "digimons": digimon.results
+    }
+})
+.then(result => load_page(result))
+.catch((err) => {
+    console.log(err);
+});
 
 
-let human_template = {
-    "id": 2,
-    "sheet": "https://docs.google.com/spreadsheets/d/1zBWe14UF89XjdDGEEByMOq9bUPpvjRdpKJBHExv42lQ/edit#gid=637703777/",
-    "sheetName": "Xochi",
-    "name": "Xochitl Vega",
-    "title": "Monstrous Hacker",
-    "image": "https://i.imgur.com/f0vkqrG.png",
-    "xp": {"rewarded": 10, "used": 0},
-    "inspiration": {"rewarded": 1, "used": 0},
-    "aspects": {
-        "major": {"name": "Prodigious Mind",
-                  "description": "Xochi is very talented with computers, sneaking, problem solving, and general logical processing."},
-        "minor": {"name": "Solitary Miss",
-                  "description": "Xochi prefers working alone and finds herself to be much more efficent in solitary settings."},
-    },
-    "torments": [
-        {"name": "Monster Abandoned",
-        "type": "Major",
-        "total_boxes": 7,
-        "marked_boxes": 4,
-        "description": "As an orphan who no one really cared up about, Xochi grew up hearing repeated promises of things that would never be, leading to a deep feeling of rejection from the world and the feeling that she was a monster deserving of it."},
-        {"name": "Monstrous Torment",
-        "type": "Terrible",
-        "total_boxes": 7,
-        "marked_boxes": 3,
-        "description": "Words an orphan who no one really cared up about, Xochi grew up hearing repeated promises of things that would never be, leading to a deep feeling of rejection from the world and the feeling that she was a monster deserving of it."}
-        ],
-    "partner": "Bacomon",
-    "partnerId": 1,
-    "campaign": "Standard",
-    "age": 15,
-    "gender": "Female",
-    "height": "5'6\"",
-    "characterSynopsis": "Xyz is a 15 year old girl living in Southern California as a seemingly regular highschool student. An incredibly bright girl, Xyz spends most of her time online, a brilliant young hacker - either researching the most current ways of defusing the secrets of the web or stalking the internet for a subject to shitpost, it can really 50/50 with her. \n\nXyz is very level headed, especially for her age, calm and calculating, always questioning the systems that are at work around her. If you assign a task to Xyz, you can trust that it will be done, and it will be done well. She is very guarded about her personal information, usually going by an alias if ever possible (note: Xyz is an alias in itself) and tends to make subtle moves to keep her distance from people. Surprisingly Xyz can still be fairly sociable, with a dry, sassy wit when dealing with people, either endearing people to her or a building tension the girl knowingly ignores. She isn’t the usual stereotype of an introvertive hacker, though at her core that is what she is, she just knows how to play different roles and the values of being able to be more than just what you’re defined as. \n\nXyz is a teenage girl who stands at about 5'6. She has long straight hair with bangs covering her forehead. Generally on the thin side due to her mostly inactive lifestyle and youth.  She has a dark complexion with subtle freckles crossing her nose. Her ethnicity is a bit of a mystery, that even Xyz doesn’t quite know herself, though through her last name she knows she has some spanish heritage, though her look generally guides to some native and black touches. Ultimately she just thinks of herself as some flavor of afrolatino mutt. \n\nXyz is  almost always found in a bulky blue and yellow hoodie (with her signature X across the front), a red skirt, tights, and a pair of \"smart sneakers\". She has a single X shaped gold earring, that she particularly likes as well. For fun she wears yellow prescription contact, with her ordinary eye color being hazel. \n",
-    "attributes_skills":{
-        "agility": 4,
-        "dodge": 0,
-        "fight": 0,
-        "stealth": 4,
-        "body": 3,
-        "athletics": 0,
-        "endurance": 0,
-        "featsOfStrength": 0,
-        "charisma": 5,
-        "manipulate": 0,
-        "perform": 0,
-        "persuade": 2,
-        "intelligence": 5,
-        "computer": 5,
-        "survival": 1,
-        "knowledge": 4,
-        "willpower": 4,
-        "perception": 3,
-        "decipherIntent": 1,
-        "bravery": 1,
-    },
-    "derived_stats":{
-        "current_wound_boxes": 3,
-        "wound_boxes": 3,
-        "movement": 5,
-        "accuracy": 4,
-        "damage": 3,
-        "dodge": 4,
-        "armor": 3,
+function load_page(result){
+    localStorage.setItem( 'character_data', JSON.stringify(result))
+    // all_digimon_forms = result.digimons
+    tamers = result.tamers
+    all_torments = result.torments
+    tamers.shift()
+
+    tamers.forEach(function(tamer){
+        tamer.xp = {}
+        tamer.xp.rewarded = tamer.xp_rewarded
+        tamer.xp.used = tamer.xp_used
+
+        tamer.inspiration = {}
+        tamer.inspiration.rewarded = tamer.inspiration_rewarded
+        tamer.inspiration.used = tamer.inspiration_used
+        tamer.special_orders = tamer['special orders'].split(',')
+    })
+    console.log(tamers)
+
+    let activeTamer = localStorage.getItem('activeTamer')
+    
+
+    if(activeTamer){
+        update_tamer_tab(activeTamer)
+    } else {
+        update_tamer_tab(tamers[0]['id'])
     }
 
-    }
+    setup_tamers(tamers)
+    // setup_digimon(all_digimon_forms)
+    // 
 
-
-setup_human(human_template){
-	let human_template_2 = JSON.parse(JSON.stringify(human_template))
-	human_template_2.id = "3"
-	human_template_2.name = "Xochitl 2"
-
-	let response = {
-	"humans": [human_template, human_template_2],
-}
 }
 
 
-let all_digimon_forms = [
-    {
-        "id": 0,
-        "partner_tamer_id": 2,
-        "name": "Bacomon",
-        "epitaph": "A Box for Two",
-        "image": "https://digisinobalichibi.s3.amazonaws.com/80+(1).png",
-        "stage": "Child",
-        "size": "Small", 
-        "attribute": "Unknown",
-        "type": "Unknown",
-        "field": "Unknown",
-        "jogress": null,
-        "dp": 10,
-        "used_dp": 9,
-        "base_id": 0,
-        "partner": "Xochi",
-        "stats": {
-            "health": 3,
-            "accuracy": 4,
-            "damage": 4,
-            "dodge": 3,
-            "armor": 3
-        },
-        "synopsis": "This is just some text",
-        "derived_stats": {
-            "current_wound_boxes": 4,
-            "wound_boxes": 4,
-            "movement": 10,
-            "range": 10,   
-            "range_limit": 10,
-            "agility": 4,
-            "body": 8,
-            "brains": 5,
-            "RAM": 1,
-            "CPU": 3, 
-            "BIT": 1
-        },
-        "attributes_skills": 
-        {
-        'Agility': 4,
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Body': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Charisma': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Intelligence': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Willpower': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2
-        },
-        "qualities": [
-        "Data Optimization - Guardian",
-        "Instinct",
-        "Hide in Plain Sight ",
-        "Technician ",
-        "Prodigious Skill - Stealth ",
-        "Improved Derived Stat - Agility ",
-        "Mode Change ",
-        "Speedy 3",
-        "Teleport ",
-        "Naturewalk - Darkness ",
-        "Attack Effect: [Pull],"
-        ],
-        attacks: [
-            {
-                'name': 'Gum Roll',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Ranged] [Support] [Pull 2]',
-                'description': 'Bacomon wraps the enemy in packing tape, slowing them down.'
-            },
-            {
-                'name': 'Box Upper',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': 'Bacomon throws a light punch.'
-            },
-            {
-                'name': 'Box Upper',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': 'Bacomon throws a light punch.'
-            },
-            {
-                'name': 'Box Upper',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': 'Bacomon throws a light punch.'
-            },  
-            {
-                'name': 'Basic Melee',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': `Default Attack when you can't use other attacks.`
-            },  
-            {
-                'name': 'Throw',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Ranged] [Damage]',
-                'description': `Default Attack when you can't use other attacks.`
-            },
+function setup_tamers(tamers){
 
-        ],
-        dodges: [
-            {
-                'name': 'Melee Dodge',
-                'roll': '3d6',
-                'armor': '5',
-                'auto_success': 0,
-                'effect duration': 0,
-                'tags': 'Vulnerable I',
-            },
-            {
-                'name': 'Ranged Dodge',
-                'roll': '3d6',
-                'armor': '5',
-                'auto_success': 0,
-                'effect duration': 0,
-                'tags': ' '
-            },
-            {
-                'name': 'Positive Effect',
-                'roll': '3d6',
-                'auto_success': 0,
-                'effect duration': 0,
-                'tags': ' '
-            },
-        ]
-    },
-    {
-        "id": 1,
-        "partner_tamer_id": 2,
-        "epitaph": "A Big Dumbass",
-        "name": "Ginkakumon",
-        "image": "https://i.imgur.com/sdQFBbb.png",
-        "stage": "Adult",
-        "size": "Huge",
-        "attribute": "Virus",
-        "type": "Oni",
-        "field": "Unknown",
-        "jogress": null,
-        "dp": 10,
-        "used_dp": 9,
-        "base_id": 0,
-        "partner": "Xochi",
-        "stats": {
-            "health": 5,
-            "accuracy": 4,
-            "damage": 4,
-            "dodge": 3,
-            "armor": 10
-        },
-        "synopsis": "This is just some text but with some more.",
-        "derived_stats": {
-            "current_wound_boxes": 4,
-            "wound_boxes": 22,
-            "movement": 12,
-            "range": 10,   
-            "range_limit": 12,
-            "agility": 4,
-            "body": 8,
-            "brains": 5,
-            "RAM": 1,
-            "CPU": 3, 
-            "BIT": 1
-        },
-        "attributes_skills": 
-        {
-        'Agility': 4,
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Body': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Charisma': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Intelligence': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Willpower': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2
-        },
-        "qualities": [
-        "Data Optimization - Guardian",
-        "Instinct",
-        "Hide in Plain Sight ",
-        "Technician ",
-        "Prodigious Skill - Stealth ",
-        "Improved Derived Stat - Agility ",
-        "Mode Change ",
-        "Speedy 3",
-        "Teleport ",
-        "Naturewalk - Darkness ",
-        "Attack Effect: [Pull],"
-        ],
-        attacks: [
-            {
-                'name': 'Gum Roll',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Ranged] [Support] [Pull 2]',
-                'description': 'Bacomon wraps the enemy in packing tape, slowing them down.'
-            },
-            {
-                'name': 'Box Upper',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': 'Bacomon throws a light punch.'
-            },
-            {
-                'name': 'Box Upper',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': 'Bacomon throws a light punch.'
-            },
-            {
-                'name': 'Box Upper',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': 'Bacomon throws a light punch.'
-            },  
-            {
-                'name': 'Basic Melee',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': `Default Attack when you can't use other attacks.`
-            },  
-            {
-                'name': 'Throw',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Ranged] [Damage]',
-                'description': `Default Attack when you can't use other attacks.`
-            },
+    document.querySelector('#tamer-dropdownmenu').innerHTML = ""
+    tamers.forEach(function(x){
+    let dropdownitem = create_element(
+            'li',
+            `<li>
+            <a tamer_id=${x["id"]} class="dropdown-item" href="#a">${x["name"]}</a>
+            </li>`,
+            )
+        document.querySelector('#tamer-dropdownmenu').append(dropdownitem)
+    })
 
-        ],
-        dodges: [
-            {
-                'name': 'Melee Dodge',
-                'roll': '3d6',
-                'armor': '5',
-                'auto_success': 0,
-                'effect duration': 0,
-                'tags': 'Vulnerable I',
-            },
-            {
-                'name': 'Ranged Dodge',
-                'roll': '3d6',
-                'armor': '5',
-                'auto_success': 0,
-                'effect duration': 0,
-                'tags': ' '
-            },
-            {
-                'name': 'Positive Effect',
-                'roll': '3d6',
-                'auto_success': 0,
-                'effect duration': 0,
-                'tags': ' '
-            },
-        ]
-    },
-    {
-        "id": 2,
-        "partner_tamer_id": 2,
-        "name": "Charismon",
-        "epitaph": "Villain Hero",
-        "image": "https://i.imgur.com/iAPVAK4.png",
-        "stage": "Perfect",
-        "size": "Huge",
-        "attribute": "Virus",
-        "type": "Unknown",
-        "field": "Unknown",
-        "jogress": null,
-        "dp": 10,
-        "used_dp": 9,
-        "base_id": 0,
-        "partner": "Xochi",
-        "stats": {
-            "health": 3,
-            "accuracy": 4,
-            "damage": 4,
-            "dodge": 3,
-            "armor": 3
-        },
-        "synopsis": "Not Canon",
-        "derived_stats": {
-            "current_wound_boxes": 4,
-            "wound_boxes": 4,
-            "movement": 10,
-            "range": 10,   
-            "range_limit": 10,
-            "agility": 4,
-            "body": 8,
-            "brains": 5,
-            "RAM": 1,
-            "CPU": 3, 
-            "BIT": 1
-        },
-        "attributes_skills": 
-        {
-        'Agility': 4,
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Body': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Charisma': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Intelligence': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2,
-        'Willpower': 4, 
-        'Dodge': 1,
-        'Fight': 1,
-        'Stealth': 2
-        },
-        "qualities": [
-        "Data Optimization - Guardian",
-        "Instinct",
-        "Hide in Plain Sight ",
-        "Technician ",
-        "Prodigious Skill - Stealth ",
-        "Improved Derived Stat - Agility ",
-        "Mode Change ",
-        "Speedy 3",
-        "Teleport ",
-        "Naturewalk - Darkness ",
-        "Attack Effect: [Pull],"
-        ],
-        attacks: [
-            {
-                'name': 'Gum Roll',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Ranged] [Support] [Pull 2]',
-                'description': 'Bacomon wraps the enemy in packing tape, slowing them down.'
-            },
-            {
-                'name': 'Box Upper',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': 'Bacomon throws a light punch.'
-            },
-            {
-                'name': 'Box Upper',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': 'Bacomon throws a light punch.'
-            },
-            {
-                'name': 'Box Upper',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': 'Bacomon throws a light punch.'
-            },  
-            {
-                'name': 'Basic Melee',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Melee] [Damage]',
-                'description': `Default Attack when you can't use other attacks.`
-            },  
-            {
-                'name': 'Throw',
-                'roll': '3d6',
-                'damage': '10',
-                'tags': '[Ranged] [Damage]',
-                'description': `Default Attack when you can't use other attacks.`
-            },
+    document.querySelectorAll('#tamer-dropdownmenu .dropdown-item')
+    .forEach(
+        function(x){
+            x.addEventListener('click', function (event) {
+                console.log("Ran update")
+                let id = x.getAttribute('tamer_id')
+                update_tamer_tab(id)
+                localStorage.setItem( 'activeTamer', id)
+            })
+        }
+        )
 
-        ],
-        dodges: [
-            {
-                'name': 'Melee Dodge',
-                'roll': '3d6',
-                'armor': '5',
-                'auto_success': 0,
-                'effect duration': 0,
-                'tags': 'Vulnerable I',
-            },
-            {
-                'name': 'Ranged Dodge',
-                'roll': '3d6',
-                'armor': '5',
-                'auto_success': 0,
-                'effect duration': 0,
-                'tags': ' '
-            },
-            {
-                'name': 'Positive Effect',
-                'roll': '3d6',
-                'auto_success': 0,
-                'effect duration': 0,
-                'tags': ' '
-            },
-        ]
-    }
+    let partner_forms = all_digimon_forms.filter(function(x){
+        return x.partner_tamer_id == tamers[0]
+    })
+
+    document.querySelector("#partner_forms").innerHTML = ""
+    partner_forms.forEach(function(digimon){
+        let new_element = create_element('li',
+            `<img src="${digimon['image']}" style="width:15%;float:left;"> 
+            <div> ${digimon['name']} </div>
+            <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
+            {"class": 'list-group-item list-group-item-action overflow-auto',
+            "digimon_id": digimon['id']} )
+
+        new_element.addEventListener('click', function (event) {
+            let id = new_element.getAttribute('digimon_id')
+                // digimon_tab.show
+                update_digimon_tab (id)
+                localStorage.setItem( 'activeDigimon', id)
+                set_tabs("#digimonTab")
+            })
+        document.querySelector("#partner_forms").append(new_element)
+    })
+}
+
+
+// Functions --------------------------------------------------------------
+
+function update_tamer_tab(id){
+    console.log(tamers)
+    let tamer = tamers.filter(function(x){ return x.id == id})[0]
+
+    document.getElementById("tamerName").textContent = tamer.name;
+    // document.getElementById("tamerEpitaph").textContent = tamer.title;
+    document.getElementById("tamerImage").src = tamer.image_url;
+    document.getElementById("tamerSynopsis").textContent = tamer.characterSynopsis;
+
+
+    create_tamer_sidebar_data(tamer)
+    create_aspect_div(tamer)
+    create_torment_div(tamer)
+    create_special_order_div(tamer)
+}
+
+function create_tamer_sidebar_data(tamer){
+
+    let small_container = create_element(
+        'small',
+        '',
+        {
+            'class': 'text-muted', 
+            'style': "margin: 0 auto;"
+        }
+        )
+
+
+
+    let xp_div = create_element('div', `${tamer["xp"]["used"]} / ${tamer["xp"]["rewarded"]} XP Used`)
+    let misc = create_element('div', `${tamer["gender"]} / ${tamer["age"]} / ${tamer["height"]}`)
+    let inspiration_div = create_element('div', `${tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"]} Inspiration`)
+
+
+    let character_sheet_link = create_element(
+        'a', 
+        `Character Sheet Link`,
+        {'class': `character_info`,
+        'href': tamer.sheet})
+
+    let inside_divs = [misc, xp_div, inspiration_div]
+
+    inside_divs.forEach(function(x){small_container.appendChild(x)})
+
+    clear_div('#tamerinfo')
+    document.querySelector('#tamerinfo').appendChild(small_container)
+    document.querySelector('#tamerinfo').appendChild(character_sheet_link)
+
+
+    let boxes = [
+    ['Wound Boxes', `${tamer['wound_boxes']} / ${tamer['wound_boxes']}`], 
+    ['Movement', tamer['movement']], 
     ]
 
-setup_digimon(all_digimon_forms)
+    let stats = [
+    ['Accuracy Pool', tamer['accuracy']], 
+    ['Damage', tamer['damage']],
+    ['Dodge Pool', tamer['dodge']],
+    ['Armor', tamer['armor']]]
+
+    let attributes = [
+    ['Agility', 4, 
+    [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
+    ]],
+    ['Body', 4, 
+    [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
+    ]],
+    ['Charisma', 4, 
+    [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
+    ]],
+    ['Intelligence', 4, 
+    [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
+    ]],
+    ['Willpower', 4, 
+    [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
+    ]]
+    ]
+
+
+
+
+    clear_div('#tamer_stat_block_1')
+    boxes.forEach(function(x) {create_bar(x, '#tamer_stat_block_1')})
+    clear_div('#tamer_stat_block_2')
+    stats.forEach(function(x) {create_bar(x, '#tamer_stat_block_2')})   
+//     clear_div('#digimon_stat_block_3')
+//     derived.forEach(function(x) {create_bar(x, '#digimon_stat_block_3')})  
+//     clear_div('#digimon_stat_block_4')
+//     specs.forEach(function(x) {create_bar(x, '#digimon_stat_block_4')})  
+clear_div('#tamer_stat_block_3')
+attributes.forEach(function(x) {create_attribute_bar(x, '#tamer_stat_block_3')})
+}
+
+function create_aspect_div (tamer){
+    let tamer_aspects = {
+        "major": {
+            "name": tamer.major_aspect_name,
+            "description": tamer.major_aspect_description
+        },
+        "minor": {
+            "name": tamer.minor_aspect_name,
+            "description": tamer.minor_aspect_description
+        }
+    }
+    
+    let target_id = "#aspects"
+    clear_div(target_id)
+
+    let major_element = create_element(
+        'div', 
+        `<em>${tamer['major_aspect_name']}</em><small> (Major Aspect ±4)</small><p>${tamer['major_aspect_description']}</p>`,
+        {'class': "col-6"})
+    
+    document.querySelector(`${target_id}`).append(major_element)
+
+    let minor_element = create_element(
+        'div', 
+        `<em>${tamer['minor_aspect_name']}</em><small> (Minor Aspect ±2) </small><p>${tamer['minor_aspect_description']}</p>`,
+        {'class': "col-6"})
+    
+    document.querySelector(`${target_id}`).append(minor_element)
+
+}
+
+function create_torment_div (tamer){
+    console.log(all_torments)
+     let tamer_torments = all_torments.filter(function(x){
+        return x.tamer_id == tamer.id
+    })
+
+     console.log(tamer_torments)
+    // let tamer_torments = tamer['torments']
+    let target_id = "#torments"
+    clear_div(target_id)
+
+    tamer_torments.forEach(function(x){
+
+        let new_element = create_element(
+            'div',
+            `${x["name"]} <small>(${x["type"]} Torment |     ${x["marked_boxes"]}/${x["total_boxes"]} Boxes Marked)</small>
+            <div>${x["description"]}</div>`,
+            {"style": "padding-bottom:1%"})
+        console.log(x)
+        if(x.total_boxes != 0){document.querySelector(`${target_id}`).append(new_element)}
+        
+    })
+
+}
+
+function create_special_order_div (tamer){
+    let target_id = "#special_orders"
+    clear_div(target_id)
+    
+    tamer.special_orders.forEach(function(x){
+        console.log(x)
+
+        let new_element = create_element(
+            'div',
+            `${x} - <small>Special Order Text </small>`,
+            {"style": "padding-bottom:1%"})
+        document.querySelector(`${target_id}`).append(new_element)
+        
+    })
+
+}
