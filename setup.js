@@ -2,7 +2,13 @@ let api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
 let spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
 let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
 console.log(stored_character_data)
-load_page(stored_character_data)
+
+if(stored_character_data){
+    load_page(stored_character_data)
+} else {
+    
+}
+
 
 Promise.all([
   fetch("https://api.sheetson.com/v2/sheets/tamer", {headers: {
@@ -39,7 +45,7 @@ function load_page(result){
     // all_digimon_forms = result.digimons
     tamers = result.tamers
     all_torments = result.torments
-    // tamers.shift()
+    tamers.shift()
 
     tamers.forEach(function(tamer){
         tamer.xp = {}
