@@ -39,7 +39,7 @@ function load_page(result){
     // all_digimon_forms = result.digimons
     tamers = result.tamers
     all_torments = result.torments
-    tamers.shift()
+    // tamers.shift()
 
     tamers.forEach(function(tamer){
         tamer.xp = {}
