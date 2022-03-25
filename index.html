@@ -68,9 +68,9 @@
 
 <nav id="character_nav" class="nav navbar" style="max-width:65vw;">
 
-<a class="nav-link"  data-bs-toggle="tab" data-bs-target="#tamerTab" type="button"  href="#tamerTab" href="#tamerTab">To Tamer</a>
+<a class="nav-link"  data-bs-toggle="tab" data-bs-target="#tamerTab" type="button"  href="#tamerTab" href="#tamerTab">< To Tamer</a>
 
-<a class="nav-link"  data-bs-toggle="tab" data-bs-target="#digimonTab" type="button"  href="#digimonTab" href="#digimonTab">To Digimon</a>
+<a class="nav-link"  data-bs-toggle="tab" data-bs-target="#digimonTab" type="button"  href="#digimonTab" href="#digimonTab">To Digimon ></a>
 
 </nav>
 
@@ -91,7 +91,7 @@
 <div>
 
 <div style="position: relative; top: 0; left: 0;">    
-    <img id="tamerImage" src="https://i.imgur.com/f0vkqrG.png" class="card-img-top" style="position: relative; top: 0; left: 0;">
+    <img id="tamerImage" src="https://i.imgur.com/f0vkqrG.png" class="card-img-top" style="position: relative; top: 0; left: 0; object-fit: cover;object-position: top; width: 100%;min-height: 300px; height: 15vh; margin-bottom: 1rem;">
 </div>
 
 
@@ -133,6 +133,19 @@
 
 <hr>
 
+
+
+<!----------------------------------------------------------------------------->
+<!---------------------------------COMBAT STATS-------------------------------->
+<!----------------------------------------------------------------------------->
+
+<div class="combat_stats">
+
+<div id="tamer_stat_block_2">
+</div>
+
+<hr>
+
 <div style="display:flex; flex-direction: row; justify-content: space-evenly;text-align:center;">
     <div>
         <div> Initiative (Solo)</div>
@@ -144,17 +157,6 @@
         <div> 3d6 + 3</div>
     </div>
 </div> 
-
-<hr>
-
-<!----------------------------------------------------------------------------->
-<!---------------------------------COMBAT STATS-------------------------------->
-<!----------------------------------------------------------------------------->
-
-<div class="combat_stats">
-
-<div id="tamer_stat_block_2">
-</div>
 
 <hr>
 
@@ -312,19 +314,7 @@
 <div style="margin-left:5%;margin-right:5%">
 <div id="digimon_stat_block_1"></div><hr>
 
-<div style="display:flex; flex-direction: row; justify-content: space-evenly;text-align:center;">
-    <div>
-        <div> Initiative </div>
-        <div> 3d6 + 4</div> 
-        </div>
 
-        <div>
-        <div> Recovery Pool </div>
-        <div> 3d6 + 3</div>
-    </div>
-</div> 
-
-<hr>
 
 <div id="digimon_stat_block_2" class="combat_stats"></div><hr>
 
@@ -347,11 +337,20 @@
 <div  id="digimon_stat_block_3" style="width:95%; padding-right: 3%;"></div>
 
 <div id="digimon_stat_block_4" style="width:95%; padding-left: 3%;"></div>
-</div>
+</div><hr>
 
-    
+<div style="display:flex; flex-direction: row; justify-content: space-evenly;text-align:center;">
+    <div>
+        <div> Initiative </div>
+        <div> 3d6 + 4</div> 
+        </div>
 
-<hr>
+        <div>
+        <div> Recovery Pool </div>
+        <div> 3d6 + 3</div>
+    </div>
+</div> <hr>
+
 <div  id="digimon_stat_block_5"></div>
 </div>
 

@@ -125,7 +125,6 @@
     //   a.setAttribute('data-bs-toggle', 'tab')
     //   a.setAttribute('role', 'tab')
     //   a.innerHTML = x
-    //   console.log(human_nav)
     //
     //   li_item.appendChild(a)
     //   human_nav.appendChild(li_item)
@@ -312,7 +311,6 @@
                 element.innerHTML = ""
                 element.setAttribute("Style", `width:${(value/10)*100}%`)
               } else
-              console.log("Element not found (Human)")
             }
 
 
@@ -343,7 +341,6 @@
               action_div.innerHTML = `${x.Name}<small class="text-muted">(${x.Type})</small>`
 
               var action_description = document.createElement('p')
-              console.log(x)
               action_description.id = `human_action_${tamer.id}_${x.Name.replaceAll(" ", "")}`
               action_description.classList.add('collapse')
               action_description.setAttribute("style", "white-space: pre-line;")

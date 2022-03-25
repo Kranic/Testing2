@@ -1,61 +1,5 @@
 
-function setup_digimon(all_digimon_forms){
 
-let selected_digimon = all_digimon_forms[0]
-let activeDigimon = localStorage.getItem('activeDigimon') 
-
-if(activeDigimon){
-    update_digimon_tab(activeDigimon)
-} else {
-    update_digimon_tab(selected_digimon['id'])
-}
-
-
-//Create Data in DOM for Dropdown
-
-all_digimon_forms.forEach(function(x){
-    let dropdownitem = create_element(
-        'li',
-        `<li>
-        <a digimon_id=${x["id"]} class="dropdown-item" href="#a">${x["name"]}</a>
-        </li>`,
-        )
-    console.log(dropdownitem)
-    document.querySelector('#digimon-dropdownmenu').append(dropdownitem)
-})
-
-//Adding Listener for digimon dropdown changes
-document.querySelectorAll('#digimon-dropdownmenu .dropdown-item').forEach(
-    function(x){
-    x.addEventListener('click', function (event) {
-        let id = x.getAttribute('digimon_id')
-        update_digimon_tab (id)
-        localStorage.setItem( 'activeDigimon', id)
-    })
-    }
-)
-
-let other_forms = all_digimon_forms.filter(function(x){
-    return x.base_id == selected_digimon.base_id
-})
-
-
-other_forms.forEach(function(digimon){
-    let new_element = create_element('li',
-    `<img src="${digimon['image']}" style="width:15%;float:left;"> 
-        <div> ${digimon['name']} </div>
-        <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
-        {"class": 'list-group-item list-group-item-action overflow-auto',
-        "digimon_id": digimon['id']} )
-    new_element.addEventListener('click', function (event) {
-        let id = new_element.getAttribute('digimon_id')
-        update_digimon_tab (id)
-        localStorage.setItem( 'activeDigimon', id)
-    })
-    document.querySelector("#other_forms").append(new_element)
-
-})
-}
 
 // Functions --------------------------------------------------------------
 
@@ -63,17 +7,20 @@ other_forms.forEach(function(digimon){
 function update_digimon_tab(id){
     let digimon = all_digimon_forms.filter(function(x){ return x.id == id})[0]
     let selected_digimon = digimon
+    if(digimon==undefined){digimon=all_digimon_forms[0]}
+
+    console.log(digimon)
     // document.querySelector('#digimonEpitaph').textContent = digimon['epitaph']
-    document.querySelector('#digimonImage').src = digimon['image']
+    document.querySelector('#digimonImage').src = digimon['image_url']
     document.querySelector('#digimonName').textContent = digimon['name']
     document.querySelector('#DigimonSynopsis').textContent = digimon['synopsis']
 
-    create_attack_div(digimon)
-    create_quality_div(digimon)
-    create_dodge_div(digimon)
+    // create_attack_div(digimon)
+    // create_quality_div(digimon)
+    // create_dodge_div(digimon)
 
 
-    create_sidebar_data(selected_digimon)
+    create_sidebar_data(digimon)
 }
 
 
@@ -113,9 +60,9 @@ function create_sidebar_data(digimon){
 
     //
 
-
+    console.log(digimon)
     let boxes = [
-        ['Wound Boxes', `${digimon['derived_stats']['current_wound_boxes']} / ${digimon['derived_stats']['wound_boxes']}`], 
+        ['Wound Boxes', `${digimon['derived_stats']} / ${digimon['derived_stats']['wound_boxes']}`], 
         ['Movement', digimon['derived_stats']['movement']], 
         ['Attack Range', `${digimon['derived_stats']['range']}m | ${digimon['derived_stats']['range_limit']}m`]
         ]
@@ -209,5 +156,3 @@ function create_attack_div(digimon){
         document.querySelector(`${target_id}`).append(new_element)
 })
 }
-
-setup_digimon(all_digimon_forms)
