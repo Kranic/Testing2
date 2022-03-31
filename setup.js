@@ -85,7 +85,6 @@ function load_page(result){
     let activeDigimon = localStorage.getItem('activeDigimon') 
     
     setup_tamers(tamers)
-    setup_digimon(all_digimon_forms)
 
     if(activeTamer){ update_tamer_tab(activeTamer)}
     else { update_tamer_tab(tamers[0]['id'])}
@@ -93,16 +92,160 @@ function load_page(result){
     if(activeDigimon){ update_digimon_tab(activeDigimon)}
     else { update_digimon_tab(all_digimon_forms[0]['id'])}
 
-
-    
-    
-
 }
 
 
 function setup_tamers(tamers){
 
-    document.querySelector('#tamer-dropdownmenu').innerHTML = ""
+    // document.querySelector('#tamer-dropdownmenu').innerHTML = ""
+    // tamers.forEach(function(x){
+    // let dropdownitem = create_element(
+    //         'li',
+    //         `<li>
+    //         <a tamer_id=${x["id"]} class="dropdown-item" href="#a">${x["name"]}</a>
+    //         </li>`,
+    //         )
+    //     document.querySelector('#tamer-dropdownmenu').append(dropdownitem)
+    // })
+
+    // document.querySelectorAll('#tamer-dropdownmenu .dropdown-item')
+    // .forEach(
+    //     function(x){
+    //         x.addEventListener('click', function (event) {
+    //             let id = x.getAttribute('tamer_id')
+    //             update_tamer_tab(id)
+    //             localStorage.setItem( 'activeTamer', id)
+    //         })
+    //     }
+    //     )
+
+    // let partner_forms = all_digimon_forms.filter(function(x){
+    //     return x['tamer id'] == localStorage.getItem('activeTamer')
+    // })
+
+    // document.querySelector("#partner_forms").innerHTML = ""
+
+    // partner_forms.forEach(function(digimon){
+    //     console.log(digimon)
+    //     let new_element = create_element('li',
+    //         `<img src="${digimon['image_url']}" style="width:15%;float:left;"> 
+    //         <div> ${digimon['name']} </div>
+    //         <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
+    //         {"class": 'list-group-item list-group-item-action overflow-auto',
+    //         "digimon_id": digimon['id']} )
+
+    //     new_element.addEventListener('click', function (event) {
+    //         console.log(new_element.getAttribute('digimon_id'))
+    //             let id = new_element.getAttribute('digimon_id')
+    //             // digimon_tab.show
+    //             update_digimon_tab (id)
+    //             localStorage.setItem( 'activeDigimon', id)
+    //             set_tabs("#digimonTab")
+    //         })
+    //     document.querySelector("#partner_forms").append(new_element)
+    // })
+}
+
+
+// Functions --------------------------------------------------------------
+
+function update_tamer_tab(id){
+    let tamer = tamers.filter(function(x){ return x.id == id})[0]
+
+    document.getElementById("tamerName").textContent = tamer.name;
+    // document.getElementById("tamerEpitaph").textContent = tamer.title;
+    document.getElementById("tamerImage").src = tamer.image_url;
+    document.getElementById("tamerSynopsis").textContent = tamer.characterSynopsis.trim();
+
+
+    create_partner_forms(tamers, tamer)
+    create_tamer_sidebar_data(tamer)
+    create_aspect_div(tamer)
+    create_torment_div(tamer)
+    create_special_order_div(tamer)
+
+}
+
+
+function update_digimon_tab(id){
+    let digimon = all_digimon_forms.filter(function(x){ return x.id == id})[0]
+    let selected_digimon = digimon
+    if(digimon==undefined){digimon=all_digimon_forms[0]}
+
+    // document.querySelector('#digimonEpitaph').textContent = digimon['epitaph']
+    document.querySelector('#digimonImage').src = digimon['image_url']
+    document.querySelector('#digimonName').textContent = digimon['name']
+    document.querySelector('#DigimonSynopsis').textContent = digimon['synopsis']
+
+
+    create_other_forms(digimon)
+    create_attack_div(digimon)
+    // create_quality_div(digimon)
+    // create_dodge_div(digimon)
+
+
+    create_sidebar_data(digimon)
+}
+
+
+function create_other_forms(selected_digimon){
+
+    console.log(selected_digimon)
+    let other_forms = all_digimon_forms.filter(function(x){
+        return x['sheet'] == selected_digimon['sheet']})
+
+                //Create Data in DOM for Dropdown
+
+                document.querySelector('#digimon-dropdownmenu').innerHTML = ""
+
+                other_forms.forEach(function(x){
+                    let dropdownitem = create_element(
+                        'li',
+                        `<li>
+                        <a digimon_id=${x["id"]} class="dropdown-item" href="#a">${x["name"]}</a>
+                        </li>`,
+                        )
+
+                    document.querySelector('#digimon-dropdownmenu').append(dropdownitem)
+                })
+                //Adding Listener for digimon dropdown changes
+                document.querySelectorAll('#digimon-dropdownmenu .dropdown-item').forEach(
+                    function(x){
+
+                        x.addEventListener('click', function (event) {
+                            let id = x.getAttribute('digimon_id')
+                            selected_digimon = x
+                            update_digimon_tab (id)
+                            localStorage.setItem( 'activeDigimon', id)
+                        })
+                    }
+                    )
+
+
+
+                document.querySelector("#other_forms").innerHTML = ""
+                other_forms.forEach(function(digimon){
+                    let new_element = create_element('li',
+                        `<img src="${digimon['image_url']}" style="width:15%;float:left;;object-fit: cover;object-position: top; aspect-ratio: 1 / 1"> 
+                        <div> ${digimon['name']} </div>
+                        <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
+                        {"class": 'list-group-item list-group-item-action overflow-auto',
+                        "digimon_id": digimon['id']} )
+                    new_element.addEventListener('click', function (event) {
+                        let id = new_element.getAttribute('digimon_id')
+                        update_digimon_tab (id)
+                        localStorage.setItem( 'activeDigimon', id)
+                    })
+                    document.querySelector("#other_forms").append(new_element)
+
+                })
+
+}
+
+function create_partner_forms(tamers, tamer){
+
+ document.querySelector('#tamer-dropdownmenu').innerHTML = ""
+    
     tamers.forEach(function(x){
     let dropdownitem = create_element(
             'li',
@@ -125,23 +268,23 @@ function setup_tamers(tamers){
         )
 
     let partner_forms = all_digimon_forms.filter(function(x){
-        console.log(x)
-        return x['tamer id'] == localStorage.getItem('activeTamer')
+        return x['sheet'] == tamer['sheet']
     })
-    console.log(partner_forms)
 
     document.querySelector("#partner_forms").innerHTML = ""
 
     partner_forms.forEach(function(digimon){
+        console.log(digimon)
         let new_element = create_element('li',
-            `<img src="${digimon['image_url']}" style="width:15%;float:left;"> 
+            `<img src="${digimon['image_url']}" style="width:15%;float:left;object-fit: cover;object-position: top; aspect-ratio: 1 / 1"> 
             <div> ${digimon['name']} </div>
             <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
             {"class": 'list-group-item list-group-item-action overflow-auto',
             "digimon_id": digimon['id']} )
 
         new_element.addEventListener('click', function (event) {
-            let id = new_element.getAttribute('digimon_id')
+            console.log(new_element.getAttribute('digimon_id'))
+                let id = new_element.getAttribute('digimon_id')
                 // digimon_tab.show
                 update_digimon_tab (id)
                 localStorage.setItem( 'activeDigimon', id)
@@ -149,96 +292,7 @@ function setup_tamers(tamers){
             })
         document.querySelector("#partner_forms").append(new_element)
     })
-}
 
-
-function setup_digimon(all_digimon_forms){
-
-    selected_digimon = all_digimon_forms[localStorage.getItem('activeDigimon')]
-    
-    let other_forms = all_digimon_forms.filter(function(x){
-    return x['tamer id'] == selected_digimon['tamer id']})
-    
-        //Create Data in DOM for Dropdown
-
-    document.querySelector('#digimon-dropdownmenu').innerHTML = ""
-
-    other_forms.forEach(function(x){
-    let dropdownitem = create_element(
-        'li',
-        `<li>
-        <a digimon_id=${x["id"]} class="dropdown-item" href="#a">${x["name"]}</a>
-        </li>`,
-        )
-    document.querySelector('#digimon-dropdownmenu').append(dropdownitem)
-        })
-        //Adding Listener for digimon dropdown changes
-        document.querySelectorAll('#digimon-dropdownmenu .dropdown-item').forEach(
-    function(x){
-    x.addEventListener('click', function (event) {
-        let id = x.getAttribute('digimon_id')
-        selected_digimon = x
-        update_digimon_tab (id)
-        localStorage.setItem( 'activeDigimon', id)
-    })
-    }
-)
-
-
-
-
-other_forms.forEach(function(digimon){
-    let new_element = create_element('li',
-    `<img src="${digimon['image_url']}" style="width:15%;float:left;"> 
-        <div> ${digimon['name']} </div>
-        <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
-        {"class": 'list-group-item list-group-item-action overflow-auto',
-        "digimon_id": digimon['id']} )
-    new_element.addEventListener('click', function (event) {
-        let id = new_element.getAttribute('digimon_id')
-        update_digimon_tab (id)
-        localStorage.setItem( 'activeDigimon', id)
-    })
-    document.querySelector("#other_forms").append(new_element)
-
-})
-}
-
-
-// Functions --------------------------------------------------------------
-
-function update_tamer_tab(id){
-    let tamer = tamers.filter(function(x){ return x.id == id})[0]
-
-    document.getElementById("tamerName").textContent = tamer.name;
-    // document.getElementById("tamerEpitaph").textContent = tamer.title;
-    document.getElementById("tamerImage").src = tamer.image_url;
-    document.getElementById("tamerSynopsis").textContent = tamer.characterSynopsis.trim();
-
-
-    create_tamer_sidebar_data(tamer)
-    create_aspect_div(tamer)
-    create_torment_div(tamer)
-    create_special_order_div(tamer)
-}
-
-
-function update_digimon_tab(id){
-    let digimon = all_digimon_forms.filter(function(x){ return x.id == id})[0]
-    let selected_digimon = digimon
-    if(digimon==undefined){digimon=all_digimon_forms[0]}
-
-    // document.querySelector('#digimonEpitaph').textContent = digimon['epitaph']
-    document.querySelector('#digimonImage').src = digimon['image_url']
-    document.querySelector('#digimonName').textContent = digimon['name']
-    document.querySelector('#DigimonSynopsis').textContent = digimon['synopsis']
-
-    create_attack_div(digimon)
-    // create_quality_div(digimon)
-    // create_dodge_div(digimon)
-
-
-    create_sidebar_data(digimon)
 }
 
 function create_tamer_sidebar_data(tamer){
