@@ -57,7 +57,7 @@ Promise.all([
 
 
 function load_page(result){
-    console.log(res)
+    console.log(result)
     localStorage.setItem( 'character_data', JSON.stringify(result)) 
 
     let playlist = result.playlist
@@ -88,8 +88,6 @@ function load_page(result){
         digimon['wound_boxes'] = digimon['wound_boxes']
         
     })
-
-
 
     let activeTamer = localStorage.getItem('activeTamer')
     let activeDigimon = localStorage.getItem('activeDigimon') 
@@ -394,11 +392,7 @@ function create_tamer_sidebar_data(tamer){
     clear_div('#tamer_stat_block_1')
     boxes.forEach(function(x) {create_bar(x, '#tamer_stat_block_1')})
     clear_div('#tamer_stat_block_2')
-    stats.forEach(function(x) {create_bar(x, '#tamer_stat_block_2')})   
-    //     clear_div('#digimon_stat_block_3')
-    //     derived.forEach(function(x) {create_bar(x, '#digimon_stat_block_3')})  
-    //     clear_div('#digimon_stat_block_4')
-    //     specs.forEach(function(x) {create_bar(x, '#digimon_stat_block_4')})  
+    stats.forEach(function(x) {create_bar(x, '#tamer_stat_block_2')})  
     clear_div('#tamer_stat_block_3')
     attributes.forEach(function(x) {create_attribute_bar(x, '#tamer_stat_block_3')})
 }
@@ -586,7 +580,11 @@ function create_sidebar_data(digimon){
     clear_div('#digimon_stat_block_2')
     stats.forEach(function(x) {create_bar(x, '#digimon_stat_block_2')})   
     clear_div('#digimon_stat_block_3')
-    derived.forEach(function(x) {create_bar(x, '#digimon_stat_block_3')})  
+    derived.forEach(function(x) {create_bar(x, '#digimon_stat_block_3')}) 
+    
+    clear_div('#digimon_stat_block_stage')
+    create_bar(["Stage Bonus", digimon["stage_bonus"]], '#digimon_stat_block_stage')
+    
     clear_div('#digimon_stat_block_4')
     specs.forEach(function(x) {create_bar(x, '#digimon_stat_block_4')})  
     clear_div('#digimon_stat_block_5')
