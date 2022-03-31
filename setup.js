@@ -1,7 +1,7 @@
 let api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
 let spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
 let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
-let special_orders_list = ""
+let special_orders_list = {}
 
 if(stored_character_data){
     load_page(stored_character_data)
@@ -9,7 +9,7 @@ if(stored_character_data){
 
 
 Promise.all([
-  fetch(`https://api.sheetson.com/v2/sheets/tamer?limit=100`, 
+  fetch(`https://api.sheetson.com/v2/sheets/tamer`, 
     {headers: {
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
@@ -29,12 +29,12 @@ Promise.all([
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
   }}).then(r => r.json()),
-    fetch(`https://api.sheetson.com/v2/sheets/playlist?limit=100`,
+    fetch(`https://api.sheetson.com/v2/sheets/attacks?limit=100`,
     {headers: {
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
   }}).then(r => r.json()),
-  fetch(`https://api.sheetson.com/v2/sheets/special_orders?limit=100`,
+  fetch(`https://api.sheetson.com/v2/sheets/special_orders`,
     {headers: {
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
@@ -57,27 +57,30 @@ Promise.all([
 
 
 function load_page(result){
-    console.log(result)
-    localStorage.setItem( 'character_data', JSON.stringify(result)) 
+
+    if(result!=undefined){localStorage.setItem( 'character_data', JSON.stringify(result))}
+
+    
 
     let playlist = result.playlist
+
+    tamers = result.tamers
+    if(tamers==undefined){tamers = []} else {tamers.shift()}
+
+    all_torments = result.torments
     special_orders_list = result.special_orders
 
     all_digimon_forms = result.digimons
-    all_digimon_forms.shift()
+    if(all_digimon_forms==undefined){all_digimon_forms = []} else {all_digimon_forms.shift()}
+    
     let selected_digimon = all_digimon_forms[0]
 
-    tamers = result.tamers
-    tamers.shift()
-
-    all_torments = result.torments
     attacks = result.attacks
     
     tamers.forEach(function(tamer){
         tamer.xp = {}
         tamer.xp.rewarded = tamer.xp_rewarded
         tamer.xp.used = tamer.xp_used
-
         tamer.inspiration = {}
         tamer.inspiration.rewarded = tamer.inspiration_rewarded
         tamer.inspiration.used = tamer.inspiration_used
@@ -90,69 +93,15 @@ function load_page(result){
     })
 
     let activeTamer = localStorage.getItem('activeTamer')
-    let activeDigimon = localStorage.getItem('activeDigimon') 
-    
-    setup_tamers(tamers)
-
     if(activeTamer){ update_tamer_tab(activeTamer)}
     else { update_tamer_tab(tamers[0]['id'])}
 
+    let activeDigimon = localStorage.getItem('activeDigimon') 
     if(activeDigimon){ update_digimon_tab(activeDigimon)}
     else { update_digimon_tab(all_digimon_forms[0]['id'])}
 
 }
 
-
-function setup_tamers(tamers){
-
-    // document.querySelector('#tamer-dropdownmenu').innerHTML = ""
-    // tamers.forEach(function(x){
-    // let dropdownitem = create_element(
-    //         'li',
-    //         `<li>
-    //         <a tamer_id=${x["id"]} class="dropdown-item" href="#a">${x["name"]}</a>
-    //         </li>`,
-    //         )
-    //     document.querySelector('#tamer-dropdownmenu').append(dropdownitem)
-    // })
-
-    // document.querySelectorAll('#tamer-dropdownmenu .dropdown-item')
-    // .forEach(
-    //     function(x){
-    //         x.addEventListener('click', function (event) {
-    //             let id = x.getAttribute('tamer_id')
-    //             update_tamer_tab(id)
-    //             localStorage.setItem( 'activeTamer', id)
-    //         })
-    //     }
-    //     )
-
-    // let partner_forms = all_digimon_forms.filter(function(x){
-    //     return x['tamer id'] == localStorage.getItem('activeTamer')
-    // })
-
-    // document.querySelector("#partner_forms").innerHTML = ""
-
-    // partner_forms.forEach(function(digimon){
-    //     console.log(digimon)
-    //     let new_element = create_element('li',
-    //         `<img src="${digimon['image_url']}" style="width:15%;float:left;"> 
-    //         <div> ${digimon['name']} </div>
-    //         <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
-    //         {"class": 'list-group-item list-group-item-action overflow-auto',
-    //         "digimon_id": digimon['id']} )
-
-    //     new_element.addEventListener('click', function (event) {
-    //         console.log(new_element.getAttribute('digimon_id'))
-    //             let id = new_element.getAttribute('digimon_id')
-    //             // digimon_tab.show
-    //             update_digimon_tab (id)
-    //             localStorage.setItem( 'activeDigimon', id)
-    //             set_tabs("#digimonTab")
-    //         })
-    //     document.querySelector("#partner_forms").append(new_element)
-    // })
-}
 
 
 // Functions --------------------------------------------------------------
@@ -180,16 +129,41 @@ function update_digimon_tab(id){
     let selected_digimon = digimon
     if(digimon==undefined){digimon=all_digimon_forms[0]}
 
+    digimon.dodges = [
+        {
+            "name": "vs Melee",
+            "roll": digimon.dodge_roll_melee,
+            "auto_success": digimon.dodge_successes,
+            "effect_duration": digimon.dodge_effect_duration,
+            "tags": digimon.dodge_tags,
+        },
+        {
+            "name": "vs Ranged",
+            "roll": digimon.dodge_roll_ranged,
+            "auto_success": digimon.dodge_successes,
+            "effect_duration": digimon.dodge_effect_duration,
+            "tags": digimon.dodge_tags,
+        },
+        {
+            "name": "vs Positive Effect",
+            "roll": digimon.postive_effect_roll,
+            "effect_duration": digimon.postive_effect_duration,
+            "auto_success": 0,
+            "tags": digimon.postive_effect_tags,
+        },
+    ]
+
+
     // document.querySelector('#digimonEpitaph').textContent = digimon['epitaph']
     document.querySelector('#digimonImage').src = digimon['image_url']
     document.querySelector('#digimonName').textContent = digimon['name']
     document.querySelector('#DigimonSynopsis').textContent = digimon['synopsis']
 
-
     create_other_forms(digimon)
     create_attack_div(digimon)
+    area_value_div(digimon)
     // create_quality_div(digimon)
-    // create_dodge_div(digimon)
+    create_dodge_div(digimon)
 
 
     create_sidebar_data(digimon)
@@ -221,6 +195,7 @@ function create_other_forms(selected_digimon){
                     function(x){
 
                         x.addEventListener('click', function (event) {
+                            console.log(event)
                             let id = x.getAttribute('digimon_id')
                             selected_digimon = x
                             update_digimon_tab (id)
@@ -233,12 +208,19 @@ function create_other_forms(selected_digimon){
 
                 document.querySelector("#other_forms").innerHTML = ""
                 other_forms.forEach(function(digimon){
+                    
                     let new_element = create_element('li',
-                        `<img src="${digimon['image_url']}" style="width:15%;float:left;;object-fit: cover;object-position: top; aspect-ratio: 1 / 1"> 
+                        `<img src="${digimon['image_url']}" 
+                        style="width:15%;
+                        float:left;
+                        object-fit: cover;
+                        object-position: top;
+                        aspect-ratio: 1 / 1"> 
                         <div> ${digimon['name']} </div>
                         <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
                         {"class": 'list-group-item list-group-item-action overflow-auto',
                         "digimon_id": digimon['id']} )
+
                     new_element.addEventListener('click', function (event) {
                         let id = new_element.getAttribute('digimon_id')
                         update_digimon_tab (id)
@@ -253,6 +235,9 @@ function create_other_forms(selected_digimon){
 function create_partner_forms(tamers, tamer){
 
  document.querySelector('#tamer-dropdownmenu').innerHTML = ""
+ document.querySelector("#human_images").innerHTML = ""
+ document.querySelector("#partner_images").innerHTML = ""
+
     
     tamers.forEach(function(x){
     let dropdownitem = create_element(
@@ -261,8 +246,37 @@ function create_partner_forms(tamers, tamer){
             <a tamer_id=${x["id"]} class="dropdown-item" href="#a">${x["name"]}</a>
             </li>`,
             )
-        document.querySelector('#tamer-dropdownmenu').append(dropdownitem)
+    document.querySelector('#tamer-dropdownmenu').append(dropdownitem)
+        
+    let tamer_element = create_element('li',
+                `<img
+                src="${x['image_url']}"
+                style="width:50%;
+                height:100px;
+                align-items: center;
+                justify-content: center;
+                object-fit: cover;
+                object-position: top;
+                aspect-ratio: 1 / 1"> 
+                `,
+                {"class": '',
+                "tamer_id": x['id']} )
+
+    tamer_element.addEventListener('click', function (event) {
+            console.log(event)
+                let id = tamer_element.getAttribute('tamer_id')
+                update_tamer_tab(id)
+                localStorage.setItem( 'activeTamer', id)
+                localStorage.setItem('activecharacterTab', event.target.getAttribute('#tamerTab'))
+                set_tabs("#tamerTab")
+            })
+    
+
+    document.querySelector("#human_images").append(tamer_element)
+
     })
+
+    
 
     document.querySelectorAll('#tamer-dropdownmenu .dropdown-item')
     .forEach(
@@ -275,30 +289,36 @@ function create_partner_forms(tamers, tamer){
         }
         )
 
+    
+
+
     let partner_forms = all_digimon_forms.filter(function(x){
         return x['sheet'] == tamer['sheet']
     })
 
-    document.querySelector("#partner_forms").innerHTML = ""
-
     partner_forms.forEach(function(digimon){
         console.log(digimon)
         let new_element = create_element('li',
-            `<img src="${digimon['image_url']}" style="width:15%;float:left;object-fit: cover;object-position: top; aspect-ratio: 1 / 1"> 
-            <div> ${digimon['name']} </div>
-            <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
-            {"class": 'list-group-item list-group-item-action overflow-auto',
+            `<img src="${digimon['image_url']}"
+            style="width:50%;
+                height:100px;
+                align-items: center;
+                justify-content: center;
+                object-fit: cover;
+                object-position: top;
+                aspect-ratio: 1 / 1">`,
+            {"class": '',
             "digimon_id": digimon['id']} )
 
         new_element.addEventListener('click', function (event) {
-            console.log(new_element.getAttribute('digimon_id'))
+            // console.log(new_element.getAttribute('digimon_id'))
                 let id = new_element.getAttribute('digimon_id')
                 // digimon_tab.show
                 update_digimon_tab (id)
                 localStorage.setItem( 'activeDigimon', id)
                 set_tabs("#digimonTab")
             })
-        document.querySelector("#partner_forms").append(new_element)
+        document.querySelector("#partner_images").append(new_element)
     })
 
 }
@@ -458,6 +478,7 @@ function create_special_order_div (tamer){
     clear_div(target_id)
     
     tamer.special_orders.forEach(function(x){
+
         let order = special_orders_list.filter(function(order){
             return order['name'] == x.trim()
         })[0]
@@ -606,13 +627,25 @@ function create_dodge_div (digimon){
     let digimon_dodges = digimon['dodges']
     let target_id = "#digimon_dodges"
     clear_div(target_id)
+
     digimon_dodges.forEach(function(x){
+
+    let effect_duration = ""
+    if(x['effect_duration'] != 0){
+        effect_duration = `<small>Effect Duration: ${x['effect_duration']}</small>`
+    } 
+
+    
+    let auto_successes = ""
+    if(x['auto_success'] == 0){}
+    else{
+        auto_successes = `+${x['auto_success']}`
+    }   
+
         let new_element = create_element('div', 
-            `<div>${x['name']} (${x['roll']}+${x['auto_success']})</div>
-            <small> Armor: ${x['armor']}</small>
-            <small> | Effect Duration: +${x['effect duration']}</small>
-            <small>${x['tags']}</small>
-            <div style="white-space: pre-line;"><small>${x['description']}</small><hr>`,
+            `<div>${x['name']} (${x['roll']}d6${auto_successes})</div>
+            <div>${x['tags']}</div>
+            ${effect_duration}<hr>`,
             {'class': 'overflow-auto'})
         document.querySelector(`${target_id}`).append(new_element)
     })
@@ -620,9 +653,12 @@ function create_dodge_div (digimon){
 
 
 function create_attack_div(digimon){
+
     let digimon_attacks = attacks.filter(function(x){
-        return x['Digimon id'] == digimon.id
+        return x['digimon_id'] == digimon.id
     })
+
+    console.log(attacks)
 
     // let digimon_attacks = digimon['attacks']
     let target_id = "#digimon_attacks"
@@ -637,6 +673,63 @@ function create_attack_div(digimon){
         if(x.Roll){document.querySelector(`${target_id}`).append(new_element)}
         
 })
+}
+
+function area_value_div(digimon){
+
+    // let digimon_attacks = digimon['attacks']
+    let target_id = "#area_value_div"
+    clear_div(target_id)
+
+    let new_element = create_element('div', 
+            `<h5>Area Values</h5> 
+            <div>[Burst] Radius ${digimon['burst_m']}m | ${digimon['burst_r']}m</div>
+            <div>[Blast] Diameter ${digimon['blast_m']}m | ${digimon['blast_r']}m</div>
+            <div>[Close Blast] Radius ${digimon['clost_blast_m']}m | ${digimon['clost_blast_r']}m</div>
+            <div>[Line] Dimension ${digimon['line_m']}m | ${digimon['line_r']}m</div>
+            <div>[Cone] Length ${digimon['cone_m']}m | ${digimon['cone_r']}m</div>
+            <div>[Pass] Movement ${digimon['pass_m']}m | ${digimon['pass_r']}m</div>`, 
+            {'class': 'overflow-auto'})
+
+    let combat_notes = "" 
+
+
+    if(digimon.start_of_combat){
+        combat_notes += `<h6>Start of Combat</h6><div>${digimon.start_of_combat}</div>`}
+    else { 
+        combat_notes += ""
+    }
+
+    if(digimon.start_of_round){
+        combat_notes += `<h6>Start of Round</h6><div>${digimon.start_of_round}</div>`} 
+    else { 
+        combat_notes += ""
+    }
+
+    let element_2 = create_element('div', 
+            `<h5>Combat Notes:</h5>
+            ${combat_notes}
+            <h6>Misc Skill Notes</h6>`)
+    
+    console.log(digimon.misc_skill_rolls)
+    if(digimon.misc_skill_rolls!="No Notes"){
+
+    let misc_skills = digimon.misc_skill_rolls.split(',')
+    let misc_descriptions = digimon.misc_skill_rolls_descriptions.split(',')
+    let count = 0
+
+    misc_skills.forEach(function(x){
+        let name_elem = create_element('div', `<b>${x}</b>`)
+        element_2.append(name_elem)
+
+        let disc_elem = create_element('div', misc_descriptions[count])
+        element_2.append(disc_elem)
+        count++
+    })
+
+        document.querySelector(target_id).append(new_element)
+        document.querySelector(target_id).append(element_2)}
+     
 }
 
 
