@@ -51,12 +51,13 @@ Promise.all([
     }
 })
 .then(result => load_page(result))
-.catch((err) => {
+.catch((err) => {console.log(err)
 });
 
 
 
 function load_page(result){
+    console.log(res)
     localStorage.setItem( 'character_data', JSON.stringify(result)) 
 
     let playlist = result.playlist
