@@ -114,12 +114,14 @@ function update_tamer_tab(id){
     document.getElementById("tamerImage").src = tamer.image_url;
     document.getElementById("tamerSynopsis").textContent = tamer.characterSynopsis.trim();
 
-
+    try{
     create_partner_forms(tamers, tamer)
     create_tamer_sidebar_data(tamer)
     create_aspect_div(tamer)
     create_torment_div(tamer)
     create_special_order_div(tamer)
+    }
+    catch(err){console.log(err)}
 
 }
 
@@ -153,20 +155,42 @@ function update_digimon_tab(id){
         },
     ]
 
+    digimon.qualities = []
+
+    console.log(digimon)
+
+    let q_names = []
+    if(digimon.qualities_names){q_names = digimon.qualities_names.split(',')}
+    
+    
+    let q_ranks = []
+    if(digimon.quality_ranks){q_ranks = digimon.quality_ranks.split(',')}
+
+    let count = 0
+    q_names.forEach(function(x){
+
+        digimon.qualities.push(
+        {
+            "name": x,
+            "rank": q_ranks[count]
+        })
+        count++
+    })
+
 
     // document.querySelector('#digimonEpitaph').textContent = digimon['epitaph']
     document.querySelector('#digimonImage').src = digimon['image_url']
     document.querySelector('#digimonName').textContent = digimon['name']
     document.querySelector('#DigimonSynopsis').textContent = digimon['synopsis']
-
+    try{
     create_other_forms(digimon)
     create_attack_div(digimon)
     area_value_div(digimon)
-    // create_quality_div(digimon)
+    create_quality_div(digimon)
     create_dodge_div(digimon)
-
-
     create_sidebar_data(digimon)
+    }
+    catch(err){console.log(err)}
 }
 
 
@@ -483,10 +507,17 @@ function create_special_order_div (tamer){
             return order['name'] == x.trim()
         })[0]
 
+        let desc = ""
+
+        console.log(order)
+        if(order != undefined){
+            desc = `| ${order['action_type']} Action ${order['usage']}</h6></em><small> ${order['description']}`
+        }
         let new_element = create_element(
             'div',
-            `<h6><em>${x} | ${order['action_type']} Action ${order['usage']}</h6></em><small> ${order['description']}</small>`,
+            `<h6><em>${x} ${desc}</small>`,
             {"style": "padding-bottom:1%"})
+
         document.querySelector(`${target_id}`).append(new_element)
         
     })
@@ -617,8 +648,9 @@ function create_quality_div (digimon){
     let target_id = "#digimon_qualities"
     clear_div(target_id)
     digimon_qualities.forEach(function(x){
+        if(x.rank == undefined){x.rank = ""}
         
-        let new_element = create_element('div', `<small>${x}</small>`)
+        let new_element = create_element('div', `<small>${x.name}</small> <small>${x.rank}</small>`)
         document.querySelector(`${target_id}`).append(new_element)
     })
 }
@@ -682,7 +714,7 @@ function area_value_div(digimon){
     clear_div(target_id)
 
     let new_element = create_element('div', 
-            `<h5>Area Values</h5> 
+            `<h6>Area Values: </h6> 
             <div>[Burst] Radius ${digimon['burst_m']}m | ${digimon['burst_r']}m</div>
             <div>[Blast] Diameter ${digimon['blast_m']}m | ${digimon['blast_r']}m</div>
             <div>[Close Blast] Radius ${digimon['clost_blast_m']}m | ${digimon['clost_blast_r']}m</div>
@@ -707,13 +739,11 @@ function area_value_div(digimon){
     }
 
     let element_2 = create_element('div', 
-            `<h5>Combat Notes:</h5>
-            ${combat_notes}
-            <h6>Misc Skill Notes</h6>`)
+            combat_notes)
     
     console.log(digimon.misc_skill_rolls)
     if(digimon.misc_skill_rolls!="No Notes"){
-
+        console.log(digimon.misc_skill_rolls)
     let misc_skills = digimon.misc_skill_rolls.split(',')
     let misc_descriptions = digimon.misc_skill_rolls_descriptions.split(',')
     let count = 0
@@ -727,8 +757,10 @@ function area_value_div(digimon){
         count++
     })
 
-        document.querySelector(target_id).append(new_element)
+        
         document.querySelector(target_id).append(element_2)}
+
+        document.querySelector(target_id).append(new_element)
      
 }
 
