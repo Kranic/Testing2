@@ -1,6 +1,7 @@
 let api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
 let spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
 let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
+let special_orders_list = ""
 
 if(stored_character_data){
     load_page(stored_character_data)
@@ -28,19 +29,25 @@ Promise.all([
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
   }}).then(r => r.json()),
-  fetch(`https://api.sheetson.com/v2/sheets/attacks?limit=100`,
+    fetch(`https://api.sheetson.com/v2/sheets/playlist?limit=100`,
+    {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+  fetch(`https://api.sheetson.com/v2/sheets/special_orders?limit=100`,
     {headers: {
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
   }}).then(r => r.json()),
 ])
-.then(([tamer, torment, digimon, playlist, attacks]) => {
+.then(([tamer, torment, digimon, playlist, attacks, special_orders]) => {
     return {
         "tamers": tamer.results,
         "torments": torment.results,
         "digimons": digimon.results,
         "playlist": playlist.results,
-        "attacks": attacks.results
+        "attacks": attacks.results,
+        "special_orders": special_orders.results
     }
 })
 .then(result => load_page(result))
@@ -48,10 +55,12 @@ Promise.all([
 });
 
 
+
 function load_page(result){
     localStorage.setItem( 'character_data', JSON.stringify(result)) 
 
     let playlist = result.playlist
+    special_orders_list = result.special_orders
 
     all_digimon_forms = result.digimons
     all_digimon_forms.shift()
@@ -75,7 +84,7 @@ function load_page(result){
     })
 
     all_digimon_forms.forEach(function(digimon){
-        digimon['wound_boxes'] = digimon['wound boxes']
+        digimon['wound_boxes'] = digimon['wound_boxes']
         
     })
 
@@ -341,20 +350,40 @@ function create_tamer_sidebar_data(tamer){
 
     let attributes = [
     ['Agility', tamer['agility'], 
-    [['Dodge', tamer['dodge']], ['Fight', tamer['fight']], ['Stealth', tamer['stealth']]
-    ]],
+        [
+        ['Dodge', tamer['dodge'],  tamer['dodge_roll']], 
+        ['Fight', tamer['fight'], tamer['fight_roll']], 
+        ['Stealth', tamer['stealth'], tamer['stealth_roll']]
+        ]
+    ],
     ['Body', tamer['body'], 
-    [['Athletics', tamer['athletics']], ['endurance', tamer['endurance']], ['Feats of Strength', tamer['feats of strength']]
-    ]],
+        [
+        ['Athletics', tamer['athletics'], tamer['athletics_roll']],
+        ['Endurance', tamer['endurance'], tamer['endurance_roll']],
+        ['Feats of Strength', tamer['feats of strength'], tamer['feats of strength_roll']]
+        ]
+    ],
     ['Charisma', tamer['charisma'], 
-    [['Manipulate', tamer['manipulate']], ['Perform', tamer['perform']], ['Persuade', tamer['persuade']]
-    ]],
+        [
+        ['Manipulate', tamer['manipulate'], tamer['manipulate_roll']],
+        ['Perform', tamer['perform'], tamer['perform_roll']],
+        ['Persuade', tamer['persuade'], tamer['persuade_roll']]
+        ]
+    ],
     ['Intelligence', tamer['intelligence'], 
-    [['Computer', tamer['computer']], ['Survival', tamer['survival']], ['Knowledge', tamer['knowledge']]
-    ]],
+        [
+        ['Computer', tamer['computer'], tamer['computer_roll']],
+        ['Survival', tamer['survival'], tamer['survival_roll']],
+        ['Knowledge', tamer['knowledge'], tamer['knowledge_roll']]
+        ]
+    ],
     ['Willpower', tamer['willpower'], 
-    [['Perception', tamer['perception']], ['Decipher Intent', tamer['decipher intent']], ['Bravery', tamer['bravery']]
-    ]]
+        [
+        ['Perception', tamer['perception'], tamer['perception_roll']],
+        ['Decipher Intent', tamer['decipher intent'],tamer['decipher intent_roll']],
+        ['Bravery', tamer['bravery'], tamer['bravery_roll']]
+        ]
+    ]
     ]
 
 
@@ -427,14 +456,20 @@ function create_torment_div (tamer){
 }
 
 function create_special_order_div (tamer){
+    console.log(special_orders_list)
+
+    
     let target_id = "#special_orders"
     clear_div(target_id)
     
     tamer.special_orders.forEach(function(x){
+        let order = special_orders_list.filter(function(order){
+            return order['name'] == x.trim()
+        })[0]
 
         let new_element = create_element(
             'div',
-            `<h6><em>${x}</h6></em><small>Special Order Text </small>`,
+            `<h6><em>${x} | ${order['action_type']} Action ${order['usage']}</h6></em><small> ${order['description']}</small>`,
             {"style": "padding-bottom:1%"})
         document.querySelector(`${target_id}`).append(new_element)
         
@@ -460,14 +495,15 @@ function create_sidebar_data(digimon){
     container.append(stage_div)
     container.append(size_div)
 
-    let dp_div = create_element('div', `${digimon["dp"]} DP`)
+    let dp_div = create_element('div', `+${digimon["rewarded_dp"]} DP`)
     let type_div = create_element('div', digimon["jogress"])
     let misc = create_element('div', `${digimon["attribute"]} / ${digimon["type"]} / ${digimon["field"]}`)
 
     let character_sheet_div = create_element(
-        'div', 
-        `<a onclick="show_digimon(1)">Partner: ${digimon["partner"]}`,
-        {'class': `character_info`})
+        'a', 
+        `Character Sheet Link`,
+        {'class': `character_info`,
+        'href': digimon.sheet})
 
     let inside_divs = [container, misc, type_div, dp_div]
 
@@ -480,43 +516,67 @@ function create_sidebar_data(digimon){
     //
 
     let boxes = [
-        ['Wound Boxes', `${digimon['wound_boxes']}`], 
+        ['Wound Boxes', digimon['wound_boxes']], 
         ['Movement', digimon['movement']], 
         ['Attack Range', `${digimon['range']}m | ${digimon['limit']}m`]
         ]
 
     let stats = [
-        ['Health', 3], 
-        ['Accuracy', 4], 
-        ['Damage', 3],
-        ['Dodge', 4],
-        ['Armor', 3]]
+        ['Health', digimon['health']], 
+        ['Accuracy', digimon['accuracy']], 
+        ['Damage', digimon['damage']],
+        ['Dodge', digimon['dodge']],
+        ['Armor', digimon['armor']]
+        ]
 
     let derived = [
-        ['Agility', 2], 
-        ['Body', 2],
-        ['Brains', 1]]
+        ['Agility', digimon['agility']], 
+        ['Body', digimon['body']],
+        ['Brains', digimon['brains']]
+        ]
 
     let specs = [
-        ['RAM', 1], ['CPU', 1], ['BIT', 1]
+        ['RAM', digimon['ram']],
+        ['CPU', digimon['cpu']],
+        ['BIT', digimon['bit']]
         ]
 
     let attributes = [
-        ['Agility', 4, 
-        [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
-        ]],
-        ['Body', 4, 
-        [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
-        ]],
-        ['Charisma', 4, 
-        [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
-        ]],
-        ['Intelligence', 4, 
-        [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
-        ]],
-        ['Willpower', 4, 
-        [['Dodge', 1], ['Fight', 1], ['Stealth', 2]
-        ]]
+        ['Agility', digimon['agility'], 
+        [
+        ['Dodge', digimon['dodge']],
+        ['Fight', digimon['fight']],
+        ['Stealth', digimon['stealth']]
+        ]
+        ],
+        ['Body', digimon['body'], 
+        [
+        ['Athletics', digimon['dodge']],
+        ['Endurance', digimon['fight']],
+        ['Feats of Strength', digimon['feats of strength']]
+        ]
+        ],
+        ['Charisma', digimon['charisma'], 
+        [
+        ['Manipulate', digimon['manipulate']],
+        ['Perform', digimon['perform']],
+        ['Persuade', digimon['persuade']]
+        ]
+        ],
+        ['Intelligence', digimon['intelligence'], 
+        [
+        ['Computer', digimon['computer']],
+        ['Survival', digimon['survival']],
+        ['Knowledge', digimon['knowledge']]
+        ]
+        ],
+        ['Willpower', digimon['willpower'], 
+        [
+        ['Perception', digimon['perception']],
+        ['Decipher Intent', digimon['decipher intent']],
+        ['Bravery', digimon['bravery']]
+        ]
+        ]
         
     ]
 

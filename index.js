@@ -41,11 +41,14 @@ function create_bar(x, target_id){
         }
 
     function create_attribute_bar(x, target_id){
+
+
+
         let div = create_element('div', "", {"style": "padding-bottom: 5%;"})
         let new_element = create_element(
             'div', 
-            `<div>${x[0]}<small class="text-muted"> (3d6 + ${x[1]})</small></div>
-            <div style="text-align: right">${x[1]}</div>  `,
+            `<div>${x[0]}<small class="text-muted"> (${x[1]})</small></div>
+            <div style="text-align: right">3d6 + ${x[1]}</div>  `,
             {
                 'class': 'd-flex justify-content-between mx-auto',
                 'display': 'flex'
@@ -66,10 +69,11 @@ function create_bar(x, target_id){
 
 
         x[2].forEach(function(skill){
+            if (skill[2]==undefined){skill[2]=skill[1]}
             let text_elem = create_element(
                 'div',
-                `<div>${skill[0]}<small class="text-muted">(3d6 + x)</small></div>
-                <div>${skill[1]}</div>`,
+                `<div>${skill[0]}<small class="text-muted, skill-roll-text"> (${skill[1]})</small></div>
+                <div>3d6 + ${skill[2]}</div>`,
                 {   
                     'class': 'd-flex justify-content-between mx-auto',
                     'font-size': '12px'
@@ -77,7 +81,7 @@ function create_bar(x, target_id){
                 )
             let progress_elem = create_element(
                 'div',
-                `<div class="progress-bar ${skill[0].toLowerCase()} role=" progressbar style="width:${skill[1]/10*100}%"></div>`,
+                `<div class="progress-bar ${skill[0].toLowerCase()} role=" progressbar style="width:${skill[2]/10*100}%"></div>`,
                 {   
                     'class': 'progress',
                     'style': `height: 5px`
