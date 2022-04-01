@@ -4,7 +4,7 @@ let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
 let special_orders_list = {}
 
 if(stored_character_data){
-    load_page(stored_character_data)
+    try{load_page(stored_character_data)}catch(err){console.log(err)}
 }
 
 
@@ -24,12 +24,7 @@ Promise.all([
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
   }}).then(r => r.json()),
-  fetch(`https://api.sheetson.com/v2/sheets/playlist?limit=100`,
-    {headers: {
-    "Authorization": `Bearer ${api_key}`,
-    "X-Spreadsheet-Id": spreadsheet_id
-  }}).then(r => r.json()),
-    fetch(`https://api.sheetson.com/v2/sheets/attacks?limit=100`,
+  fetch(`https://api.sheetson.com/v2/sheets/playlist?limit=1000`,
     {headers: {
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
@@ -40,13 +35,12 @@ Promise.all([
     "X-Spreadsheet-Id": spreadsheet_id
   }}).then(r => r.json()),
 ])
-.then(([tamer, torment, digimon, playlist, attacks, special_orders]) => {
+.then(([tamer, torment, digimon, playlist, special_orders]) => {
     return {
         "tamers": tamer.results,
         "torments": torment.results,
         "digimons": digimon.results,
         "playlist": playlist.results,
-        "attacks": attacks.results,
         "special_orders": special_orders.results
     }
 })
@@ -57,10 +51,7 @@ Promise.all([
 
 
 function load_page(result){
-
     if(result!=undefined){localStorage.setItem( 'character_data', JSON.stringify(result))}
-
-    
 
     let playlist = result.playlist
 
@@ -71,11 +62,12 @@ function load_page(result){
     special_orders_list = result.special_orders
 
     all_digimon_forms = result.digimons
+    all_digimon_forms = all_digimon_forms.filter(all_digimon_forms => all_digimon_forms.sheet != ' ')
     if(all_digimon_forms==undefined){all_digimon_forms = []} else {all_digimon_forms.shift()}
     
     let selected_digimon = all_digimon_forms[0]
 
-    attacks = result.attacks
+    // attacks = result.attacks
     
     tamers.forEach(function(tamer){
         tamer.xp = {}
@@ -87,8 +79,40 @@ function load_page(result){
         tamer.special_orders = tamer['special orders'].split(',')
     })
 
-    all_digimon_forms.forEach(function(digimon){
+    all_digimon_forms.forEach(
+        function(digimon){
         digimon['wound_boxes'] = digimon['wound_boxes']
+        
+        try{
+        attack = []
+        console.log(digimon)
+        attacks = digimon['attacks_array'].split("|||")
+        
+        attacks.forEach(
+            function(x){ 
+                attack_values = x.split("|XXX|")
+
+        final_attack = {
+            "name": attack_values[0],
+            "description": attack_values[1],
+            "tags": attack_values[2],
+            "roll": attack_values[3],
+            "accuracy_bonus": attack_values[4],
+            "damage_bonus": attack_values[5],
+            "auto_successes": attack_values[6],
+            "armor_ignored": attack_values[7]
+        }
+
+        
+        attack.push(final_attack)
+
+        }
+
+        )    
+
+        digimon['attacks'] = attack
+        }catch(err){console.log(err)}
+
         
     })
 
@@ -291,7 +315,7 @@ function create_partner_forms(tamers, tamer){
                 let id = tamer_element.getAttribute('tamer_id')
                 update_tamer_tab(id)
                 localStorage.setItem( 'activeTamer', id)
-                localStorage.setItem('activecharacterTab', event.target.getAttribute('#tamerTab'))
+                localStorage.setItem('activecharacterTab', '#tamerTab')
                 set_tabs("#tamerTab")
             })
     
@@ -309,6 +333,7 @@ function create_partner_forms(tamers, tamer){
                 let id = x.getAttribute('tamer_id')
                 update_tamer_tab(id)
                 localStorage.setItem( 'activeTamer', id)
+                localStorage.setItem('activecharacterTab', '#tamerTab')
             })
         }
         )
@@ -686,9 +711,11 @@ function create_dodge_div (digimon){
 
 function create_attack_div(digimon){
 
-    let digimon_attacks = attacks.filter(function(x){
-        return x['digimon_id'] == digimon.id
-    })
+    // let digimon_attacks = attacks.filter(function(x){
+    //     return x['digimon_id'] == digimon.id
+    // })
+
+    let digimon_attacks = digimon.attacks
 
     console.log(attacks)
 
@@ -696,13 +723,16 @@ function create_attack_div(digimon){
     let target_id = "#digimon_attacks"
     clear_div(target_id)
 
+
+
     digimon_attacks.forEach(function(x){
+        console.log(x)
         let new_element = create_element('li', 
-            `<div>${x['Name']} (${x['Roll']})</div>
-            <small>${x['Tags']}</small>
-            <div style="white-space: pre-line;"><small>${x['Description']}</small><hr>`, 
+            `<div>${x['name']} (${x['roll']})</div>
+            <small>${x['tags']}</small>
+            <div style="white-space: pre-line;"><small>${x['description']}</small><hr>`, 
             {'class': 'overflow-auto'})
-        if(x.Roll){document.querySelector(`${target_id}`).append(new_element)}
+        if(x.roll){document.querySelector(`${target_id}`).append(new_element)}
         
 })
 }
