@@ -673,9 +673,9 @@ function create_quality_div (digimon){
     let target_id = "#digimon_qualities"
     clear_div(target_id)
     digimon_qualities.forEach(function(x){
-        if(x.rank == undefined){x.rank = ""}
+        if(x.rank == undefined || x.rank == "I" ){x.rank = ""}
         
-        let new_element = create_element('div', `<small>${x.name}</small> <small>${x.rank}</small>`)
+        let new_element = create_element('div', `<small>${x.name}</small> <small>${x.rank}</small>`, {"style":"padding-bottom: 3%;"})
         document.querySelector(`${target_id}`).append(new_element)
     })
 }
@@ -684,6 +684,9 @@ function create_dodge_div (digimon){
     let digimon_dodges = digimon['dodges']
     let target_id = "#digimon_dodges"
     clear_div(target_id)
+
+    let dodge_div = create_element('div', '', {'class': 'row'})
+    document.querySelector(target_id).append(dodge_div)
 
     digimon_dodges.forEach(function(x){
 
@@ -700,11 +703,18 @@ function create_dodge_div (digimon){
     }   
 
         let new_element = create_element('div', 
-            `<div>${x['name']} (${x['roll']}d6${auto_successes})</div>
-            <div>${x['tags']}</div>
+            `<div><b>${x['name']}</b> (${x['roll']}d6${auto_successes})</div>
+            <div><small>${x['tags']}</small></div>
             ${effect_duration}<hr>`,
             {'class': 'overflow-auto'})
-        document.querySelector(`${target_id}`).append(new_element)
+        if(x.name=="vs Ranged" || x.name=="vs Melee"){
+            new_element.classList.add("col-6")
+            dodge_div.append(new_element)
+        }
+        else{
+            document.querySelector(target_id).append(new_element)
+        }
+        
     })
 }
 
@@ -728,7 +738,7 @@ function create_attack_div(digimon){
     digimon_attacks.forEach(function(x){
         console.log(x)
         let new_element = create_element('li', 
-            `<div>${x['name']} (${x['roll']})</div>
+            `<div><b>${x['name']}</b> (${x['roll']})</div>
             <small>${x['tags']}</small>
             <div style="white-space: pre-line;"><small>${x['description']}</small><hr>`, 
             {'class': 'overflow-auto'})
@@ -743,15 +753,53 @@ function area_value_div(digimon){
     let target_id = "#area_value_div"
     clear_div(target_id)
 
+    if(digimon['clost_blast_m'] == "-"){digimon['clost_blast_m']=""}else{digimon['clost_blast_m']+="m"}
+    if(digimon['pass_r'] == "-"){digimon['pass_r']=""}else{digimon['pass_r']+="m"}
+
     let new_element = create_element('div', 
-            `<h6>Area Values: </h6> 
-            <div>[Burst] Radius ${digimon['burst_m']}m | ${digimon['burst_r']}m</div>
-            <div>[Blast] Diameter ${digimon['blast_m']}m | ${digimon['blast_r']}m</div>
-            <div>[Close Blast] Radius ${digimon['clost_blast_m']}m | ${digimon['clost_blast_r']}m</div>
-            <div>[Line] Dimension ${digimon['line_m']}m | ${digimon['line_r']}m</div>
-            <div>[Cone] Length ${digimon['cone_m']}m | ${digimon['cone_r']}m</div>
-            <div>[Pass] Movement ${digimon['pass_m']}m | ${digimon['pass_r']}m</div>`, 
+            `<table class="">
+              <thead>
+                <tr>
+                  <th scope="col">Area Value</th>
+                  <th scope="col">Melee</th>
+                  <th scope="col">Ranged</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>[Burst] Radius</td>
+                  <td>${digimon['burst_m']}m</td>
+                  <td>${digimon['burst_r']}m</td>
+                </tr>
+                <tr>
+                  <td>[Blast] Diameter</td>
+                  <td>${digimon['blast_m']}m</td>
+                  <td>${digimon['blast_r']}m</td>
+                </tr>
+                <tr>
+                  <td>[Close Blast] Radius</td>
+                  <td>${digimon['clost_blast_m']}</td>
+                  <td>${digimon['clost_blast_r']}m</td>
+                </tr>
+                <tr>
+                  <td>[Line] Dimension</td>
+                  <td>${digimon['line_m']}m</td>
+                  <td>${digimon['line_r']}m</td>
+                </tr>
+                <tr>
+                  <td>[Cone] Length</td>
+                  <td>${digimon['cone_m']}m</td>
+                  <td>${digimon['cone_r']}m</td>
+                </tr>
+                <tr>
+                  <td>[Pass] Movement</td>
+                  <td>${digimon['pass_m']}m</td>
+                  <td>${digimon['pass_r']}</td>
+                </tr>
+              </tbody>
+            </table>`, 
             {'class': 'overflow-auto'})
+
 
     let combat_notes = "" 
 
@@ -771,9 +819,8 @@ function area_value_div(digimon){
     let element_2 = create_element('div', 
             combat_notes)
     
-    console.log(digimon.misc_skill_rolls)
+
     if(digimon.misc_skill_rolls!="No Notes"){
-        console.log(digimon.misc_skill_rolls)
     let misc_skills = digimon.misc_skill_rolls.split(',')
     let misc_descriptions = digimon.misc_skill_rolls_descriptions.split(',')
     let count = 0
@@ -787,7 +834,7 @@ function area_value_div(digimon){
         count++
     })
 
-        
+        element_2.append(create_element('hr'))
         document.querySelector(target_id).append(element_2)}
 
         document.querySelector(target_id).append(new_element)

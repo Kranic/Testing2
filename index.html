@@ -42,7 +42,7 @@
     <a class="nav-link disabled" aria-current="page" data-bs-toggle="tab" data-bs-target="#npc" type="button"  href="#npc">NPCs</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link disabled" aria-current="page" data-bs-toggle="tab" data-bs-target="#journal" type="button"  href="#journal">Journal</a>
+    <a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#journal" type="button"  href="#journal">Journal</a>
 </li>
 <li class="nav-item">
     <a class="nav-link disabled" aria-current="page" data-bs-toggle="tab" data-bs-target="#notes" type="button"  href="#notes">Notes</a>
@@ -58,8 +58,7 @@
 </div>
 
 
-        
-<div class="tab-content" style="padding-left:5%">
+<div class="tab-content" style="padding-left:10%;padding-right:10%;padding-top:1%">
 
     <!--Nav Containers---------------------------->
 
@@ -405,9 +404,9 @@
                                 <div class="justify-content-between pt-2" style="display:flex;flex-direction: row;">
                                     <div style="width:60%">
                                         <h5>Attacks</h5>
-                                        <ul id = "digimon_attacks" class="list-group overflow-auto"></ul>
+                                        <ul id = "digimon_attacks" class="list-group"></ul>
                                         <h5>Dodge</h5>
-                                        <ul id = "digimon_dodges" class="list-group overflow-auto"></ul>
+                                        <ul id = "digimon_dodges" class="list-group"></ul>
                                     </div>
 
                                     <div  style="width:33%">    
@@ -454,14 +453,20 @@
 
         <!--NPC-->
         <div id="npc" class="tab-pane fade navpage">NPCs</div>
+        
         <!--Music-->
         <div id="music" class="tab-pane fade navpage">
-            <h5>Music</h5>
-
             <div id="Playlist">
                 <div id="Playlist-Container"></div>
             </div>
         </div>
+
+        <div id="journal" class="tab-pane fade navpage">
+            <a href="https://docs.google.com/document/d/1BSJmgPe8AvK_D7uz2UFSSxz7Le014pzKwM5-3qvPxFs/edit">Editable Link</a>
+            <iframe 
+            style="height:80vh; width:100%" src="https://docs.google.com/document/d/e/2PACX-1vQffQpL64pamZFzu-URPPDz3uF8qiMwvIzZGqluLgzP1bUI_5SgJGCbIoN8MjK_IiTMC1GoIGFmQ-uE/pub?embedded=true"></iframe>
+        </div>
+
         <!--Notes-->
         <div id="notes" class="tab-pane fade navpage">Notes</div>
         <!--Book-->
@@ -479,11 +484,11 @@
     <!----------------------------------------------------------------------------->
 
     <template id="playlist-template">
-        <div  class="container">          
+        <div>          
             <div>      
                 <div id="currently_playing" style="display: flex;
                 justify-content: center;
-                align-items: center;  height: 55vh;">
+                align-items: center; min-height:500px">
                 <div id="Playlist-Container"><img src="https://i.imgur.com/VIVysnJ.png"></div>
             </div>
         </div>
