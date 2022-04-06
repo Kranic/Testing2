@@ -299,13 +299,12 @@ function create_partner_forms(tamers, tamer){
     let tamer_element = create_element('li',
                 `<img
                 src="${x['image_url']}"
-                style="width:50%;
-                height:100px;
+                style="width:50px;
+                height:50px;
                 align-items: center;
                 justify-content: center;
                 object-fit: cover;
-                object-position: top;
-                aspect-ratio: 1 / 1"> 
+                object-position: top;"> 
                 `,
                 {"class": '',
                 "tamer_id": x['id']} )
@@ -349,8 +348,8 @@ function create_partner_forms(tamers, tamer){
         console.log(digimon)
         let new_element = create_element('li',
             `<img src="${digimon['image_url']}"
-            style="width:50%;
-                height:100px;
+            style="width:50px;
+                height:50px;
                 align-items: center;
                 justify-content: center;
                 object-fit: cover;
@@ -753,8 +752,11 @@ function area_value_div(digimon){
     let target_id = "#area_value_div"
     clear_div(target_id)
 
-    if(digimon['clost_blast_m'] == "-"){digimon['clost_blast_m']=""}else{digimon['clost_blast_m']+="m"}
-    if(digimon['pass_r'] == "-"){digimon['pass_r']=""}else{digimon['pass_r']+="m"}
+    if(digimon['clost_blast_m'] == "-" || digimon['clost_blast_m']==""){digimon['clost_blast_m']=""}
+    else{digimon['clost_blast_m']+="m"}
+
+    if(digimon['pass_r'] == "-" || digimon['pass_r'] == ""){digimon['pass_r']=""}
+    else{digimon['pass_r']+="m"}
 
     let new_element = create_element('div', 
             `<table class="">
