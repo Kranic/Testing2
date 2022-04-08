@@ -2,7 +2,6 @@ let api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
 let spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
 let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
 let special_orders_list = {}
-
 if(stored_character_data){
     try{load_page(stored_character_data)}catch(err){console.log(err)}
 }
@@ -77,12 +76,171 @@ function load_page(result){
         tamer.inspiration.rewarded = tamer.inspiration_rewarded
         tamer.inspiration.used = tamer.inspiration_used
         tamer.special_orders = tamer['special orders'].split(',')
+
+    tamer.boxes = [
+        ['Wound Boxes', `${tamer['wound_boxes']} / ${tamer['wound_boxes']}`], 
+        ['Movement', tamer['movement']], 
+        ]
+
+    tamer.stats = [
+    ['Accuracy Pool', tamer['accuracy']], 
+    ['Damage', tamer['damage']],
+    ['Dodge Pool', tamer['dodge_stat']],
+    ['Armor', tamer['armor']]]
+
+    tamer.attributes = [
+    ['Agility', tamer['agility'], 
+        [
+        ['Dodge', tamer['dodge'],  tamer['dodge_roll']], 
+        ['Fight', tamer['fight'], tamer['fight_roll']], 
+        ['Stealth', tamer['stealth'], tamer['stealth_roll']]
+        ]
+    ],
+    ['Body', tamer['body'], 
+        [
+        ['Athletics', tamer['athletics'], tamer['athletics_roll']],
+        ['Endurance', tamer['endurance'], tamer['endurance_roll']],
+        ['Feats of Strength', tamer['feats of strength'], tamer['feats of strength_roll']]
+        ]
+    ],
+    ['Charisma', tamer['charisma'], 
+        [
+        ['Manipulate', tamer['manipulate'], tamer['manipulate_roll']],
+        ['Perform', tamer['perform'], tamer['perform_roll']],
+        ['Persuade', tamer['persuade'], tamer['persuade_roll']]
+        ]
+    ],
+    ['Intelligence', tamer['intelligence'], 
+        [
+        ['Computer', tamer['computer'], tamer['computer_roll']],
+        ['Survival', tamer['survival'], tamer['survival_roll']],
+        ['Knowledge', tamer['knowledge'], tamer['knowledge_roll']]
+        ]
+    ],
+    ['Willpower', tamer['willpower'], 
+        [
+        ['Perception', tamer['perception'], tamer['perception_roll']],
+        ['Decipher Intent', tamer['decipher intent'],tamer['decipher intent_roll']],
+        ['Bravery', tamer['bravery'], tamer['bravery_roll']]
+        ]
+    ]
+    ]
+
     })
 
     all_digimon_forms.forEach(
         function(digimon){
         digimon['wound_boxes'] = digimon['wound_boxes']
         
+        digimon.dodges = [
+        {
+            "name": "vs Melee",
+            "roll": digimon.dodge_roll_melee,
+            "auto_success": digimon.dodge_successes,
+            "effect_duration": digimon.dodge_effect_duration,
+            "tags": digimon.dodge_tags,
+        },
+        {
+            "name": "vs Ranged",
+            "roll": digimon.dodge_roll_ranged,
+            "auto_success": digimon.dodge_successes,
+            "effect_duration": digimon.dodge_effect_duration,
+            "tags": digimon.dodge_tags,
+        },
+        {
+            "name": "vs Positive Effect",
+            "roll": digimon.postive_effect_roll,
+            "effect_duration": digimon.postive_effect_duration,
+            "auto_success": 0,
+            "tags": digimon.postive_effect_tags,
+        },
+    ]
+
+    digimon.qualities = []
+
+    let q_names = []
+    if(digimon.qualities_names){q_names = digimon.qualities_names.split(',')}
+    
+    
+    let q_ranks = []
+    if(digimon.quality_ranks){q_ranks = digimon.quality_ranks.split(',')}
+
+    let count = 0
+    q_names.forEach(function(x){
+
+        digimon.qualities.push(
+        {
+            "name": x,
+            "rank": q_ranks[count]
+        })
+        count++
+    })
+
+    digimon.boxes = [
+        ['Wound Boxes', digimon['wound_boxes']], 
+        ['Movement', digimon['movement']], 
+        ['Attack Range', `${digimon['range']}m | ${digimon['limit']}m`]
+        ]
+
+    digimon.stats = [
+        ['Health', digimon['health']], 
+        ['Accuracy', digimon['accuracy']], 
+        ['Damage', digimon['damage']],
+        ['Dodge', digimon['dodge']],
+        ['Armor', digimon['armor']]
+        ]
+
+    digimon.derived = [
+        ['Agility', digimon['agility']], 
+        ['Body', digimon['body']],
+        ['Brains', digimon['brains']]
+        ]
+
+    digimon.specs = [
+        ['RAM', digimon['ram']],
+        ['CPU', digimon['cpu']],
+        ['BIT', digimon['bit']]
+        ]
+
+    digimon.attributes = [
+        ['Agility', digimon['agility'], 
+        [
+        ['Dodge', digimon['dodge']],
+        ['Fight', digimon['fight']],
+        ['Stealth', digimon['stealth']]
+        ]
+        ],
+        ['Body', digimon['body'], 
+        [
+        ['Athletics', digimon['dodge']],
+        ['Endurance', digimon['fight']],
+        ['Feats of Strength', digimon['feats of strength']]
+        ]
+        ],
+        ['Charisma', digimon['charisma'], 
+        [
+        ['Manipulate', digimon['manipulate']],
+        ['Perform', digimon['perform']],
+        ['Persuade', digimon['persuade']]
+        ]
+        ],
+        ['Intelligence', digimon['intelligence'], 
+        [
+        ['Computer', digimon['computer']],
+        ['Survival', digimon['survival']],
+        ['Knowledge', digimon['knowledge']]
+        ]
+        ],
+        ['Willpower', digimon['willpower'], 
+        [
+        ['Perception', digimon['perception']],
+        ['Decipher Intent', digimon['decipher intent']],
+        ['Bravery', digimon['bravery']]
+        ]
+        ]
+        
+    ]
+
         try{
         attack = []
         console.log(digimon)
@@ -124,11 +282,181 @@ function load_page(result){
     if(activeDigimon){ update_digimon_tab(activeDigimon)}
     else { update_digimon_tab(all_digimon_forms[0]['id'])}
 
+    document.getElementById("home_page_tamer").innerHTML= ""
+    tamers.forEach(function(x){create_home_tamer(x, "home_page_tamer")})
+
+    document.getElementById("home_page_digimon").innerHTML= ""
+    tamers.forEach(function(x){create_home_digimon(x, "home_page_digimon")})
+
+    
 }
 
 
 
 // Functions --------------------------------------------------------------
+
+function create_home_tamer(tamer, element_id){
+    let tamer_element = create_element('div', `<img 
+                id="HometamerImage_${tamer.id}" 
+                src="${tamer.image_url}" 
+                class="card-img-top" 
+                style="position:relative;
+                        top: 0;
+                        left: 0;
+                        object-fit: cover;
+                        object-position: top;
+                        min-width: 200px;
+                        max-width: 200px;
+                        min-height: 200px;
+                        height: 20vh;
+                        margin-bottom: 1rem;">
+                <div class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
+                <div id="tamerinfo"><small class="text-muted" style="margin: 0 auto;">
+                    <div>${tamer.gender} / ${tamer.age} / ${tamer.height}</div>
+                    <div>${tamer.xp_used} / ${tamer.xp_rewarded} XP Used</div>
+                    <div>${tamer.inspiration.rewarded - tamer.inspiration.used} / ${tamer.willpower} Inspiration</div>
+                </small>
+                <a class="character_info"
+                href="${tamer.sheet}">Character Sheet Link</a>
+                <hr>
+                </div>`, {style: "padding:1%"
+                })
+
+    let box_element = create_element('div', '', {id: `block_1_${tamer.id}`})
+    tamer_element.append(box_element)
+    tamer_element.append(document.createElement("hr"))
+
+    let stats_element = create_element('div', '', {id: `block_2_${tamer.id}`})
+    tamer_element.append(stats_element)
+    tamer_element.append(document.createElement("hr"))
+
+    let attributes_element = create_element('div', '', {id: `block_3_${tamer.id}`})
+    tamer_element.append(attributes_element)
+
+    document.getElementById(element_id).append(tamer_element)
+
+    tamer.boxes.forEach(function(x) {create_bar(x, `#block_1_${tamer.id}`)})
+
+    tamer.stats.forEach(function(x) {create_bar(x, `#block_2_${tamer.id}`)})
+
+    tamer.attributes.forEach(function(x) {create_attribute_bar(x, `#block_3_${tamer.id}`)})    
+}
+
+function create_home_digimon(tamer, element_id, digimon_id=null){
+
+    let all_digimon = all_digimon_forms.filter(all_digimon_forms => all_digimon_forms.sheet == tamer.sheet)
+    if (digimon_id == null){
+        digimon = all_digimon[0]}
+    else{ 
+        digimon = all_digimon.filter(all_digimon => all_digimon.id == digimon_id)[0]
+        console.log(digimon[0])
+        }
+    
+
+
+    let digimon_element = create_element('div', `<img 
+                id="HomeDigimonImage_${digimon.id}" 
+                src="${digimon.image_url}" 
+                class="card-img-top" 
+                style="position:relative;
+                        top: 0;
+                        left: 0;
+                        object-fit: cover;
+                        object-position: top;
+                        min-width: 200px;
+                        max-width: 200px;
+                        min-height: 200px;
+                        height: 20vh;
+                        margin-bottom: 1rem;">
+                <div class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
+                <div>
+                <hr>
+                </div>`, {
+                    id: `home_digimon_div_tamer_${tamer.id}`,
+                    style: "padding:1%"
+                })
+
+    let drop_down_container = create_element('div', `
+        <button class="display-6 btn btn-light dropdown-toggle" type="button" id="digimonName_${digimon.id}" data-bs-toggle="dropdown" aria-expanded="false">${digimon.name}</button>`,
+         {class: "dropdown"})
+
+    let drop_down = create_element('ul', ``,
+    {   "id": "digimon-dropdownmenu",
+        "class": "dropdown-menu",
+        "aria-labelledby": "dropdownMenuButton1"}
+        )
+    
+    drop_down_container.append(drop_down)
+
+    all_digimon.forEach(function(x){
+        console.log(x.name)
+        let form = create_element('a', `${x.name}`,
+        {
+            digimon_id: x.id,
+            class: "dropdown-item",
+            href: "#a"
+        })
+        form.addEventListener('click', function (event) {
+                            create_home_digimon(tamer, element_id, x.id)
+                        })
+        drop_down.append(form)
+
+
+    })
+
+    digimon_element.prepend(drop_down_container)
+
+    let box_element = create_element('div', '', {id: `digimon_block_1_${digimon.id}`})
+    digimon_element.append(box_element)
+    digimon_element.append(document.createElement("hr"))
+
+    let stat_element = create_element('div', '', {id: `digimon_block_2_${digimon.id}`})
+    digimon_element.append(stat_element)
+    digimon_element.append(document.createElement("hr"))
+
+    let derived_element = create_element('div', '', {id: `digimon_block_3_${digimon.id}`})
+    digimon_element.append(derived_element)
+    digimon_element.append(document.createElement("hr"))
+
+    let stage_element = create_element('div', '', {id: `digimon_block_stage_${digimon.id}`})
+    digimon_element.append(stage_element)
+    digimon_element.append(document.createElement("hr"))
+
+    let specs_element = create_element('div', '', {id: `digimon_block_4_${digimon.id}`})
+    digimon_element.append(specs_element)
+    digimon_element.append(document.createElement("hr"))
+
+    let attribute_element = create_element('div', '', {id: `digimon_block_5_${digimon.id}`})
+    digimon_element.append(attribute_element)
+    digimon_element.append(document.createElement("hr"))
+
+    
+
+
+    if(document.getElementById(`home_digimon_div_tamer_${tamer.id}`)){
+        document.getElementById(`home_digimon_div_tamer_${tamer.id}`).parentNode.replaceChild(digimon_element, document.getElementById(`home_digimon_div_tamer_${tamer.id}`));
+    }
+        else (document.getElementById(element_id).append(digimon_element))
+    
+
+    digimon.boxes.forEach(function(x) {create_bar(x, `#digimon_block_1_${digimon.id}`)})
+    digimon.stats.forEach(function(x) {create_bar(x, `#digimon_block_2_${digimon.id}`)}) 
+    digimon.derived.forEach(function(x) {create_bar(x, `#digimon_block_3_${digimon.id}`)})
+    create_bar(["Stage Bonus", digimon["stage_bonus"]], `#digimon_block_stage_${digimon.id}`)
+    digimon.specs.forEach(function(x) {create_bar(x, `#digimon_block_4_${digimon.id}`)})  
+    digimon.attributes.forEach(function(x) {create_attribute_bar(x, `#digimon_block_5_${digimon.id}`)})
+    
+    let quality_element = create_element('div', '', {id: `digimon_qualities_${digimon.id}`})
+    
+    digimon.qualities.forEach(function(x) {
+        let quality = create_element('div', `${x.name} ${x.rank}`)
+        quality_element.append(quality)}
+        )
+
+    digimon_element.append(quality_element)
+}
+
+
 
 function update_tamer_tab(id){
     let tamer = tamers.filter(function(x){ return x.id == id})[0]
@@ -155,52 +483,6 @@ function update_digimon_tab(id){
     let selected_digimon = digimon
     if(digimon==undefined){digimon=all_digimon_forms[0]}
 
-    digimon.dodges = [
-        {
-            "name": "vs Melee",
-            "roll": digimon.dodge_roll_melee,
-            "auto_success": digimon.dodge_successes,
-            "effect_duration": digimon.dodge_effect_duration,
-            "tags": digimon.dodge_tags,
-        },
-        {
-            "name": "vs Ranged",
-            "roll": digimon.dodge_roll_ranged,
-            "auto_success": digimon.dodge_successes,
-            "effect_duration": digimon.dodge_effect_duration,
-            "tags": digimon.dodge_tags,
-        },
-        {
-            "name": "vs Positive Effect",
-            "roll": digimon.postive_effect_roll,
-            "effect_duration": digimon.postive_effect_duration,
-            "auto_success": 0,
-            "tags": digimon.postive_effect_tags,
-        },
-    ]
-
-    digimon.qualities = []
-
-    console.log(digimon)
-
-    let q_names = []
-    if(digimon.qualities_names){q_names = digimon.qualities_names.split(',')}
-    
-    
-    let q_ranks = []
-    if(digimon.quality_ranks){q_ranks = digimon.quality_ranks.split(',')}
-
-    let count = 0
-    q_names.forEach(function(x){
-
-        digimon.qualities.push(
-        {
-            "name": x,
-            "rank": q_ranks[count]
-        })
-        count++
-    })
-
 
     // document.querySelector('#digimonEpitaph').textContent = digimon['epitaph']
     document.querySelector('#digimonImage').src = digimon['image_url']
@@ -220,7 +502,6 @@ function update_digimon_tab(id){
 
 function create_other_forms(selected_digimon){
 
-    console.log(selected_digimon)
     let other_forms = all_digimon_forms.filter(function(x){
         return x['sheet'] == selected_digimon['sheet']})
 
@@ -403,66 +684,12 @@ function create_tamer_sidebar_data(tamer){
     document.querySelector('#tamerinfo').appendChild(small_container)
     document.querySelector('#tamerinfo').appendChild(character_sheet_link)
 
-
-    let boxes = [
-    ['Wound Boxes', `${tamer['wound_boxes']} / ${tamer['wound_boxes']}`], 
-    ['Movement', tamer['movement']], 
-    ]
-
-    let stats = [
-    ['Accuracy Pool', tamer['accuracy']], 
-    ['Damage', tamer['damage']],
-    ['Dodge Pool', tamer['dodge_stat']],
-    ['Armor', tamer['armor']]]
-
-    let attributes = [
-    ['Agility', tamer['agility'], 
-        [
-        ['Dodge', tamer['dodge'],  tamer['dodge_roll']], 
-        ['Fight', tamer['fight'], tamer['fight_roll']], 
-        ['Stealth', tamer['stealth'], tamer['stealth_roll']]
-        ]
-    ],
-    ['Body', tamer['body'], 
-        [
-        ['Athletics', tamer['athletics'], tamer['athletics_roll']],
-        ['Endurance', tamer['endurance'], tamer['endurance_roll']],
-        ['Feats of Strength', tamer['feats of strength'], tamer['feats of strength_roll']]
-        ]
-    ],
-    ['Charisma', tamer['charisma'], 
-        [
-        ['Manipulate', tamer['manipulate'], tamer['manipulate_roll']],
-        ['Perform', tamer['perform'], tamer['perform_roll']],
-        ['Persuade', tamer['persuade'], tamer['persuade_roll']]
-        ]
-    ],
-    ['Intelligence', tamer['intelligence'], 
-        [
-        ['Computer', tamer['computer'], tamer['computer_roll']],
-        ['Survival', tamer['survival'], tamer['survival_roll']],
-        ['Knowledge', tamer['knowledge'], tamer['knowledge_roll']]
-        ]
-    ],
-    ['Willpower', tamer['willpower'], 
-        [
-        ['Perception', tamer['perception'], tamer['perception_roll']],
-        ['Decipher Intent', tamer['decipher intent'],tamer['decipher intent_roll']],
-        ['Bravery', tamer['bravery'], tamer['bravery_roll']]
-        ]
-    ]
-    ]
-
-
-
-
-
     clear_div('#tamer_stat_block_1')
-    boxes.forEach(function(x) {create_bar(x, '#tamer_stat_block_1')})
+    tamer.boxes.forEach(function(x) {create_bar(x, '#tamer_stat_block_1')})
     clear_div('#tamer_stat_block_2')
-    stats.forEach(function(x) {create_bar(x, '#tamer_stat_block_2')})  
+    tamer.stats.forEach(function(x) {create_bar(x, '#tamer_stat_block_2')})  
     clear_div('#tamer_stat_block_3')
-    attributes.forEach(function(x) {create_attribute_bar(x, '#tamer_stat_block_3')})
+    tamer.attributes.forEach(function(x) {create_attribute_bar(x, '#tamer_stat_block_3')})
 }
 
 function create_aspect_div (tamer){
@@ -584,87 +811,20 @@ function create_sidebar_data(digimon){
     document.querySelector('#digimoninfo').appendChild(small_container)
     document.querySelector('#digimoninfo').appendChild(character_sheet_div)
 
-    //
-
-    let boxes = [
-        ['Wound Boxes', digimon['wound_boxes']], 
-        ['Movement', digimon['movement']], 
-        ['Attack Range', `${digimon['range']}m | ${digimon['limit']}m`]
-        ]
-
-    let stats = [
-        ['Health', digimon['health']], 
-        ['Accuracy', digimon['accuracy']], 
-        ['Damage', digimon['damage']],
-        ['Dodge', digimon['dodge']],
-        ['Armor', digimon['armor']]
-        ]
-
-    let derived = [
-        ['Agility', digimon['agility']], 
-        ['Body', digimon['body']],
-        ['Brains', digimon['brains']]
-        ]
-
-    let specs = [
-        ['RAM', digimon['ram']],
-        ['CPU', digimon['cpu']],
-        ['BIT', digimon['bit']]
-        ]
-
-    let attributes = [
-        ['Agility', digimon['agility'], 
-        [
-        ['Dodge', digimon['dodge']],
-        ['Fight', digimon['fight']],
-        ['Stealth', digimon['stealth']]
-        ]
-        ],
-        ['Body', digimon['body'], 
-        [
-        ['Athletics', digimon['dodge']],
-        ['Endurance', digimon['fight']],
-        ['Feats of Strength', digimon['feats of strength']]
-        ]
-        ],
-        ['Charisma', digimon['charisma'], 
-        [
-        ['Manipulate', digimon['manipulate']],
-        ['Perform', digimon['perform']],
-        ['Persuade', digimon['persuade']]
-        ]
-        ],
-        ['Intelligence', digimon['intelligence'], 
-        [
-        ['Computer', digimon['computer']],
-        ['Survival', digimon['survival']],
-        ['Knowledge', digimon['knowledge']]
-        ]
-        ],
-        ['Willpower', digimon['willpower'], 
-        [
-        ['Perception', digimon['perception']],
-        ['Decipher Intent', digimon['decipher intent']],
-        ['Bravery', digimon['bravery']]
-        ]
-        ]
-        
-    ]
-
     clear_div('#digimon_stat_block_1')
-    boxes.forEach(function(x) {create_bar(x, '#digimon_stat_block_1')})
+    digimon.boxes.forEach(function(x) {create_bar(x, '#digimon_stat_block_1')})
     clear_div('#digimon_stat_block_2')
-    stats.forEach(function(x) {create_bar(x, '#digimon_stat_block_2')})   
+    digimon.stats.forEach(function(x) {create_bar(x, '#digimon_stat_block_2')})   
     clear_div('#digimon_stat_block_3')
-    derived.forEach(function(x) {create_bar(x, '#digimon_stat_block_3')}) 
+    digimon.derived.forEach(function(x) {create_bar(x, '#digimon_stat_block_3')}) 
     
     clear_div('#digimon_stat_block_stage')
     create_bar(["Stage Bonus", digimon["stage_bonus"]], '#digimon_stat_block_stage')
     
     clear_div('#digimon_stat_block_4')
-    specs.forEach(function(x) {create_bar(x, '#digimon_stat_block_4')})  
+    digimon.specs.forEach(function(x) {create_bar(x, '#digimon_stat_block_4')})  
     clear_div('#digimon_stat_block_5')
-    attributes.forEach(function(x) {create_attribute_bar(x, '#digimon_stat_block_5')})
+    digimon.attributes.forEach(function(x) {create_attribute_bar(x, '#digimon_stat_block_5')})
 }
 
 function create_quality_div (digimon){

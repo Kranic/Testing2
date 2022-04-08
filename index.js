@@ -32,7 +32,6 @@ function create_bar(x, target_id){
             'style': 'height:5px'
         }
         )
-
         let target = document.querySelector(target_id)
 
         div.appendChild(new_element)

@@ -29,9 +29,9 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="nav navbar-nav" role="tablist">
-<!-- <li class="nav-item">
+<li class="nav-item">
 <a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#home" type="button"  href="#home">Home</a>
-</li> -->
+</li>
 <li class="nav-item">
     <a class="nav-link" data-bs-toggle="tab" data-bs-target="#characters" type="button"  href="#characters">Characters</a>
 </li>
@@ -61,7 +61,12 @@
 
     <!--Nav Containers---------------------------->
 
-    <div id="home" class="tab-pane fade navpage">Home</div> 
+    <div id="home" class="tab-pane fade navpage overflow-auto">
+        <div id="home_page_tamer"  style="display:inline-flex; width:100%">
+        </div>
+        <div id="home_page_digimon" style="display:inline-flex; width:100%">
+        </div>
+    </div> 
 
     <div id="characters" class="tab-pane fade navpage show active">
         <nav id="character_nav" class="nav navbar" style="max-width:65vw;">
@@ -222,7 +227,7 @@
                                 <div id="special_orders" style="padding:10px"> Special Order 1 </div>
                             </div>
 
-                            
+
 
                             <div id="TamerDigimonTab" class="tab-pane fade" role="tabpanel">  
                                 <div>
