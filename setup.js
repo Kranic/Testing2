@@ -78,7 +78,7 @@ function load_page(result){
         tamer.special_orders = tamer['special orders'].split(',')
 
     tamer.boxes = [
-        ['Wound Boxes', `${tamer['wound_boxes']} / ${tamer['wound_boxes']}`], 
+        ['Wound Boxes', `${tamer['wound_boxes']}`], 
         ['Movement', tamer['movement']], 
         ]
 
@@ -186,7 +186,7 @@ function load_page(result){
         ['Health', digimon['health']], 
         ['Accuracy', digimon['accuracy']], 
         ['Damage', digimon['damage']],
-        ['Dodge', digimon['dodge']],
+        ['Dodge', digimon['dodge_stat']],
         ['Armor', digimon['armor']]
         ]
 
@@ -311,7 +311,7 @@ function create_home_tamer(tamer, element_id){
                         height: 20vh;
                         margin-bottom: 1rem;">
                 <div class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
-                <div id="tamerinfo"><small class="text-muted" style="margin: 0 auto;">
+                <div><small class="text-muted" style="margin: 0 auto;">
                     <div>${tamer.gender} / ${tamer.age} / ${tamer.height}</div>
                     <div>${tamer.xp_used} / ${tamer.xp_rewarded} XP Used</div>
                     <div>${tamer.inspiration.rewarded - tamer.inspiration.used} / ${tamer.willpower} Inspiration</div>
@@ -580,7 +580,7 @@ function create_partner_forms(tamers, tamer){
     let tamer_element = create_element('li',
                 `<img
                 src="${x['image_url']}"
-                style="width:50px;
+                style="width:100%;
                 height:50px;
                 align-items: center;
                 justify-content: center;
@@ -629,7 +629,7 @@ function create_partner_forms(tamers, tamer){
         console.log(digimon)
         let new_element = create_element('li',
             `<img src="${digimon['image_url']}"
-            style="width:50px;
+            style="width:100%;
                 height:50px;
                 align-items: center;
                 justify-content: center;

@@ -12,7 +12,8 @@ let set_tabs = function(activeTab){
     selected_tab.show()
 }
 
-function create_bar(x, target_id){
+function create_bar(x, target_id, max_amount=20){
+    console.log(max_amount)
         let div = create_element('div')
         
         let new_element = create_element(
@@ -26,7 +27,7 @@ function create_bar(x, target_id){
 
         let progress_bar = create_element(
         'div', 
-        `<div class="progress-bar" role="progressbar" style="width:${x[1]/10*100}%"></div>`,
+        `<div class="progress-bar ${x[0]}" role="progressbar" style="width:${x[1]/max_amount*100}%"></div>`,
         {
             'class': 'progress',
             'style': 'height:5px'
@@ -39,7 +40,7 @@ function create_bar(x, target_id){
         target.appendChild(div)
         }
 
-    function create_attribute_bar(x, target_id){
+    function create_attribute_bar(x, target_id, max_amount=9){
 
 
 
@@ -56,7 +57,7 @@ function create_bar(x, target_id){
 
         let progress_bar = create_element(
             'div', 
-            `<div class="progress-bar ${x[0].toLowerCase()}" role="progressbar" style="width:${x[1]/10*100}%"></div>`,
+            `<div class="progress-bar ${x[0].toLowerCase()}" role="progressbar" style="width:${x[1]/max_amount*100}%"></div>`,
             {
                 'class': 'progress',
                 'style': 'height:10px'
@@ -66,7 +67,7 @@ function create_bar(x, target_id){
         div.appendChild(progress_bar)
 
 
-
+        max_amount=max_amount*1.5
         x[2].forEach(function(skill){
             if (skill[2]==undefined){skill[2]=skill[1]}
             let text_elem = create_element(
@@ -80,7 +81,7 @@ function create_bar(x, target_id){
                 )
             let progress_elem = create_element(
                 'div',
-                `<div class="progress-bar ${skill[0].toLowerCase()} role=" progressbar style="width:${skill[2]/10*100}%"></div>`,
+                `<div class="progress-bar ${skill[0].toLowerCase()} role=" progressbar style="width:${skill[2]/max_amount*100}%"></div>`,
                 {   
                     'class': 'progress',
                     'style': `height: 5px`

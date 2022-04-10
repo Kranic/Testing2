@@ -56,48 +56,48 @@ height: 10px;
 font-size: 14px;
 }
 
-.accuracy {
+.Accuracy {
       background-color: #a4c2f4 !important;
       color: black;
 }
-.damage {
+.Damage {
       background-color: #f9cb9c !important;
       color: black;
 }
-.dodge {
+.Dodge {
       background-color: #ffe599 !important;
       color: black;
 }
-.armor {
+.Armor {
       background-color: #b6d7a8 !important;
       color: black;
 }
 
-.health {
+.Health, .Wound {
       background-color: #e06666 !important;
       color: black;
 }
-.movement {
+.Movement {
       background-color: #b4a7d6 !important;
 }
 
-.agility {
+.agility, .dodge, .fight, .stealth{
       background-color: #ffe599 !important;
 }
 
-.body {
+.body, .athletics, .endurance, .feats {
       background-color: #ea9999 !important;
 }
 
-.charisma {
+.charisma, .manipulate, .perform, .persuade {
       background-color: #b4a7d6 !important;
 }
 
-.intelligence {
+.intelligence, .computer, .survival, .knowledge {
       background-color: #9fc5e8 !important;
 }
 
-.willpower {
+.willpower, .perception, .decipher, .bravery {
       background-color: #b6d7a8 !important;
 }
 
@@ -135,7 +135,7 @@ a, .nav-link{
   font-size: 12px;
 }
 
-button:hover, a:hover, img:hover {
+button:hover, a:hover, img:ahover {
   opacity: 0.7;
 }
 
