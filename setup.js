@@ -33,14 +33,20 @@ Promise.all([
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
   }}).then(r => r.json()),
+  fetch(`https://api.sheetson.com/v2/sheets/campaign_info`,
+    {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
 ])
-.then(([tamer, torment, digimon, playlist, special_orders]) => {
+.then(([tamer, torment, digimon, playlist, special_orders, campaign]) => {
     return {
         "tamers": tamer.results,
         "torments": torment.results,
         "digimons": digimon.results,
         "playlist": playlist.results,
-        "special_orders": special_orders.results
+        "special_orders": special_orders.results,
+        "campaign": campaign.results
     }
 })
 .then(result => load_page(result))
@@ -63,6 +69,13 @@ function load_page(result){
     all_digimon_forms = result.digimons
     all_digimon_forms = all_digimon_forms.filter(all_digimon_forms => all_digimon_forms.sheet != ' ')
     if(all_digimon_forms==undefined){all_digimon_forms = []} else {all_digimon_forms.shift()}
+
+    campaign = result.campaign[0]
+    if(campaign==undefined){campaign = {'name': "DDA Campaign"}}
+    console.log(campaign)
+    console.log("campaign")
+    document.querySelector('#campaign_name').innerHTML = campaign['name']
+
     
     let selected_digimon = all_digimon_forms[0]
 
@@ -464,7 +477,9 @@ function update_tamer_tab(id){
     document.getElementById("tamerName").textContent = tamer.name;
     // document.getElementById("tamerEpitaph").textContent = tamer.title;
     document.getElementById("tamerImage").src = tamer.image_url;
+    document.getElementById("tamer_background").src = tamer.background_image;
     document.getElementById("tamerSynopsis").textContent = tamer.characterSynopsis.trim();
+    
 
     try{
     create_partner_forms(tamers, tamer)
