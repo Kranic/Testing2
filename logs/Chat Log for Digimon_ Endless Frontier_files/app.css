@@ -1562,7 +1562,7 @@ div.fm-video {
   color: white;
   padding: 3px 0px 3px 0px;
   line-height: 18px;
-  background-image: url(/images/volumebar.png?1648749868);
+  background-image: url(/images/volumebar.png?1649351128);
   background-repeat: no-repeat;
   background-color: rgba(0, 0, 0, 0.5);
   background-size: 0% 100%;
@@ -2250,13 +2250,13 @@ input:checked:disabled + .dark-mode-slider svg use {
 #fogcontrols.udl.reveal .currentselection {
   height: 20px;
   display: block;
-  /* background-image: url(/images/editor/hide.svg?1648749868); */
+  /* background-image: url(/images/editor/hide.svg?1649351128); */
   background-repeat: no-repeat;
   margin-left: 2px;
   /* opacity: 0.4; */
 }
 #fogcontrols.udl.reveal .currentselection {
-  /* background-image: url(/images/editor/reveal.svg?1648749868); */
+  /* background-image: url(/images/editor/reveal.svg?1649351128); */
 }
 
 #fogcontrols .hidetool,
@@ -2943,7 +2943,7 @@ div.color_picker {
   width: 26px;
   padding: 0 !important;
   border: 1px solid #333;
-  /*background: url(/images/arrow.gif?1648749868) no-repeat top right;*/
+  /*background: url(/images/arrow.gif?1649351128) no-repeat top right;*/
   cursor: pointer;
   line-height: 28px;
   display: inline-block;
@@ -5899,7 +5899,7 @@ body.tokenselected .tokenslot button {
   padding: 0px 0px 9px 0px;
   z-index: 1000;
   opacity: 0;
-  background: url(/images/carat.png?1648749868) bottom center no-repeat;
+  background: url(/images/carat.png?1649351128) bottom center no-repeat;
 }
 
 .chatbubble p {
@@ -7409,7 +7409,7 @@ input.feature_enabled:not(:checked) ~ .subsettings {
   margin-right: 2px;
   margin-top: 2px;
   cursor: pointer;
-  background-image: url(/images/statussheet.png?1648749868);
+  background-image: url(/images/statussheet.png?1649351128);
   background-repeat: no-repeat;
   background-size: 24px;
   width: 24px;
@@ -9556,11 +9556,11 @@ div.grid_settings[data-feature_enabled="false"] > .grid_subsettings {
 }
 
 .pagedetails .page-buttons button.archive::before {
-  background-image: url(/v3/assets/img/icons/icon-archive.svg?1648749869);
+  background-image: url(/v3/assets/img/icons/icon-archive.svg?1649351128);
 }
 
 .pagedetails .page-buttons button.delete::before {
-  background-image: url(/v3/assets/img/icons/icon-trash-can.svg?1648749869);
+  background-image: url(/v3/assets/img/icons/icon-trash-can.svg?1649351128);
 }
 
 /* Token Settings in the VTT */
@@ -9837,7 +9837,7 @@ input[type="range"].dyn_fog_dark_vision_effect_dimming {
 }
 
 .torch-cursor {
-  cursor: url(/images/editor/torch.svg?1648749868) 24 24, auto !important;
+  cursor: url(/images/editor/torch.svg?1649351128) 24 24, auto !important;
 }
 
 .page-create-new-after {

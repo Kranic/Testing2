@@ -81,11 +81,11 @@ font-size: 14px;
       background-color: #b4a7d6 !important;
 }
 
-.agility, .dodge, .fight, .stealth{
+.agility, .Agility, .RAM, .dodge, .fight, .stealth{
       background-color: #ffe599 !important;
 }
 
-.body, .athletics, .endurance, .feats {
+.body, .Body, .CPU, .athletics, .endurance, .feats {
       background-color: #ea9999 !important;
 }
 
@@ -93,7 +93,7 @@ font-size: 14px;
       background-color: #b4a7d6 !important;
 }
 
-.intelligence, .computer, .survival, .knowledge {
+.intelligence, .Brains, .BIT, .computer, .survival, .knowledge {
       background-color: #9fc5e8 !important;
 }
 

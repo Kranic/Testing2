@@ -74,6 +74,7 @@ function load_page(result){
     if(campaign==undefined){campaign = {'name': "DDA Campaign"}}
     console.log(campaign)
     console.log("campaign")
+    document.querySelector('title').innerHTML = campaign['name']
     document.querySelector('#campaign_name').innerHTML = campaign['name']
 
     
@@ -327,8 +328,10 @@ function create_home_tamer(tamer, element_id){
                 <div><small class="text-muted" style="margin: 0 auto;">
                     <div>${tamer.gender} / ${tamer.age} / ${tamer.height}</div>
                     <div>${tamer.xp_used} / ${tamer.xp_rewarded} XP Used</div>
-                    <div>${tamer.inspiration.rewarded - tamer.inspiration.used} / ${tamer.willpower} Inspiration</div>
-                </small>
+                    <div>${tamer.inspiration.rewarded - tamer.inspiration.used} / ${tamer.willpower} Inspiration</div></small>
+                    ${'✦'.repeat(tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])}${'✧'.repeat((tamer["willpower"] - (tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])))}
+                
+                <br>
                 <a class="character_info"
                 href="${tamer.sheet}">Character Sheet Link</a>
                 <hr>
@@ -475,20 +478,25 @@ function update_tamer_tab(id){
     let tamer = tamers.filter(function(x){ return x.id == id})[0]
 
     document.getElementById("tamerName").textContent = tamer.name;
-    // document.getElementById("tamerEpitaph").textContent = tamer.title;
+    document.getElementById("tamerEpitaph").textContent = "- " + tamer.title;
+    document.getElementById("tamerUsername").textContent = '[' + tamer.username + ']'
     document.getElementById("tamerImage").src = tamer.image_url;
     document.getElementById("tamer_background").src = tamer.background_image;
     document.getElementById("tamerSynopsis").textContent = tamer.characterSynopsis.trim();
-    
-
+    document.getElementById("tamer_initiative").textContent =  `3d6 + ${tamer.initiative_bonus}`;
+    document.getElementById("tamer_recovery").textContent = `3d6 + ${tamer.recovery_bonus}`;
+   
     try{
+    
     create_partner_forms(tamers, tamer)
     create_tamer_sidebar_data(tamer)
     create_aspect_div(tamer)
     create_torment_div(tamer)
     create_special_order_div(tamer)
     }
-    catch(err){console.log(err)}
+    catch(err){
+        console.log(tamer)
+        console.log(err)}
 
 }
 
@@ -499,7 +507,7 @@ function update_digimon_tab(id){
     if(digimon==undefined){digimon=all_digimon_forms[0]}
 
 
-    // document.querySelector('#digimonEpitaph').textContent = digimon['epitaph']
+    document.querySelector('#digimonEpitaph').textContent =  "- " + digimon['title']
     document.querySelector('#digimonImage').src = digimon['image_url']
     document.querySelector('#digimonName').textContent = digimon['name']
     document.querySelector('#DigimonSynopsis').textContent = digimon['synopsis']
@@ -682,7 +690,9 @@ function create_tamer_sidebar_data(tamer){
 
     let xp_div = create_element('div', `${tamer["xp"]["used"]} / ${tamer["xp"]["rewarded"]} XP Used`)
     let misc = create_element('div', `${tamer["gender"]} / ${tamer["age"]} / ${tamer["height"]}`)
-    let inspiration_div = create_element('div', `${tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"]} Inspiration`)
+    let inspiration_div = create_element('div', `${tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"]} Inspiration
+        <br>
+        ${'✦'.repeat(tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])}${'✧'.repeat((tamer["willpower"] - (tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])))}`)
 
 
     let character_sheet_link = create_element(
@@ -751,7 +761,11 @@ function create_torment_div (tamer){
 
         let new_element = create_element(
             'div',
-            `<h6><em>${x["name"]}</em></h6> <div>(${toTitleCase(x["type"])} |     ${x["marked_boxes"]}/${x["total_boxes"]} Boxes Marked)</div>
+            `<div style="display:inline-flex; justify-content: space-between;width:100%;">
+            <div><h6><em>${x["name"]}</em></h6><div>(${toTitleCase(x["type"])} | ${x["marked_boxes"]}/${x["total_boxes"]} Boxes Marked)</div></div>
+            <div style=" text-align: right;">${'☒'.repeat(x["marked_boxes"])}${'☐'.repeat(x["total_boxes"]-x["marked_boxes"])}</div>
+            </div>
+            
             <div>${x["description"]}</div>`,
             {"style": "padding-bottom:1%"})
         if(x.total_boxes != 0){document.querySelector(`${target_id}`).append(new_element)}
@@ -766,8 +780,8 @@ function create_special_order_div (tamer){
     
     let target_id = "#special_orders"
     clear_div(target_id)
-    
-    tamer.special_orders.forEach(function(x){
+   
+     tamer.special_orders.forEach(function(x){
 
         let order = special_orders_list.filter(function(order){
             return order['name'] == x.trim()
