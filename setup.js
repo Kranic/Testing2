@@ -534,8 +534,9 @@ function create_home_digimon(tamer, element_id, digimon_id=null){
     let quality_element = create_element('div', '', {id: `digimon_qualities_${digimon.id}`})
     
     digimon.qualities.forEach(function(x) {
+        if(x){
         let quality = create_element('div', `${x.Name} ${x.rank}`)
-        quality_element.append(quality)}
+        quality_element.append(quality)}}
         )
 
     digimon_element.append(quality_element)
