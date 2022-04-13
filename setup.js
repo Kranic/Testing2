@@ -1,11 +1,48 @@
 let api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
 let spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
 let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
-let special_orders_list = {}
+let saved_quality_data = JSON.parse(localStorage.getItem('quality_list'))
+let special_orders_list = []
+let quality_list = {}
+
+
+if(saved_quality_data==undefined){
+    quality_list = {}
+} else { quality_list = saved_quality_data }
+
+
 if(stored_character_data){
     try{load_page(stored_character_data)}catch(err){console.log(err)}
 }
 
+Promise.all([
+  fetch(`https://api.sheetson.com/v2/sheets/Full_Qualities?limit=100`,
+    {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+  fetch(`https://api.sheetson.com/v2/sheets/Full_Qualities?skip=100&limit=100`,
+    {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+  fetch(`https://api.sheetson.com/v2/sheets/Full_Qualities?skip=200&limit=100`,
+    {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+])
+.then(([full_qualities_1, full_qualities_2, full_qualities_3]) => {
+    return {
+        "full_qualities_1": full_qualities_1.results,
+        "full_qualities_2": full_qualities_2.results,
+        "full_qualities_3": full_qualities_3.results,
+
+    }
+})
+.then(result => save_qualities(result))
+.catch((err) => {console.log(err)
+});
 
 Promise.all([
   fetch(`https://api.sheetson.com/v2/sheets/tamer`, 
@@ -53,9 +90,27 @@ Promise.all([
 .catch((err) => {console.log(err)
 });
 
+function save_qualities(result){
+    console.log("qualities")
+    console.log(result)
+    quality_array = result.full_qualities_1.concat(result.full_qualities_2, result.full_qualities_3)
+    let qualities_json = {}
+    quality_array.forEach(function(x){
+    qualities_json[x.Name] = x
+    })
+
+
+
+    quality_list = qualities_json
+
+    if(quality_list!=undefined){localStorage.setItem( 'quality_list', JSON.stringify(quality_list))}
+
+}
 
 
 function load_page(result){
+    console.log("x")
+    console.log(result)
     if(result!=undefined){localStorage.setItem( 'character_data', JSON.stringify(result))}
 
     let playlist = result.playlist
@@ -181,14 +236,31 @@ function load_page(result){
 
     let count = 0
     q_names.forEach(function(x){
+        target_quality = {
+            "id": 0,
+            "Name": x,
+            "rank": q_ranks[count],
 
-        digimon.qualities.push(
-        {
-            "name": x,
-            "rank": q_ranks[count]
-        })
+        }
+        console.log(quality_list)
+        try{
+            console.log(quality_list[x])
+            target_quality = quality_list[x]
+            target_quality.rank = q_ranks[count]
+
+        }catch(err){console.log(err)}
+
+        // target_quality = quality_list[x]
+        // console.log(target_quality)
+        // target_quality["rank"] = q_ranks[count]
+        
+        digimon.qualities.push(target_quality)
         count++
     })
+        console.log(digimon.qualities)
+        digimon.qualities.sort((a, b) => parseFloat(a.id) - parseFloat(b.id));
+        console.log(digimon.qualities)
+
 
     digimon.boxes = [
         ['Wound Boxes', digimon['wound_boxes']], 
@@ -257,7 +329,6 @@ function load_page(result){
 
         try{
         attack = []
-        console.log(digimon)
         attacks = digimon['attacks_array'].split("|||")
         
         attacks.forEach(
@@ -365,7 +436,6 @@ function create_home_digimon(tamer, element_id, digimon_id=null){
         digimon = all_digimon[0]}
     else{ 
         digimon = all_digimon.filter(all_digimon => all_digimon.id == digimon_id)[0]
-        console.log(digimon[0])
         }
     
 
@@ -405,7 +475,6 @@ function create_home_digimon(tamer, element_id, digimon_id=null){
     drop_down_container.append(drop_down)
 
     all_digimon.forEach(function(x){
-        console.log(x.name)
         let form = create_element('a', `${x.name}`,
         {
             digimon_id: x.id,
@@ -465,7 +534,7 @@ function create_home_digimon(tamer, element_id, digimon_id=null){
     let quality_element = create_element('div', '', {id: `digimon_qualities_${digimon.id}`})
     
     digimon.qualities.forEach(function(x) {
-        let quality = create_element('div', `${x.name} ${x.rank}`)
+        let quality = create_element('div', `${x.Name} ${x.rank}`)
         quality_element.append(quality)}
         )
 
@@ -649,7 +718,7 @@ function create_partner_forms(tamers, tamer){
     })
 
     partner_forms.forEach(function(digimon){
-        console.log(digimon)
+        // console.log(digimon)
         let new_element = create_element('li',
             `<img src="${digimon['image_url']}"
             style="width:100%;
@@ -734,14 +803,14 @@ function create_aspect_div (tamer){
 
     let major_element = create_element(
         'div', 
-        `<h6><em>${tamer['major_aspect_name']}</em></h6><small> (Major Aspect ±4)</small><p>${tamer['major_aspect_description']}</p>`,
+        `<h6><em>${tamer['major_aspect_name']}</em></h6><small> (Major Aspect | ±4 to roll)</small><p>${tamer['major_aspect_description']}</p>`,
         {'class': "col-6"})
     
     document.querySelector(`${target_id}`).append(major_element)
 
     let minor_element = create_element(
         'div', 
-        `<h6><em>${tamer['minor_aspect_name']}</em></h6><small> (Minor Aspect ±2) </small><p>${tamer['minor_aspect_description']}</p>`,
+        `<h6><em>${tamer['minor_aspect_name']}</em></h6><small> (Minor Aspect | ±2 to roll) </small><p>${tamer['minor_aspect_description']}</p>`,
         {'class': "col-6"})
     
     document.querySelector(`${target_id}`).append(minor_element)
@@ -750,7 +819,8 @@ function create_aspect_div (tamer){
 
 function create_torment_div (tamer){
      let tamer_torments = all_torments.filter(function(x){
-        return x.tamer_id == tamer.id
+
+        return x.tamer_id == tamer.id && x.name != "Torment Name" 
     })
 
     // let tamer_torments = tamer['torments']
@@ -762,7 +832,7 @@ function create_torment_div (tamer){
         let new_element = create_element(
             'div',
             `<div style="display:inline-flex; justify-content: space-between;width:100%;">
-            <div><h6><em>${x["name"]}</em></h6><div>(${toTitleCase(x["type"])} | ${x["marked_boxes"]}/${x["total_boxes"]} Boxes Marked)</div></div>
+            <div><h6><em>${x["name"]}</em></h6><div>(${toTitleCase(x["type"])} | ${x["marked_boxes"]}/${x["total_boxes"]} Boxes Marked  | 3d6 + ${x.roll})</div></div>
             <div style=" text-align: right;">${'☒'.repeat(x["marked_boxes"])}${'☐'.repeat(x["total_boxes"]-x["marked_boxes"])}</div>
             </div>
             
@@ -775,7 +845,7 @@ function create_torment_div (tamer){
 }
 
 function create_special_order_div (tamer){
-    console.log(special_orders_list)
+    // console.log(special_orders_list)
 
     
     let target_id = "#special_orders"
@@ -789,7 +859,7 @@ function create_special_order_div (tamer){
 
         let desc = ""
 
-        console.log(order)
+        // console.log(order)
         if(order != undefined){
             desc = `| ${order['action_type']} Action ${order['usage']}</h6></em><small> ${order['description']}`
         }
@@ -860,11 +930,17 @@ function create_quality_div (digimon){
     let digimon_qualities = digimon['qualities']
     let target_id = "#digimon_qualities"
     clear_div(target_id)
+    clear_div(`#quality-description`)
     digimon_qualities.forEach(function(x){
         if(x.rank == undefined || x.rank == "I" ){x.rank = ""}
         
-        let new_element = create_element('div', `<small>${x.name}</small> <small>${x.rank}</small>`, {"style":"padding-bottom: 3%;"})
+        let new_element = create_element('div', `<small>${x.Name}</small> <small>${x.rank}</small>`, {"style":"padding-bottom: 3%;"})
         document.querySelector(`${target_id}`).append(new_element)
+
+        let quality_description = create_element('div', `<div><b>${x.Name} ${x.rank}</b> ${x["Type"]}</div>
+            <div><small>${x.Description}</small></div>`,
+            {style: "white-space: pre-line;"})
+        document.querySelector(`#quality-description`).append(quality_description)
     })
 }
 
@@ -915,7 +991,7 @@ function create_attack_div(digimon){
 
     let digimon_attacks = digimon.attacks
 
-    console.log(attacks)
+    // console.log(attacks)
 
     // let digimon_attacks = digimon['attacks']
     let target_id = "#digimon_attacks"
@@ -924,7 +1000,7 @@ function create_attack_div(digimon){
 
 
     digimon_attacks.forEach(function(x){
-        console.log(x)
+        // console.log(x)
         let new_element = create_element('li', 
             `<div><b>${x['name']}</b> (${x['roll']})</div>
             <small>${x['tags']}</small>

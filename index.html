@@ -77,7 +77,7 @@
 
         </nav>
 
-        <img id="tamer_background" src="", style="position:fixed; bottom:0px;right:0;z-index:-1;opacity: 0.5;height:100px;">
+        <img id="tamer_background" src="", style="position:fixed; bottom:0;right:0;z-index:-1;opacity: 0.2;height:1000px;padding-top:10%;padding-right:1%">
 
 
 
@@ -394,6 +394,9 @@
                                 <a id="tabs" class="nav-link"  data-bs-toggle="tab" data-bs-target="#DigimonFormTab" type="button">Other Forms</a>
                             </li> -->
                             <li class="nav-item">
+                                <a class="nav-link"  data-bs-toggle="tab" data-bs-target="#DigimonQualitiesTab" type="button">Qualities</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#DigimonPlaylistTab" type="button">Playlist</a>
                             </li>
                             <li class="nav-item">
@@ -426,7 +429,9 @@
                                         <ul id = "digimon_attacks" class="list-group"></ul>
                                         <h5>Dodge</h5>
                                         <ul id = "digimon_dodges" class="list-group"></ul>
+                                        
                                     </div>
+
 
                                     <div  style="width:33%">    
                                         <div style="min-height: 600px";>
@@ -461,6 +466,13 @@
 
 
                             <div id="DigimonPlaylistTab" class="tab-pane fade" role="tabpanel"> Playlist </div>
+                            <div id="DigimonQualitiesTab" class="tab-pane fade" role="tabpanel">
+                                <h5>Qualities</h5>
+                                <div id="quality-description"></div>
+                            </div>
+                            
+
+
                             <div id="DigimonNotesTab" class="tab-pane fade" role="tabpanel">  Notes </div>
                         </div>    
 

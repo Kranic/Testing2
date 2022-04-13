@@ -1,0 +1,12 @@
+Ideas:
+Digimon Character Tab:
+- Fix up and decide on design for Digimon Page
+
+Playlist:
+- Add and remove songs
+- Play/Pause/Loop songs. 
+
+- Autoplay theme on character Tab: 
+	- Ability to turn this off (default off)
+
+- Clean up caching system
