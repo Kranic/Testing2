@@ -1,19 +1,19 @@
-let api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
-let spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
+var api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
+var spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
 let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
 let saved_quality_data = JSON.parse(localStorage.getItem('quality_list'))
 let special_orders_list = []
 let quality_list = {}
-
+// let playlist = {}
 
 if(saved_quality_data==undefined){
     quality_list = {}
 } else { quality_list = saved_quality_data }
 
 
-if(stored_character_data){
-    try{load_page(stored_character_data)}catch(err){console.log(err)}
-}
+// if(stored_character_data){
+//     try{load_page(stored_character_data)}catch(err){console.log(err)}
+// }
 
 Promise.all([
   fetch(`https://api.sheetson.com/v2/sheets/Full_Qualities?limit=100`,
@@ -49,18 +49,16 @@ Promise.all([
     {headers: {
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
-  }}).then(r => r.json()),
+  }}).then(r => {
+    console.log(r.body)
+    r.json()
+}),
   fetch(`https://api.sheetson.com/v2/sheets/torments?limit=100`,
     {headers: {
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
   }}).then(r => r.json()),
   fetch(`https://api.sheetson.com/v2/sheets/digimon?limit=100`,
-    {headers: {
-    "Authorization": `Bearer ${api_key}`,
-    "X-Spreadsheet-Id": spreadsheet_id
-  }}).then(r => r.json()),
-  fetch(`https://api.sheetson.com/v2/sheets/playlist?limit=1000`,
     {headers: {
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
@@ -76,23 +74,25 @@ Promise.all([
     "X-Spreadsheet-Id": spreadsheet_id
   }}).then(r => r.json()),
 ])
-.then(([tamer, torment, digimon, playlist, special_orders, campaign]) => {
+.then(([tamer, torment, digimon, special_orders, campaign]) => {
     return {
         "tamers": tamer.results,
         "torments": torment.results,
         "digimons": digimon.results,
-        "playlist": playlist.results,
         "special_orders": special_orders.results,
         "campaign": campaign.results
     }
 })
-.then(result => load_page(result))
-.catch((err) => {console.log(err)
+.then(result => {
+    if (result.tamers != undefined) {load_page(result)} else {load_page(stored_character_data)}
+})
+.catch((err) => {
+    console.log(err)
+    load_page(stored_character_data)
 });
 
+
 function save_qualities(result){
-    console.log("qualities")
-    console.log(result)
     quality_array = result.full_qualities_1.concat(result.full_qualities_2, result.full_qualities_3)
     let qualities_json = {}
     quality_array.forEach(function(x){
@@ -109,11 +109,10 @@ function save_qualities(result){
 
 
 function load_page(result){
-    console.log("x")
     console.log(result)
-    if(result!=undefined){localStorage.setItem( 'character_data', JSON.stringify(result))}
+    setup_playlist()
 
-    let playlist = result.playlist
+    if(result!=undefined){localStorage.setItem( 'character_data', JSON.stringify(result))}
 
     tamers = result.tamers
     if(tamers==undefined){tamers = []} else {tamers.shift()}
@@ -127,8 +126,6 @@ function load_page(result){
 
     campaign = result.campaign[0]
     if(campaign==undefined){campaign = {'name': "DDA Campaign"}}
-    console.log(campaign)
-    console.log("campaign")
     document.querySelector('title').innerHTML = campaign['name']
     document.querySelector('#campaign_name').innerHTML = campaign['name']
 
@@ -236,15 +233,16 @@ function load_page(result){
 
     let count = 0
     q_names.forEach(function(x){
+        if(x){
         target_quality = {
             "id": 0,
             "Name": x,
             "rank": q_ranks[count],
 
         }
-        console.log(quality_list)
+        // console.log(quality_list)
         try{
-            console.log(quality_list[x])
+            // console.log(quality_list[x])
             target_quality = quality_list[x]
             target_quality.rank = q_ranks[count]
 
@@ -256,10 +254,10 @@ function load_page(result){
         
         digimon.qualities.push(target_quality)
         count++
-    })
-        console.log(digimon.qualities)
+    }})
+        // console.log(digimon.qualities)
         digimon.qualities.sort((a, b) => parseFloat(a.id) - parseFloat(b.id));
-        console.log(digimon.qualities)
+        // console.log(digimon.qualities)
 
 
     digimon.boxes = [
@@ -747,6 +745,11 @@ function create_partner_forms(tamers, tamer){
 
 function create_tamer_sidebar_data(tamer){
 
+    let xp_div = create_element('div', `${tamer["xp"]["used"]} / ${tamer["xp"]["rewarded"]} XP Used`)
+    let misc = create_element('div', `${tamer["gender"]} / ${tamer["age"]} / ${tamer["height"]}`)
+    let inspiration_div = create_element('div', `${tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"]} Inspiration
+        <br>
+        ${'✦'.repeat(tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])}${'✧'.repeat((tamer["willpower"] - (tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])))}`)
     let small_container = create_element(
         'small',
         '',
@@ -756,20 +759,14 @@ function create_tamer_sidebar_data(tamer){
         }
         )
 
-
-
-    let xp_div = create_element('div', `${tamer["xp"]["used"]} / ${tamer["xp"]["rewarded"]} XP Used`)
-    let misc = create_element('div', `${tamer["gender"]} / ${tamer["age"]} / ${tamer["height"]}`)
-    let inspiration_div = create_element('div', `${tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"]} Inspiration
-        <br>
-        ${'✦'.repeat(tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])}${'✧'.repeat((tamer["willpower"] - (tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])))}`)
-
-
     let character_sheet_link = create_element(
         'a', 
         `Character Sheet Link`,
         {'class': `character_info`,
         'href': tamer.sheet})
+
+
+    create_tamerRight(tamer)
 
     let inside_divs = [misc, xp_div, inspiration_div]
 
@@ -779,12 +776,28 @@ function create_tamer_sidebar_data(tamer){
     document.querySelector('#tamerinfo').appendChild(small_container)
     document.querySelector('#tamerinfo').appendChild(character_sheet_link)
 
+    // clear_div('#tamer_stat_block_1')
+    // tamer.boxes.forEach(function(x) {create_bar(x, '#tamer_stat_block_1')})
+    // clear_div('#tamer_stat_block_2')
+    // tamer.stats.forEach(function(x) {create_bar(x, '#tamer_stat_block_2')})  
+    // clear_div('#tamer_stat_block_3')
+    // tamer.attributes.forEach(function(x) {create_attribute_bar(x, '#tamer_stat_block_3')})
+}
+
+function create_tamerRight(tamer){
+    let character_sheet_link = create_element(
+        'a', 
+        `Character Sheet Link`,
+        {'class': `character_info`,
+        'href': tamer.sheet})
+
     clear_div('#tamer_stat_block_1')
     tamer.boxes.forEach(function(x) {create_bar(x, '#tamer_stat_block_1')})
     clear_div('#tamer_stat_block_2')
     tamer.stats.forEach(function(x) {create_bar(x, '#tamer_stat_block_2')})  
     clear_div('#tamer_stat_block_3')
     tamer.attributes.forEach(function(x) {create_attribute_bar(x, '#tamer_stat_block_3')})
+
 }
 
 function create_aspect_div (tamer){

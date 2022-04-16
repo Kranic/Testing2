@@ -1,42 +1,49 @@
-var playlist = JSON.parse(localStorage.getItem('character_data')).playlist
+var playlist = JSON.parse(localStorage.getItem('playlist_data')).playlist
 
-// var playlist = [
-//         {
-//             "id": 2,
-//             "Character_old": "Team",
-//             "Name": "Counterstrike",
-//             "Tags": "Battle, Intense, Determined",
-//             "Source": "Persona 5S",
-//             "Link": "https://youtu.be/D8Nw53ytCxQ",
-//             "Character": "Team"
-//         }
-//         ]
+function setup_playlist(){
 
-        function search_filter(input_id, list_id) {
+Promise.all([
+  fetch(`https://api.sheetson.com/v2/sheets/playlist?limit=100`,
+    {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+  fetch(`https://api.sheetson.com/v2/sheets/playlist?skip=100&limit=100`,
+    {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+  fetch(`https://api.sheetson.com/v2/sheets/playlist?skip=200&limit=100`,
+    {headers: {
+    "Authorization": `Bearer ${api_key}`,
+    "X-Spreadsheet-Id": spreadsheet_id
+  }}).then(r => r.json()),
+])
+.then(([playlist_1, playlist_2, playlist_3]) => {
+    return {
+        "playlist_1": playlist_1.results,
+        "playlist_2": playlist_2.results,
+        "playlist_3": playlist_3.results,
 
-        // Declare variables
-        var input, filter, list, item, a, i, txtValue;
-            input = document.getElementById(input_id);
-            filter = input.value.toLowerCase();
-            list = document.getElementById(list_id);
-            console.log(list_id)
-            item = list.getElementsByTagName('a');
+    }
+})
+.then(result => {if (result.playlist_1 != undefined) {save_playlist(result)} else {save_playlist()}})
+.catch((err) => {console.log(err)
+});
+}
 
-            // Loop through all itemst items, and hide those who don't match the search query
-            for (i = 0; i < item.length; i++) {
-                a = item[i].getElementsByTagName("a")[0];
-                txtValue = item[i].textContent || item[i].innerText;
-                if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                    item[i].classList.remove("d-none")
-                } else {
-                    item[i].classList.add("d-none")
-                }
-            }
-        }
+function save_playlist(result){
+    if(result!=undefined){
+        playlist = result.playlist_1.concat(result.playlist_2, result.playlist_3)
+        localStorage.setItem( 'playlist_data', JSON.stringify(playlist))
+    }
+    
+    setup_music_tab()
+
+}
 
 
-
-        //Filterable list
+function setup_music_tab(){
         var parent_container = document.querySelector("#Playlist-Container")
         var clone = document.querySelector("#playlist-template").cloneNode(true)
         var playlist_tab = clone.content.querySelectorAll("div")[0]
@@ -44,15 +51,9 @@ var playlist = JSON.parse(localStorage.getItem('character_data')).playlist
 
         var song_embed = playlist_tab.querySelector("#song_embed")
 
-        function update_embed(id){
-            console.log(id)
-            var song = playlist.find(x => x.id == id)
-            console.log(song)
-            document.querySelector("#currently_playing").innerHTML = ''
-            document.querySelector("#currently_playing").appendChild(create_song_embed(song))
-        }
+        
 
-
+        console.log(playlist)
         playlist.forEach(x => {
             var song = document.createElement('a')
             song.setAttribute('id', 'list-settings-list')
@@ -65,9 +66,23 @@ var playlist = JSON.parse(localStorage.getItem('character_data')).playlist
             var footer = document.createElement('footer')
             footer.setAttribute('class', "blockquote-footer")
             text.textContent = `${x.Name} | ${x.Character_old} ${x.Tags}`
-
             song.appendChild(text)
-            //                    text.appendChild(footer)
+            
+            // console.log(tamers)
+            // for(num in tamers){
+            //     console.log(tamers[num])
+
+            //     if(x.Character_old.includes(tamer.Name)){
+            //        var img = document.createElement('img')
+            //        img.setAttribute("class", "rounded-circle icon float-right")
+            //        img.setAttribute("style", "height:40px; width:40px;")
+            //        img.setAttribute("src", tamer.Image) 
+            
+            //        song.appendChild(img)
+            //        }
+
+            // }
+            // text.appendChild(footer)
 
             //        for (key in global_data["Humans"]){
             //
@@ -103,6 +118,45 @@ var playlist = JSON.parse(localStorage.getItem('character_data')).playlist
 
             document.querySelector("#playlist-list").appendChild(song)
         })
+}
+
+        
+
+
+
+        //Filterable list
+        
+
+        function update_embed(id){
+            console.log(id)
+            var song = playlist.find(x => x.id == id)
+            console.log(song)
+            document.querySelector("#currently_playing").innerHTML = ''
+            document.querySelector("#currently_playing").appendChild(create_song_embed(song))
+        }
+
+        function search_filter(input_id, list_id) {
+
+        // Declare variables
+        var input, filter, list, item, a, i, txtValue;
+            input = document.getElementById(input_id);
+            filter = input.value.toLowerCase();
+            list = document.getElementById(list_id);
+            console.log(list_id)
+            item = list.getElementsByTagName('a');
+
+            // Loop through all itemst items, and hide those who don't match the search query
+            for (i = 0; i < item.length; i++) {
+                a = item[i].getElementsByTagName("a")[0];
+                txtValue = item[i].textContent || item[i].innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    item[i].classList.remove("d-none")
+                } else {
+                    item[i].classList.add("d-none")
+                }
+            }
+        }
+
 
         function clear_currently_playing(){
             document.querySelector("#currently_playing").innerHTML = ''

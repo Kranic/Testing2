@@ -1,6 +1,12 @@
 Ideas:
 Digimon Character Tab:
+- Make Character Synopsis editable for digimon
 - Fix up and decide on design for Digimon Page
+- Move Qualities under Profile Image
+- Move Stats to the right (Same for Tamers)
+
+Tamers:
+- Update inspiration/torment icons
 
 Playlist:
 - Add and remove songs
@@ -10,3 +16,9 @@ Playlist:
 	- Ability to turn this off (default off)
 
 - Clean up caching system
+
+-Other Ideas:
+Try and find images to represent stuff easier at a glance
+- Melee Attacks / Support Attacks / Etc.
+Split up qualities by type.
+- Try different sorting methods

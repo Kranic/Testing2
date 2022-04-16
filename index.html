@@ -77,14 +77,14 @@
 
         </nav>
 
-        <img id="tamer_background" src="", style="position:fixed; bottom:0;right:0;z-index:-1;opacity: 0.2;height:1000px;padding-top:10%;padding-right:1%">
+        <img id="tamer_background" src="", style="position:fixed; bottom:0;left:0;z-index:-1;opacity: 0.2;height:500px;padding-top:10%;padding-left:1%">
 
 
 
         <div id="tamerTab" class="tab-pane fade navpage">
             <div id="characters" class="tab-pane fade show active navpage">
                 <div style=" display:inline-flex;">
-                    <div id="tamerSideCard" class="flex" style="max-width:15vw;min-width:300px">
+                    <div id="tamerSideCard" class="flex" style="max-width:15vw;min-width:200px">
 
 
                         <!----------------------------------------------------------------------------->
@@ -136,58 +136,14 @@
                         <!----------------------------------------------------------------------------->
 
 
-                        <div style="margin-left:5%;margin-right:5%">
-
-                            <div id="tamer_stat_block_1">
-                            </div>
-
-                            <hr>
-
-
-
-                            <!----------------------------------------------------------------------------->
-                            <!---------------------------------COMBAT STATS-------------------------------->
-                            <!----------------------------------------------------------------------------->
-
-                            <div class="combat_stats">
-
-                                <div id="tamer_stat_block_2">
-                                </div>
-
-                                <hr>
-
-                                <div>
-                                    <div class="d-flex justify-content-between mx-auto" display="flex">
-                                        <div> Initiative (Solo)</div>
-                                        <div style="text-align: right" id = "tamer_initiative">3d6</div> 
-                                    </div>
-
-
-
-                                    <div class="d-flex justify-content-between mx-auto" display="flex">
-                                        <div> Recovery Pool</div>
-                                        <div style="text-align: right" id = "tamer_recovery">3d6</div>
-                                    </div>
-                                </div> 
-
-                                <hr>
-
-                                <!----------------------------------------------------------------------------->
-                                <!---------------------------------ATTRIBUTE & SKILLS-------------------------------->
-                                <!----------------------------------------------------------------------------->
-
-                                <div id="tamer_stat_block_3">
-                                </div>
-
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <!----------------------------------------------------------------------------->
                     <!----------------------------------------------------------------------------->
-                    <!-----------------------------------DATA BLOCK ------------------------------->
+                    <!----------------------------------- DATA BLOCK ------------------------------->
                     <!----------------------------------------------------------------------------->
-                    <!----------------------------------------------------------------------------->
+                    <!--------------------------------------------------------------------------- -->
                     <div id="tamerCard" style=" min-width:50vw; max-width:50vw; padding-left:5%">
 
                         <ul class="nav justify-content-center " role="tablist" style="width:100%">
@@ -254,7 +210,54 @@
                             <div id="TamerNotesTab" class="tab-pane fade" role="tabpanel">  Notes </div>
                         </div>    
 
-                    </div></div>
+                    </div>
+                    <div id="tamerRight" style="padding-top:5%;margin-left: 5%;min-width:250px">
+                    <div style="margin-left:5%;margin-right:5%;">
+
+                            <div id="tamer_stat_block_1" >
+                            </div>
+
+                            <hr>
+
+
+
+                            <!----------------------------------------------------------------------------->
+                            <!---------------------------------COMBAT STATS-------------------------------->
+                            <!----------------------------------------------------------------------------->
+
+                            <div class="combat_stats">
+
+                                <div id="tamer_stat_block_2">
+                                </div>
+
+                                <hr>
+
+                                <div>
+                                    <div class="d-flex justify-content-between mx-auto" display="flex">
+                                        <div> Initiative (Solo)</div>
+                                        <div style="text-align: right" id = "tamer_initiative">3d6</div> 
+                                    </div>
+
+
+
+                                    <div class="d-flex justify-content-between mx-auto" display="flex">
+                                        <div> Recovery Pool</div>
+                                        <div style="text-align: right" id = "tamer_recovery">3d6</div>
+                                    </div>
+                                </div> 
+
+                                <hr>
+
+                                <!----------------------------------------------------------------------------->
+                                <!---------------------------------ATTRIBUTE & SKILLS-------------------------------->
+                                <!----------------------------------------------------------------------------->
+
+                                <div id="tamer_stat_block_3">
+                                </div>
+
+                            </div>
+                        </div></div>
+                </div>
                 </div>  
             </div>
             <div id="digimonTab" class="tab-pane fade navpage show active">
@@ -262,7 +265,7 @@
 
 
 
-                    <div id="digimonSideCard" class="flex" style="max-width:15vw; min-width:300px;">
+                    <div id="digimonSideCard" class="flex" style="max-width:15vw; min-width:200px;">
 
 
                         <!----------------------------------------------------------------------------->
@@ -281,7 +284,7 @@
 
                             <div style="position: relative; top: 0; left: 0;">   
 
-                                <img id="digimonImage" src="" class="card-img-top" style="position: relative; top: 0; left: 0; object-fit: cover;object-position: top; width: 100%;min-height: 400px; height: 20vh; margin-bottom: 1rem;">
+                                <img id="digimonImage" src="" class="card-img-top" style="position: relative; top: 0; left: 0; object-fit: cover;object-position: top; width: 100%;min-height: 200px; height: 20vh; margin-bottom: 1rem;">
 
 
                                 <hr> 
@@ -304,6 +307,11 @@
 
                             <div id="digimoninfo" class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
                             </div>
+                            <hr>
+                            <div style="min-height: 600px";>
+                                            <h5>Qualities</h5>
+                                            <div id="digimon_qualities"></div>
+                                        </div>
 
                         </div>    
 
@@ -317,54 +325,6 @@
                         <!----------------------------------------------------------------------------->
                         <!---------------------------------DERIVED STATS-------------------------------->
                         <!----------------------------------------------------------------------------->
-
-
-                        <div style="margin-left:5%;margin-right:5%">
-                            <div id="digimon_stat_block_1"></div><hr>
-
-
-
-                            <div id="digimon_stat_block_2" class="combat_stats"></div><hr>
-
-                            <div>
-                                <div>
-
-
-                                    <div id="digimon_stat_block_stage"></div>
-
-                                    <div style="width:95%; padding-right: 3%;"></div>
-
-                                    <div class="d-flex justify-content-between mx-auto"  style="display: flex;">
-                                    </div>
-
-                                    <div class="progress" style="height:5px">
-                                    </div>
-                                </div>
-
-                                <div style="display:flex; flex-direction: row;justify-content: space-evenly;">
-
-                                    <div  id="digimon_stat_block_3" style="width:95%; padding-right: 3%;"></div>
-
-                                    <div id="digimon_stat_block_4" style="width:95%; padding-left: 3%;"></div>
-                                </div><hr>
-
-                                <div>
-                                    <div class="d-flex justify-content-between mx-auto" display="flex">
-                                        <div > Initiative </div>
-                                        <div> 3d6 + 4</div> 
-                                    </div>
-
-                                    <div class="d-flex justify-content-between mx-auto" display="flex">
-                                        <div> Recovery Pool </div>
-                                        <div> 3d6 + 3</div>
-                                    </div>
-                                </div> <hr>
-
-                                <div  id="digimon_stat_block_5"></div>
-                            </div>
-
-
-                        </div>
 
 
                     </div>
@@ -434,11 +394,7 @@
 
 
                                     <div  style="width:33%">    
-                                        <div style="min-height: 600px";>
-                                            <h5>Qualities</h5>
-                                            <div id="digimon_qualities" class="col"></div>
-                                        </div>
-                                        <hr>
+                                        
                                         <h5>Combat Notes:</h5>
                                         <div id="area_value_div">
                                             <h6>Area Values:</h6> 
@@ -474,9 +430,58 @@
 
 
                             <div id="DigimonNotesTab" class="tab-pane fade" role="tabpanel">  Notes </div>
-                        </div>    
+                        </div>  
+
+
 
                     </div>
+                    <div id="digimonRight" style="padding-top:5%;margin-left: 5%;min-width:250px">
+                        <div style="margin-left:5%;margin-right:5%">
+                            <div id="digimon_stat_block_1"></div><hr>
+
+
+
+                            <div id="digimon_stat_block_2" class="combat_stats"></div><hr>
+
+                            <div>
+                                <div>
+
+
+                                    <div id="digimon_stat_block_stage"></div>
+
+                                    <div style="width:95%; padding-right: 3%;"></div>
+
+                                    <div class="d-flex justify-content-between mx-auto"  style="display: flex;">
+                                    </div>
+
+                                    <div class="progress" style="height:5px">
+                                    </div>
+                                </div>
+
+                                <div style="display:flex; flex-direction: row;justify-content: space-evenly;">
+
+                                    <div  id="digimon_stat_block_3" style="width:95%; padding-right: 3%;"></div>
+
+                                    <div id="digimon_stat_block_4" style="width:95%; padding-left: 3%;"></div>
+                                </div><hr>
+
+                                <div>
+                                    <div class="d-flex justify-content-between mx-auto" display="flex">
+                                        <div > Initiative </div>
+                                        <div> 3d6 + 4</div> 
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mx-auto" display="flex">
+                                        <div> Recovery Pool </div>
+                                        <div> 3d6 + 3</div>
+                                    </div>
+                                </div> <hr>
+
+                                <div  id="digimon_stat_block_5"></div>
+                            </div>
+
+
+                        </div></div>
 
                 </div>
             
