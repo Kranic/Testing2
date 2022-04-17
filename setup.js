@@ -305,10 +305,8 @@ function create_home_tamer(tamer, element_id){
                         left: 0;
                         object-fit: cover;
                         object-position: top;
-                        min-width: 200px;
-                        max-width: 200px;
-                        min-height: 200px;
-                        height: 20vh;
+                        width: 200px;
+                        height: 200px;
                         margin-bottom: 1rem;">
                 <div class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
                 <div id="tamerinfo"><small class="text-muted" style="margin: 0 auto;">
@@ -363,10 +361,8 @@ function create_home_digimon(tamer, element_id, digimon_id=null){
                         left: 0;
                         object-fit: cover;
                         object-position: top;
-                        min-width: 200px;
-                        max-width: 200px;
-                        min-height: 200px;
-                        height: 20vh;
+                        width: 200px;
+                        height: 200px;
                         margin-bottom: 1rem;">
                 <div class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
                 <div>
