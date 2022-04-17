@@ -4,55 +4,20 @@ let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
 let saved_quality_data = JSON.parse(localStorage.getItem('quality_list'))
 let special_orders_list = []
 let quality_list = {}
-// let playlist = {}
+let page = {}
 
 if(saved_quality_data==undefined){
     quality_list = {}
 } else { quality_list = saved_quality_data }
 
-
-// if(stored_character_data){
-//     try{load_page(stored_character_data)}catch(err){console.log(err)}
-// }
-
-Promise.all([
-  fetch(`https://api.sheetson.com/v2/sheets/Full_Qualities?limit=100`,
-    {headers: {
-    "Authorization": `Bearer ${api_key}`,
-    "X-Spreadsheet-Id": spreadsheet_id
-  }}).then(r => r.json()),
-  fetch(`https://api.sheetson.com/v2/sheets/Full_Qualities?skip=100&limit=100`,
-    {headers: {
-    "Authorization": `Bearer ${api_key}`,
-    "X-Spreadsheet-Id": spreadsheet_id
-  }}).then(r => r.json()),
-  fetch(`https://api.sheetson.com/v2/sheets/Full_Qualities?skip=200&limit=100`,
-    {headers: {
-    "Authorization": `Bearer ${api_key}`,
-    "X-Spreadsheet-Id": spreadsheet_id
-  }}).then(r => r.json()),
-])
-.then(([full_qualities_1, full_qualities_2, full_qualities_3]) => {
-    return {
-        "full_qualities_1": full_qualities_1.results,
-        "full_qualities_2": full_qualities_2.results,
-        "full_qualities_3": full_qualities_3.results,
-
-    }
-})
-.then(result => save_qualities(result))
-.catch((err) => {console.log(err)
-});
+// if(stored_character_data.tamers){load_page(stored_character_data)}
 
 Promise.all([
   fetch(`https://api.sheetson.com/v2/sheets/tamer`, 
     {headers: {
     "Authorization": `Bearer ${api_key}`,
     "X-Spreadsheet-Id": spreadsheet_id
-  }}).then(r => {
-    console.log(r.body)
-    r.json()
-}),
+  }}).then(r => r.json()),
   fetch(`https://api.sheetson.com/v2/sheets/torments?limit=100`,
     {headers: {
     "Authorization": `Bearer ${api_key}`,
@@ -75,41 +40,36 @@ Promise.all([
   }}).then(r => r.json()),
 ])
 .then(([tamer, torment, digimon, special_orders, campaign]) => {
-    return {
+    let package = {
         "tamers": tamer.results,
         "torments": torment.results,
         "digimons": digimon.results,
         "special_orders": special_orders.results,
         "campaign": campaign.results
     }
+    return package
 })
 .then(result => {
-    if (result.tamers != undefined) {load_page(result)} else {load_page(stored_character_data)}
+    if (result.tamers != undefined) {
+        load_page(result)
+        localStorage.setItem( 'character_data', JSON.stringify(result))
+    } else {
+        console.log("Using Cache")
+        load_page(stored_character_data)
+    }
 })
 .catch((err) => {
     console.log(err)
+
+        console.log("Using Cache")
     load_page(stored_character_data)
 });
 
 
-function save_qualities(result){
-    quality_array = result.full_qualities_1.concat(result.full_qualities_2, result.full_qualities_3)
-    let qualities_json = {}
-    quality_array.forEach(function(x){
-    qualities_json[x.Name] = x
-    })
-
-
-
-    quality_list = qualities_json
-
-    if(quality_list!=undefined){localStorage.setItem( 'quality_list', JSON.stringify(quality_list))}
-
-}
-
-
 function load_page(result){
-    if(result!=undefined){localStorage.setItem( 'character_data', JSON.stringify(result))}
+    // if(result!=undefined){
+    //     localStorage.setItem( 'character_data', JSON.stringify(result))
+    // }
 
     tamers = result.tamers
     if(tamers==undefined){
@@ -123,6 +83,7 @@ function load_page(result){
     all_digimon_forms = all_digimon_forms.filter(all_digimon_forms => all_digimon_forms.sheet != ' ')
     if(all_digimon_forms==undefined){all_digimon_forms = []} else {all_digimon_forms.shift()}
 
+    console.log(result)
     campaign = result.campaign[0]
     if(campaign==undefined){campaign = {'name': "DDA Campaign"}}
     document.querySelector('title').innerHTML = campaign['name']
@@ -357,12 +318,12 @@ function load_page(result){
     })
 
     let activeTamer = localStorage.getItem('activeTamer')
-    if(activeTamer){ update_tamer_tab(activeTamer)}
-    else { update_tamer_tab(tamers[0]['id'])}
+    try{ update_tamer_tab(activeTamer)}
+    catch{ update_tamer_tab(tamers[0]['id'])}
 
     let activeDigimon = localStorage.getItem('activeDigimon') 
-    if(activeDigimon){ update_digimon_tab(activeDigimon)}
-    else { update_digimon_tab(all_digimon_forms[0]['id'])}
+    try{ update_digimon_tab(activeDigimon)}
+    catch { update_digimon_tab(all_digimon_forms[0]['id'])}
 
     document.getElementById("home_page_tamer").innerHTML= ""
     tamers.forEach(function(x){create_home_tamer(x, "home_page_tamer")})
@@ -370,8 +331,8 @@ function load_page(result){
     document.getElementById("home_page_digimon").innerHTML= ""
     tamers.forEach(function(x){create_home_digimon(x, "home_page_digimon")})
 
-    console.log(tamers)
     setup_playlist(tamers, all_digimon_forms)
+    setup_qualities()
 
     
 }
@@ -527,7 +488,7 @@ function create_home_digimon(tamer, element_id, digimon_id=null){
     digimon.boxes.forEach(function(x) {create_bar(x, `#digimon_block_1_${digimon.id}`)})
     digimon.stats.forEach(function(x) {create_bar(x, `#digimon_block_2_${digimon.id}`)}) 
     digimon.derived.forEach(function(x) {create_bar(x, `#digimon_block_3_${digimon.id}`)})
-    create_bar(["Stage Bonus", digimon["stage_bonus"]], `#digimon_block_stage_${digimon.id}`)
+    create_bar(["Stage Bonus", digimon["stage_bonus"]], `#digimon_block_stage_${digimon.id}`, 5)
     digimon.specs.forEach(function(x) {create_bar(x, `#digimon_block_4_${digimon.id}`)})  
     digimon.attributes.forEach(function(x) {create_attribute_bar(x, `#digimon_block_5_${digimon.id}`)})
     
@@ -546,7 +507,6 @@ function create_home_digimon(tamer, element_id, digimon_id=null){
 
 function update_tamer_tab(id){
     let tamer = tamers.filter(function(x){ return x.id == id})[0]
-
     document.getElementById("tamerName").textContent = tamer.name;
     document.getElementById("tamerEpitaph").textContent = "- " + tamer.title;
     document.getElementById("tamerUsername").textContent = '[' + tamer.username + ']'

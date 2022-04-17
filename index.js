@@ -13,6 +13,7 @@ let set_tabs = function(activeTab){
 }
 
 function create_bar(x, target_id, max_amount=20){
+    console.log(target_id + " " + x[1]/max_amount*100)
         let div = create_element('div')
         
         let new_element = create_element(

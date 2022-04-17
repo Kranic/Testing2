@@ -53,7 +53,6 @@ function setup_music_tab(tamers, digimon_list){
 
         
 
-        console.log(playlist)
         playlist.forEach(x => {
             var song = document.createElement('a')
             song.setAttribute('id', 'list-settings-list')
@@ -70,7 +69,6 @@ function setup_music_tab(tamers, digimon_list){
 
             for(num in tamers){
                 tamer = tamers[num]
-                console.log(tamer)
 
                 try{
                 if(x.Character_old.includes(tamer.sheet_name)){
