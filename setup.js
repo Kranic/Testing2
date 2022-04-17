@@ -109,13 +109,12 @@ function save_qualities(result){
 
 
 function load_page(result){
-    console.log(result)
-    setup_playlist()
-
     if(result!=undefined){localStorage.setItem( 'character_data', JSON.stringify(result))}
 
     tamers = result.tamers
-    if(tamers==undefined){tamers = []} else {tamers.shift()}
+    if(tamers==undefined){
+        tamers = JSON.parse(localStorage.getItem('character_data')).tamers
+    } else {tamers.shift()}
 
     all_torments = result.torments
     special_orders_list = result.special_orders
@@ -370,6 +369,9 @@ function load_page(result){
 
     document.getElementById("home_page_digimon").innerHTML= ""
     tamers.forEach(function(x){create_home_digimon(x, "home_page_digimon")})
+
+    console.log(tamers)
+    setup_playlist(tamers, all_digimon_forms)
 
     
 }

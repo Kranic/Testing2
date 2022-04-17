@@ -1,6 +1,6 @@
 var playlist = JSON.parse(localStorage.getItem('playlist_data')).playlist
 
-function setup_playlist(){
+function setup_playlist(tamers, digimon_list){
 
 Promise.all([
   fetch(`https://api.sheetson.com/v2/sheets/playlist?limit=100`,
@@ -27,23 +27,23 @@ Promise.all([
 
     }
 })
-.then(result => {if (result.playlist_1 != undefined) {save_playlist(result)} else {save_playlist()}})
+.then(result => {if (result.playlist_1 != undefined) {save_playlist([result, tamers, digimon_list])} else {save_playlist([undefined, tamers, digimon_list])}})
 .catch((err) => {console.log(err)
 });
 }
 
-function save_playlist(result){
+function save_playlist([result, tamers, digimon_list]){
     if(result!=undefined){
         playlist = result.playlist_1.concat(result.playlist_2, result.playlist_3)
         localStorage.setItem( 'playlist_data', JSON.stringify(playlist))
     }
     
-    setup_music_tab()
+    setup_music_tab(tamers, digimon_list)
 
 }
 
 
-function setup_music_tab(){
+function setup_music_tab(tamers, digimon_list){
         var parent_container = document.querySelector("#Playlist-Container")
         var clone = document.querySelector("#playlist-template").cloneNode(true)
         var playlist_tab = clone.content.querySelectorAll("div")[0]
@@ -67,52 +67,41 @@ function setup_music_tab(){
             footer.setAttribute('class', "blockquote-footer")
             text.textContent = `${x.Name} | ${x.Character_old} ${x.Tags}`
             song.appendChild(text)
+
+            for(num in tamers){
+                tamer = tamers[num]
+                console.log(tamer)
+
+                try{
+                if(x.Character_old.includes(tamer.sheet_name)){
+                   var img = document.createElement('img')
+                   img.setAttribute("class", "rounded-circle icon float-right")
+                   img.setAttribute("style", "height:40px; width:40px;")
+                   img.setAttribute("src", tamer.image_url) 
             
-            // console.log(tamers)
-            // for(num in tamers){
-            //     console.log(tamers[num])
+                   song.appendChild(img)
+                   }
+               }
+               catch(err){console.log(err)}
 
-            //     if(x.Character_old.includes(tamer.Name)){
-            //        var img = document.createElement('img')
-            //        img.setAttribute("class", "rounded-circle icon float-right")
-            //        img.setAttribute("style", "height:40px; width:40px;")
-            //        img.setAttribute("src", tamer.Image) 
+            }
+            text.appendChild(footer)
+
+
+                 for (num in digimon_list){
             
-            //        song.appendChild(img)
-            //        }
-
-            // }
-            // text.appendChild(footer)
-
-            //        for (key in global_data["Humans"]){
-            //
-            //        tamer = global_data["Humans"][key]
-            //
-            //
-            //        if(x.Character.includes(tamer.Name)){
-            //        var img = document.createElement('img')
-            //        img.setAttribute("class", "rounded-circle icon float-right")
-            //        img.setAttribute("style", "height:40px; width:40px;")
-            //        img.setAttribute("src", tamer.Image)
-            //
-            //        song.appendChild(img)
-            //        }
-            //      }
-
-            //      for (key in global_data["Digimon"]){
-            //
-            //        digimon = global_data["Digimon"][key]
-            //
-            //
-            //        if(x.Character.includes(digimon.Name)){
-            //        var img = document.createElement('img')
-            //        img.setAttribute("class", "rounded-circle icon float-right")
-            //        img.setAttribute("style", "height:40px; width:40px;")
-            //        img.setAttribute("src", digimon.Image)
-            //
-            //        song.appendChild(img)
-            //        }
-            //      }
+                   digimon = digimon_list[num]
+            
+            
+                   if(x.Character_old.includes(digimon.name)){
+                   var img = document.createElement('img')
+                   img.setAttribute("class", "rounded-circle icon float-right")
+                   img.setAttribute("style", "height:40px; width:40px;")
+                   img.setAttribute("src", digimon.image_url)
+            
+                   song.appendChild(img)
+                   }
+                 }
 
 
 
