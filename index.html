@@ -8,6 +8,9 @@
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+
 
 
         <title>Campaign Name</title>
@@ -29,320 +32,249 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="nav navbar-nav" role="tablist">
-<li class="nav-item">
-<a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#home" type="button"  href="#home">Home</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#characters" type="button"  href="#characters">Characters</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#music" type="button"  href="#music">Music</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link disabled" aria-current="page" data-bs-toggle="tab" data-bs-target="#npc" type="button"  href="#npc">NPCs</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#journal" type="button"  href="#journal">Journal</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link disabled" aria-current="page" data-bs-toggle="tab" data-bs-target="#notes" type="button"  href="#notes">Notes</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#book" type="button"  href="#book">Book</a>
-</li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#home" type="button"  href="#home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#characters" type="button"  href="#characters">Characters</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#music" type="button"  href="#music">Music</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-current="page" data-bs-toggle="tab" data-bs-target="#npc" type="button"  href="#npc">NPCs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#journal" type="button"  href="#journal">Journal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-current="page" data-bs-toggle="tab" data-bs-target="#notes" type="button"  href="#notes">Notes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" data-bs-toggle="tab" data-bs-target="#book" type="button"  href="#book">Book</a>
+                            </li>
 
-</ul>
-</div>
-</div>
-</nav>
-</div>
-
-<div class="tab-content" style="padding-left:10%;padding-right:10%;padding-top:1%">
-
-    <!--Nav Containers---------------------------->
-
-    <div id="home" class="tab-pane fade navpage overflow-auto">
-        <div id="home_page_tamer"  style="display:inline-flex; width:100%">
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </div>
-        <div id="home_page_digimon" style="display:inline-flex; width:100%">
-        </div>
-    </div> 
 
-    <div id="characters" class="tab-pane fade navpage show active">
-        <nav id="character_nav" class="nav navbar" style="position:absolute; top:100px;left:0;z-index:2;display:inline;">
+        <div class="tab-content" style="padding-left:10%;padding-right:10%;padding-top:1%">
 
-            <div class="nav-link"  data-bs-toggle="tab" data-bs-target="#tamerTab" type="button"  href="#tamerTab" href="#tamerTab"><div id="human_images"> test</div></div>
+            <!--Nav Containers---------------------------->
 
-            <div class="nav-link"  data-bs-toggle="tab" data-bs-target="#digimonTab" type="button"  href="#digimonTab" href="#digimonTab"><div id="partner_images"> test</div></a>
+            <div id="home" class="tab-pane fade navpage overflow-auto">
+                <div id="home_page_tamer"  style="display:inline-flex; width:100%">
+                </div>
+                <div id="home_page_digimon" style="display:inline-flex; width:100%">
+                </div>
+            </div> 
 
-        </nav>
+            <div id="characters" class="tab-pane fade navpage show active">
+                <nav id="character_nav" class="nav navbar" style="position:absolute; top:10;left:0;z-index:2;display:inline;">
 
-        <img id="tamer_background" src="", style="position:fixed; bottom:0;left:0;z-index:-1;opacity: 0.2;height:500px;padding-top:10%;padding-left:1%">
+                    <div class="nav-link"  data-bs-toggle="tab" data-bs-target="#tamerTab" type="button"  href="#tamerTab" href="#tamerTab"><div id="human_images"> test</div></div>
+
+                    <div class="nav-link"  data-bs-toggle="tab" data-bs-target="#digimonTab" type="button"  href="#digimonTab" href="#digimonTab"><div id="partner_images"> test</div></a>
+                </nav>
+
+                <img id="tamer_background" src="", style="position:fixed; bottom:0;left:0;z-index:-1;opacity: 0.2;height:500px;padding-top:10%;padding-left:1%">
 
 
+                <div id="tamerTab" class="tab-pane fade navpage">
+                    <div id="characters" class="tab-pane fade show active navpage">
+                        <div style=" display:inline-flex;">
+                            <div id="tamerSideCard" class="flex" style="max-width:15vw;min-width:200px">
 
-        <div id="tamerTab" class="tab-pane fade navpage">
-            <div id="characters" class="tab-pane fade show active navpage">
-                <div style=" display:inline-flex;">
-                    <div id="tamerSideCard" class="flex" style="max-width:15vw;min-width:200px">
+                                <div>
+                                    <div style="position: relative; top: 0; left: 0;">    
+                                        <img id="tamerImage" src="https://i.imgur.com/f0vkqrG.png" class="card-img-top" style="position: relative; top: 0; left: 0; object-fit: cover;object-position: top; width: 100%; min-height: 200px; min-height: 400px; height: 20vh; margin-bottom: 1rem;">
+                                    </div>
 
+                                    <div>
+                                        <hr>
+                                        <div class="dropdown">
+                                            <button class="btn-light dropdown-toggle" type="button" id="tamerName" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <div>Character Name</div>
+                                            </button>
 
-                        <!----------------------------------------------------------------------------->
-                        <!----------------------------------DROPDOWN----------------------------------->
-                        <!----------------------------------------------------------------------------->
+                                            <ul id="tamer-dropdownmenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                        <div>
+                                    <div style="display:flex;justify-content: space-between;">
+                                        <em><div style="" id="tamerUsername">Username</div></em>
+                                        <em><div style="text-align:right;" id="tamerEpitaph">Epitaph</div></em>
+                                    </div>
+                                    <hr>   
+                                    <div class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
+                                        <div id="tamerinfo"></div>
+                                        <div>
 
-                            <div style="position: relative; top: 0; left: 0;">    
-                                <img id="tamerImage" src="https://i.imgur.com/f0vkqrG.png" class="card-img-top" style="position: relative; top: 0; left: 0; object-fit: cover;object-position: top; width: 100%; min-height: 200px; min-height: 400px; height: 20vh; margin-bottom: 1rem;">
+                                            <hr>
+                                            <div class="d-flex justify-content-between mx-auto" display="flex">
+                                                <div > Initiative </div>
+                                                <div id="tamer_initiative"> 3d6 + 4</div> 
+                                            </div>
+
+                                            <div class="d-flex justify-content-between mx-auto" display="flex">
+                                                <div> Recovery Pool </div>
+                                                <div id="tamer_recovery"> 3d6 + 3</div>
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                </div>    
+
                             </div>
+                            <div id="tamerCard" style=" min-width:50vw; max-width:50vw; padding-left:5%">
 
-                            
+                                <ul class="nav justify-content-center " role="tablist" style="width:100%">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#TamerCharacterTab" type="button">Character</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#TamerPlaylistTab" type="button">Playlist</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#TamerNotesTab" type="button">Notes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#TamerGalleryTab" type="button">Gallery</a>
+                                    </li>
+                                </ul>
 
+                                <hr>
+                                <div class="tab-content" id="nav-tabContent">
+
+
+
+                                    <div id="TamerCharacterTab" class="tab-pane fade active show" role="tabpanel">
+                                        <h5>Character Synopsis</h5>
+                                        <div>
+                                            <!-- <small>Female | Age: 15 | Height: 5'6"</small> -->
+                                            <div><small style="white-space: pre-line" id="tamerSynopsis" >Synopsis</small></div>
+                                        </div>
+
+                                        <hr>
+                                        <h5>Aspects</h5>
+                                        <div id="aspects" style="white-space: pre-line; font-size: 14px;" class="row">
+                                            abc
+                                        </div>
+
+                                        <hr>    
+                                        <h5>Torments</h5>
+                                        <div id="torments" style="white-space: pre-line; font-size: 14px;" class="row">
+                                            abc
+                                        </div>
+
+                                        <hr>
+                                        <h5>Special Orders</h5>
+                                        <div id="special_orders" style="padding:10px"> Special Order 1 </div>
+                                    </div>
+
+
+
+                                    <div id="TamerDigimonTab" class="tab-pane fade" role="tabpanel">  
+                                        <div>
+                                            <h5>Digimon</h5>
+                                            <div id="partner_forms" class="list-group overflow-auto">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="TamerPlaylistTab" class="tab-pane fade" role="tabpanel"> Playlist </div>
+                                    <div id="TamerNotesTab" class="tab-pane fade" role="tabpanel">  Notes </div>
+                                </div>    
+
+                            </div>
+                            <div id="tamerRight" style="padding-top:5%;margin-left: 5%;min-width:250px">
+                                <div style="margin-left:5%;margin-right:5%;">
+
+                                    <div id="tamer_stat_block_1" >
+                                    </div>
+
+                                    <hr>
+
+
+
+                                    <div class="combat_stats">
+
+                                        <div id="tamer_stat_block_2">
+                                        </div>
+
+
+
+                                        <hr>
+
+
+                                        <div id="tamer_stat_block_3">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+                <div id="digimonTab" class="tab-pane fade navpage show active">
+                    <div class="tab-pane fade show active navpage" style=" display:inline-flex; ">
+                        <div id="digimonSideCard" class="flex" style="max-width:15vw; min-width:200px;">
 
                             <div>
-                                <hr>
+
+
+
+                                <div style="position: relative; top: 0; left: 0;">   
+
+                                    <img id="digimonImage" src="" class="card-img-top" style="position: relative; top: 0; left: 0; object-fit: cover;object-position: top; width: 100%;min-height: 200px; height: 20vh; margin-bottom: 1rem;">
+
+
+                                    <hr> 
+
+                                </div>
+
                                 <div class="dropdown">
-                                    <button class="btn-light dropdown-toggle" type="button" id="tamerName" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <div>Character Name</div>
+                                    <button class="display-6 btn btn-light dropdown-toggle" type="button" id="digimonName" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <div id="digimonName">Digimon Name</div>
                                     </button>
 
-                                    <ul id="tamer-dropdownmenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <ul id="digimon-dropdownmenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
                                     </ul>
                                 </div>
 
-                            </div>
-
-                            <div style="display:flex;justify-content: space-between;">
-                            <em><div style="" id="tamerUsername">Username</div></em>
-                            <em><div style="text-align:right;" id="tamerEpitaph">Epitaph</div></em>
-                        </div>
-                            <hr>
-
-
-                            <div class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
-                                <div id="tamerinfo"></div>
-                            </div>
-
-
-                        </div>    
-
-                        <hr>
-
-
-
-                        <!----------------------------------------------------------------------------->
-                        <!---------------------------------DERIVED STATS-------------------------------->
-                        <!----------------------------------------------------------------------------->
-
-
-                        
-                    </div>
-
-                    <!----------------------------------------------------------------------------->
-                    <!----------------------------------------------------------------------------->
-                    <!----------------------------------- DATA BLOCK ------------------------------->
-                    <!----------------------------------------------------------------------------->
-                    <!--------------------------------------------------------------------------- -->
-                    <div id="tamerCard" style=" min-width:50vw; max-width:50vw; padding-left:5%">
-
-                        <ul class="nav justify-content-center " role="tablist" style="width:100%">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#TamerCharacterTab" type="button">Character</a>
-                            </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link"  data-bs-toggle="tab" data-bs-target="#TamerDigimonTab" type="button">Partner</a>
-                            </li> -->
-                            <li class="nav-item">
-                                <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#TamerPlaylistTab" type="button">Playlist</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#TamerNotesTab" type="button">Notes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#TamerGalleryTab" type="button">Gallery</a>
-                            </li>
-                        </ul>
-
-                        <hr>
-                        <div class="tab-content" id="nav-tabContent">
-
-
-                            <!-------------------------------CHARACTER------------------------------>
-
-                            <div id="TamerCharacterTab" class="tab-pane fade active show" role="tabpanel">
-                                <h5>Character Synopsis</h5>
-                                <div>
-                                    <!-- <small>Female | Age: 15 | Height: 5'6"</small> -->
-                                    <div><small style="white-space: pre-line" id="tamerSynopsis" >Synopsis</small></div>
-                                </div>
-
-                                <hr>
-                                <h5>Aspects</h5>
-                                <div id="aspects" style="white-space: pre-line; font-size: 14px;" class="row">
-                                    abc
-                                </div>
-
-                                <hr>    
-                                <h5>Torments</h5>
-                                <div id="torments" style="white-space: pre-line; font-size: 14px;" class="row">
-                                    abc
-                                </div>
-
-                                <hr>
-                                <h5>Special Orders</h5>
-                                <div id="special_orders" style="padding:10px"> Special Order 1 </div>
-                            </div>
-
-
-
-                            <div id="TamerDigimonTab" class="tab-pane fade" role="tabpanel">  
-                                <div>
-                                    <h5>Digimon</h5>
-                                    <div id="partner_forms" class="list-group overflow-auto">
-
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div id="TamerPlaylistTab" class="tab-pane fade" role="tabpanel"> Playlist </div>
-                            <div id="TamerNotesTab" class="tab-pane fade" role="tabpanel">  Notes </div>
-                        </div>    
-
-                    </div>
-                    <div id="tamerRight" style="padding-top:5%;margin-left: 5%;min-width:250px">
-                    <div style="margin-left:5%;margin-right:5%;">
-
-                            <div id="tamer_stat_block_1" >
-                            </div>
-
-                            <hr>
-
-
-
-                            <!----------------------------------------------------------------------------->
-                            <!---------------------------------COMBAT STATS-------------------------------->
-                            <!----------------------------------------------------------------------------->
-
-                            <div class="combat_stats">
-
-                                <div id="tamer_stat_block_2">
-                                </div>
+                                <em><div style="text-align:right;" id="digimonEpitaph">Epitaph</div></em>
 
                                 <hr>
 
-                                <div>
-                                    <div class="d-flex justify-content-between mx-auto" display="flex">
-                                        <div> Initiative (Solo)</div>
-                                        <div style="text-align: right" id = "tamer_initiative">3d6</div> 
-                                    </div>
-
-
-
-                                    <div class="d-flex justify-content-between mx-auto" display="flex">
-                                        <div> Recovery Pool</div>
-                                        <div style="text-align: right" id = "tamer_recovery">3d6</div>
-                                    </div>
-                                </div> 
-
-                                <hr>
-
-                                <!----------------------------------------------------------------------------->
-                                <!---------------------------------ATTRIBUTE & SKILLS-------------------------------->
-                                <!----------------------------------------------------------------------------->
-
-                                <div id="tamer_stat_block_3">
+                                <div id="digimoninfo" class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
                                 </div>
-
-                            </div>
-                        </div></div>
-                </div>
-                </div>  
-            </div>
-            <div id="digimonTab" class="tab-pane fade navpage show active">
-                <div class="tab-pane fade show active navpage" style=" display:inline-flex; ">
-
-
-
-                    <div id="digimonSideCard" class="flex" style="max-width:15vw; min-width:200px;">
-
-
-                        <!----------------------------------------------------------------------------->
-                        <!----------------------------------DROPDOWN----------------------------------->
-                        <!----------------------------------------------------------------------------->
-
-
-
-                        <!----------------------------------------------------------------------------->
-                        <!----------------------------CHARACTER PROFILE-------------------------------->
-                        <!----------------------------------------------------------------------------->
-
-                        <div>
-
-
-
-                            <div style="position: relative; top: 0; left: 0;">   
-
-                                <img id="digimonImage" src="" class="card-img-top" style="position: relative; top: 0; left: 0; object-fit: cover;object-position: top; width: 100%;min-height: 200px; height: 20vh; margin-bottom: 1rem;">
-
-
-                                <hr> 
-
-                            </div>
-
-                            <div class="dropdown">
-                                <button class="display-6 btn btn-light dropdown-toggle" type="button" id="digimonName" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div id="digimonName">Digimon Name</div>
-                                </button>
-
-                                <ul id="digimon-dropdownmenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-
-                                </ul>
-                            </div>
-
-                            <em><div style="text-align:right;" id="digimonEpitaph">Epitaph</div></em>
-
-                            <hr>
-
-                            <div id="digimoninfo" class="center" style="margin-left:5%;margin-right:5%;text-align: center">    
-                            </div>
-                            <hr>
-                            <div style="min-height: 600px";>
-                                            <h5>Qualities</h5>
-                                            <div id="digimon_qualities"></div>
+                                <hr>
+                                <div style="min-height: 600px";>
+                                    <div>
+                                        <div class="d-flex justify-content-between mx-auto" display="flex">
+                                            <div > Initiative </div>
+                                            <div id="digimon_initiative"> 3d6 + 4</div> 
                                         </div>
 
+                                        <div class="d-flex justify-content-between mx-auto" display="flex">
+                                            <div> Recovery Pool </div>
+                                            <div id="digimon_recovery"> 3d6 + 3</div>
+                                        </div>
+                                        <hr>
+                                    </div> 
+
+                                    <h5>Qualities</h5>
+                                    <div id="digimon_qualities"></div>
+                                </div>
+                            </div>
                         </div>    
-
-
-                        <hr>
-
-
-
-
-
-                        <!----------------------------------------------------------------------------->
-                        <!---------------------------------DERIVED STATS-------------------------------->
-                        <!----------------------------------------------------------------------------->
-
-
                     </div>
-
-
-
-
-
-
-
-
-
-                    <!----------------------------------------------------------------------------->
-                    <!----------------------------------------------------------------------------->
-                    <!-----------------------------------DATA BLOCK ------------------------------->
-                    <!----------------------------------------------------------------------------->
-                    <!----------------------------------------------------------------------------->
-
 
                     <div id="digimonCard" style=" min-width:50vw; max-width:50vw; padding-left:5%;">
 
@@ -350,9 +282,6 @@
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#DigimonCharacterTab" type="button">Character</a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a id="tabs" class="nav-link"  data-bs-toggle="tab" data-bs-target="#DigimonFormTab" type="button">Other Forms</a>
-                            </li> -->
                             <li class="nav-item">
                                 <a class="nav-link"  data-bs-toggle="tab" data-bs-target="#DigimonQualitiesTab" type="button">Qualities</a>
                             </li>
@@ -366,16 +295,12 @@
                                 <a class="nav-link disabled"  data-bs-toggle="tab" data-bs-target="#DigimonGalleryTab" type="button">Gallery</a>
                             </li>
                         </ul>
-
                         <hr>
                         <div class="tab-content" id="nav-tabContent">
-
-
-                            <!-------------------------------CHARACTER------------------------------>
-
                             <div id="DigimonCharacterTab" class="tab-pane fade active show" role="tabpanel">
                                 <h5>Character Synopsis</h5>
-                                <div style='min-height:240px; white-space: pre-line '><div  id="DigimonSynopsis_Container" style=""><small id="DigimonSynopsis_Text">Synopsis Text</small></div><textarea id="DigimonSynopsis_Form" class="form-control"style="display: none">Synopsis Text</textarea>
+                                <div >
+                                    <div id="DigimonSynopsis_Container" style='min-height:240px; white-space: pre-line'><small id="DigimonSynopsis_Text">Synopsis Text</small><textarea id="DigimonSynopsis_Form" class="form-control"style="display: none;min-height:240px;">Synopsis Text</textarea></div>
                                 </div>
 
                                 <hr>
@@ -388,12 +313,12 @@
                                         <ul id = "digimon_dodges" class="list-group"></ul>
                                         <h5>Misc Notes</h5>
                                         <ul id = "combat_notes_div" class="list-group"></ul>
-                                        
-                                </div>
+
                                     </div>
+                                </div>
 
 
-                                    
+
                             </div>
 
 
@@ -412,7 +337,7 @@
                                 <h5>Qualities</h5>
                                 <div id="quality-description"></div>
                             </div>
-                            
+
 
 
                             <div id="DigimonNotesTab" class="tab-pane fade" role="tabpanel">  Notes </div>
@@ -424,67 +349,39 @@
                     <div id="digimonRight" style="padding-top:5%;margin-left: 5%;min-width:250px">
                         <div style="margin-left:5%;margin-right:5%">
                             <div id="digimon_stat_block_1"></div><hr>
-
-
-
                             <div id="digimon_stat_block_2" class="combat_stats"></div><hr>
-
                             <div>
                                 <div>
-
-
                                     <div id="digimon_stat_block_stage"></div>
                                 </div>
-
                                 <div style="display:flex; flex-direction: row;justify-content: space-evenly;">
-
                                     <div  id="digimon_stat_block_3" style="width:95%; padding-right: 3%;"></div>
-
                                     <div id="digimon_stat_block_4" style="width:95%; padding-left: 3%;"></div>
                                 </div><hr>
-
-                                <div>
-                                    <div class="d-flex justify-content-between mx-auto" display="flex">
-                                        <div > Initiative </div>
-                                        <div> 3d6 + 4</div> 
-                                    </div>
-
-                                    <div class="d-flex justify-content-between mx-auto" display="flex">
-                                        <div> Recovery Pool </div>
-                                        <div> 3d6 + 3</div>
-                                    </div>
-                                </div> <hr>
 
                                 <div  id="digimon_stat_block_5"></div>
                                 <hr>
                                 <div>    
-                                        <div id="area_value_div">
-                                            <h6>Area Values:</h6> 
-                                            <div>[Burst]         Radius          1 m     5 m </div>
-                                            <div>[Blast]         Diameter        -       6 m </div>
-                                            <div>[Close Blast]   Radius          2 m     5 m </div>
-                                            <div>[Line]          Dimension       5 x 1 m 11 x 1 m  </div>
-                                            <div>[Cone]          Length          3 m     6 m </div>
-                                            <div>[Pass]          Movement        3 m     -   </div>
-                                        </div>
-                                        
+                                    <div id="area_value_div">
+                                        <h6>Area Values:</h6> 
+                                        <div>[Burst]         Radius          1 m     5 m </div>
+                                        <div>[Blast]         Diameter        -       6 m </div>
+                                        <div>[Close Blast]   Radius          2 m     5 m </div>
+                                        <div>[Line]          Dimension       5 x 1 m 11 x 1 m  </div>
+                                        <div>[Cone]          Length          3 m     6 m </div>
+                                        <div>[Pass]          Movement        3 m     -   </div>
                                     </div>
+                                </div>
                             </div>
-
-
-                        </div></div>
-
+                        </div>
+                    </div>
                 </div>
-            
-
-
-
             </div>
-        </div> 
+        
 
         <!--NPC-->
         <div id="npc" class="tab-pane fade navpage">NPCs</div>
-        
+
         <!--Music-->
         <div id="music" class="tab-pane fade navpage">
             <div id="Playlist">
@@ -507,7 +404,7 @@
             </div>
         </div>
     </div>
-
+</div> 
     <!----------------------------------------------------------------------------->
     <!----------------------------------------------------------------------------->
     <!-------------------------------------TEMPLATES------------------------------->

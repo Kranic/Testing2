@@ -361,7 +361,7 @@ function create_home_tamer(tamer, element_id){
                     <div>${tamer.gender} / ${tamer.age} / ${tamer.height}</div>
                     <div>${tamer.xp_used} / ${tamer.xp_rewarded} XP Used</div>
                     <div>${tamer.inspiration.rewarded - tamer.inspiration.used} / ${tamer.willpower} Inspiration</div></small>
-                    ${'✦'.repeat(tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])}${'✧'.repeat((tamer["willpower"] - (tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])))}
+                    ${'<i class="bi bi-star-fill"></i> '.repeat(tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])}${'<i class="bi bi-star"></i> '.repeat((tamer["willpower"] - (tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])))}
                 
                 <br>
                 <a class="character_info"
@@ -540,6 +540,8 @@ function update_digimon_tab(id){
     document.querySelector('#digimonEpitaph').textContent =  "- " + digimon['title']
     document.querySelector('#digimonImage').src = digimon['image_url']
     document.querySelector('#digimonName').textContent = digimon['name']
+    document.getElementById("digimon_initiative").textContent =  `3d6 + ${digimon.initiative}`;
+    document.getElementById("digimon_recovery").textContent = `3d6 + ${digimon["recovery pool"]}`;
     document.querySelector('#DigimonSynopsis_Text').textContent = digimon["synopsis"]
     document.querySelector('#DigimonSynopsis_Form').textContent = digimon["synopsis"]
 
@@ -550,7 +552,6 @@ function update_digimon_tab(id){
         document.querySelector('#DigimonSynopsis_Form').focus()
 })
     document.querySelector('#DigimonSynopsis_Form').onblur = function(){
-            digimon["synopsis"] = document.querySelector('#DigimonSynopsis_Form').value
             document.querySelector('#DigimonSynopsis_Text').innerHTML = document.querySelector('#DigimonSynopsis_Form').value
             document.querySelector('#DigimonSynopsis_Form').style.display = "none";
             document.querySelector('#DigimonSynopsis_Text').style.display = "";
@@ -559,6 +560,8 @@ function update_digimon_tab(id){
             console.log(digimon["synopsis_index"])
 
             if(digimon["synopsis_index"] != ""){
+
+                if(document.querySelector('#DigimonSynopsis_Form').value != digimon["synopsis"]){
                 fetch(
                     `https://api.sheetson.com/v2/sheets/digimon_synopsis/${digimon["synopsis_index"]}`, 
                 {method: "PUT",
@@ -569,11 +572,13 @@ function update_digimon_tab(id){
                   },
                 body: JSON.stringify({"synopsis_description" : document.querySelector('#DigimonSynopsis_Form').value})})
                 .then(r => r.json()).then(r => {
+
+                    digimon["synopsis"] = document.querySelector('#DigimonSynopsis_Form').value
                     console.log("PUT: " + document.querySelector('#DigimonSynopsis_Form').value)
                     console.log(r)})
-            }
+            }}
             else{
-
+                
                 fetch(
                     `https://api.sheetson.com/v2/sheets/digimon_synopsis`, 
                 
@@ -593,6 +598,8 @@ function update_digimon_tab(id){
                     }
                 )
                 .then(r => r.json()).then(r => {
+
+                    digimon["synopsis"] = document.querySelector('#DigimonSynopsis_Form').value
                     console.log("POST")
                     console.log(r)
                 })
@@ -770,9 +777,8 @@ function create_tamer_sidebar_data(tamer){
 
     let xp_div = create_element('div', `${tamer["xp"]["used"]} / ${tamer["xp"]["rewarded"]} XP Used`)
     let misc = create_element('div', `${tamer["gender"]} / ${tamer["age"]} / ${tamer["height"]}`)
-    let inspiration_div = create_element('div', `${tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"]} Inspiration
-        <br>
-        ${'✦'.repeat(tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])}${'✧'.repeat((tamer["willpower"] - (tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])))}`)
+    let inspiration_div = create_element('div', `${tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"]} Inspiration | 
+        ${'<i class="bi bi-star-fill"></i> '.repeat(tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])}${'<i class="bi bi-star"></i> '.repeat((tamer["willpower"] - (tamer["inspiration"]["rewarded"] - tamer["inspiration"]["used"])))}`)
     let small_container = create_element(
         'small',
         '',
@@ -870,7 +876,7 @@ function create_torment_div (tamer){
             'div',
             `<div style="display:inline-flex; justify-content: space-between;width:100%;">
             <div><h6><em>${x["name"]}</em></h6><div>(${toTitleCase(x["type"])} | ${x["marked_boxes"]}/${x["total_boxes"]} Boxes Marked  | 3d6 + ${x.roll})</div></div>
-            <div style=" text-align: right;">${'☒'.repeat(x["marked_boxes"])}${'☐'.repeat(x["total_boxes"]-x["marked_boxes"])}</div>
+            <div style=" text-align: right;">${'<i class="bi bi-check-square-fill"></i> '.repeat(x["marked_boxes"])}${'<i class="bi bi-square"></i> '.repeat(x["total_boxes"]-x["marked_boxes"])}</div>
             </div>
             
             <div>${x["description"]}</div>`,
@@ -923,8 +929,29 @@ function create_sidebar_data(digimon){
         }
          )
 
+    let box = '☐' // Try edit me
+    let size =1 
+    let size_key = {
+        "Large": 2,
+        "Huge": 3,
+        "Gigantic": 4   
+    }
+    console.log(size_key[digimon["size"]])
+    if(size_key[digimon["size"]]){
+        size = size_key[digimon["size"]]
+    }
+
+
+
+    box = (box + '').repeat(size)
+    box = (box + `
+        `).repeat(size)
+
     let stage_div = create_element('h4', digimon["stage"])
-    let size_div = create_element('h4', digimon["size"])
+    let size_div = create_element('div', `<hr><h4> ${digimon["size"]}</h4> <div style = "z-index:-1;white-space: pre-line;line-height: 1; " >${box}</div><div>${size}x${size} </div><hr>`,
+    {})
+
+
     let container = create_element('div', "", {style:"display:flex; flex-direction: column; justify-content: space-evenly"})
     container.append(stage_div)
     container.append(size_div)
