@@ -1,4 +1,4 @@
-var api_key="gXQ7Zr4ZuXkLPpytOy6nXkM_72nr9Kj2JA5Lkiksoq5h8NjsOs_lWKyrg_wauQ"
+var api_key="mHt46Ojvz2MQb1o6pML3fxxy2Q1WWKO4HIpaCt7L9TqtH4TuvFlxdc4canE"
 var spreadsheet_id ="1Frm49d2BmVPbHwdMq1xYjfWJd2OWPAN68zossdaL2Pc"
 let stored_character_data = JSON.parse(localStorage.getItem('character_data'))
 let saved_quality_data = JSON.parse(localStorage.getItem('quality_list'))
@@ -446,8 +446,6 @@ function create_home_digimon(tamer, element_id, digimon_id=null){
                             create_home_digimon(tamer, element_id, x.id)
                         })
         drop_down.append(form)
-
-
     })
 
     digimon_element.prepend(drop_down_container)
@@ -536,11 +534,74 @@ function update_digimon_tab(id){
     let selected_digimon = digimon
     if(digimon==undefined){digimon=all_digimon_forms[0]}
 
+    if(digimon["synopsis"] == ""){digimon["synopsis"] = "Click to add a Synopsis"}
+
 
     document.querySelector('#digimonEpitaph').textContent =  "- " + digimon['title']
     document.querySelector('#digimonImage').src = digimon['image_url']
     document.querySelector('#digimonName').textContent = digimon['name']
-    document.querySelector('#DigimonSynopsis').textContent = digimon['synopsis']
+    document.querySelector('#DigimonSynopsis_Text').textContent = digimon["synopsis"]
+    document.querySelector('#DigimonSynopsis_Form').textContent = digimon["synopsis"]
+
+    document.querySelector('#DigimonSynopsis_Text').addEventListener('click', function (event) {
+        document.querySelector('#DigimonSynopsis_Form').value = digimon["synopsis"]
+        document.querySelector('#DigimonSynopsis_Form').style.display = "";
+        document.querySelector('#DigimonSynopsis_Text').style.display = "none";
+        document.querySelector('#DigimonSynopsis_Form').focus()
+})
+    document.querySelector('#DigimonSynopsis_Form').onblur = function(){
+            digimon["synopsis"] = document.querySelector('#DigimonSynopsis_Form').value
+            document.querySelector('#DigimonSynopsis_Text').innerHTML = document.querySelector('#DigimonSynopsis_Form').value
+            document.querySelector('#DigimonSynopsis_Form').style.display = "none";
+            document.querySelector('#DigimonSynopsis_Text').style.display = "";
+                
+            console.log(digimon)
+            console.log(digimon["synopsis_index"])
+
+            if(digimon["synopsis_index"] != ""){
+                fetch(
+                    `https://api.sheetson.com/v2/sheets/digimon_synopsis/${digimon["synopsis_index"]}`, 
+                {method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${api_key}`,
+                    "X-Spreadsheet-Id": spreadsheet_id,
+                    "Content-Type": "application/json"
+                  },
+                body: JSON.stringify({"synopsis_description" : document.querySelector('#DigimonSynopsis_Form').value})})
+                .then(r => r.json()).then(r => {
+                    console.log("PUT: " + document.querySelector('#DigimonSynopsis_Form').value)
+                    console.log(r)})
+            }
+            else{
+
+                fetch(
+                    `https://api.sheetson.com/v2/sheets/digimon_synopsis`, 
+                
+                    {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${api_key}`,
+                            "X-Spreadsheet-Id": spreadsheet_id,
+                            "Content-Type": "application/json"
+                          },
+                        body: JSON.stringify(
+                            {
+                                "digimon_id": digimon["id"],
+                                "synopsis_description": document.querySelector('#DigimonSynopsis_Form').value
+                            }
+                            )
+                    }
+                )
+                .then(r => r.json()).then(r => {
+                    console.log("POST")
+                    console.log(r)
+                })
+            }
+
+
+        }
+
+
     try{
     create_other_forms(digimon)
     create_attack_div(digimon)
@@ -640,7 +701,7 @@ function create_partner_forms(tamers, tamer){
                 object-fit: cover;
                 object-position: top;"> 
                 `,
-                {"class": '',
+                {"class": 'zoom',
                 "tamer_id": x['id']} )
 
     tamer_element.addEventListener('click', function (event) {
@@ -689,7 +750,7 @@ function create_partner_forms(tamers, tamer){
                 object-fit: cover;
                 object-position: top;
                 aspect-ratio: 1 / 1">`,
-            {"class": '',
+            {"class": 'zoom',
             "digimon_id": digimon['id']} )
 
         new_element.addEventListener('click', function (event) {
@@ -864,13 +925,15 @@ function create_sidebar_data(digimon){
 
     let stage_div = create_element('h4', digimon["stage"])
     let size_div = create_element('h4', digimon["size"])
-    let container = create_element('div', "", {style:"display:flex; flex-direction: row; justify-content: space-evenly"})
+    let container = create_element('div', "", {style:"display:flex; flex-direction: column; justify-content: space-evenly"})
     container.append(stage_div)
     container.append(size_div)
 
     let dp_div = create_element('div', `+${digimon["rewarded_dp"]} DP`)
     let type_div = create_element('div', digimon["jogress"])
-    let misc = create_element('div', `${digimon["attribute"]} / ${digimon["type"]} / ${digimon["field"]}`)
+    let misc = create_element('div', `<div>${digimon["attribute"]}</div>
+        <div>${digimon["type"]}</div>
+        <div>${digimon["field"]}</div>`)
 
     let character_sheet_div = create_element(
         'a', 
@@ -942,8 +1005,15 @@ function create_dodge_div (digimon){
         auto_successes = `+${x['auto_success']}`
     }   
 
+
+    if(x['tags'] ==""){
+        x['tags'] = "No Tags"
+     }
+
         let new_element = create_element('div', 
-            `<div><b>${x['name']}</b> (${x['roll']}d6${auto_successes})</div>
+            `<div style="display:flex; justify-content:space-between"><div><b>${x['name']}</b></div>
+            <div><h4>${x['roll']}d6${auto_successes}</h4></div></div>
+            </div>
             <div><small>${x['tags']}</small></div>
             ${effect_duration}<hr>`,
             {'class': 'overflow-auto'})
@@ -960,16 +1030,8 @@ function create_dodge_div (digimon){
 
 
 function create_attack_div(digimon){
-
-    // let digimon_attacks = attacks.filter(function(x){
-    //     return x['digimon_id'] == digimon.id
-    // })
-
     let digimon_attacks = digimon.attacks
 
-    // console.log(attacks)
-
-    // let digimon_attacks = digimon['attacks']
     let target_id = "#digimon_attacks"
     clear_div(target_id)
 
@@ -978,7 +1040,8 @@ function create_attack_div(digimon){
     digimon_attacks.forEach(function(x){
         // console.log(x)
         let new_element = create_element('li', 
-            `<div><b>${x['name']}</b> (${x['roll']})</div>
+            `<div style="display:flex; justify-content:space-between"><div><b>${x['name']}</b></div>
+            <div><h4>${x['roll']}</h4></div></div>
             <small>${x['tags']}</small>
             <div style="white-space: pre-line;"><small>${x['description']}</small><hr>`, 
             {'class': 'overflow-auto'})
@@ -992,6 +1055,7 @@ function area_value_div(digimon){
     // let digimon_attacks = digimon['attacks']
     let target_id = "#area_value_div"
     clear_div(target_id)
+    clear_div("#combat_notes_div")
 
     if(digimon['clost_blast_m'] == "-" || digimon['clost_blast_m']==""){digimon['clost_blast_m']=""}
     else{digimon['clost_blast_m']+="m"}
@@ -1058,11 +1122,12 @@ function area_value_div(digimon){
     else { 
         combat_notes += ""
     }
+    console.log(combat_notes=="")
+    if(combat_notes==""){combat_notes = "No Combat Notes <hr>"}
+    console.log(combat_notes)
 
-    let element_2 = create_element('div', 
-            combat_notes)
+    let element_2 = create_element('div', combat_notes)
     
-
     if(digimon.misc_skill_rolls!="No Notes"){
     let misc_skills = digimon.misc_skill_rolls.split(',')
     let misc_descriptions = digimon.misc_skill_rolls_descriptions.split(',')
@@ -1076,9 +1141,9 @@ function area_value_div(digimon){
         element_2.append(disc_elem)
         count++
     })
-
+        
         element_2.append(create_element('hr'))
-        document.querySelector(target_id).append(element_2)}
+        document.querySelector("#combat_notes_div").append(element_2)}
 
         document.querySelector(target_id).append(new_element)
      

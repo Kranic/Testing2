@@ -375,39 +375,25 @@
 
                             <div id="DigimonCharacterTab" class="tab-pane fade active show" role="tabpanel">
                                 <h5>Character Synopsis</h5>
-
-                                <div style='min-height:240px;'>
-                                    <div><small id="DigimonSynopsis">Synopsis</small></div>
-
+                                <div style='min-height:240px; white-space: pre-line '><div  id="DigimonSynopsis_Container" style=""><small id="DigimonSynopsis_Text">Synopsis Text</small></div><textarea id="DigimonSynopsis_Form" class="form-control"style="display: none">Synopsis Text</textarea>
                                 </div>
 
                                 <hr>
 
-                                <div class="justify-content-between pt-2" style="display:flex;flex-direction: row;">
-                                    <div style="width:60%">
+                                <div class="justify-content-between pt-2">
+                                    <div>
                                         <h5>Attacks</h5>
                                         <ul id = "digimon_attacks" class="list-group"></ul>
                                         <h5>Dodge</h5>
                                         <ul id = "digimon_dodges" class="list-group"></ul>
+                                        <h5>Misc Notes</h5>
+                                        <ul id = "combat_notes_div" class="list-group"></ul>
                                         
-                                    </div>
-
-
-                                    <div  style="width:33%">    
-                                        
-                                        <h5>Combat Notes:</h5>
-                                        <div id="area_value_div">
-                                            <h6>Area Values:</h6> 
-                                            <div>[Burst]         Radius          1 m     5 m </div>
-                                            <div>[Blast]         Diameter        -       6 m </div>
-                                            <div>[Close Blast]   Radius          2 m     5 m </div>
-                                            <div>[Line]          Dimension       5 x 1 m 11 x 1 m  </div>
-                                            <div>[Cone]          Length          3 m     6 m </div>
-                                            <div>[Pass]          Movement        3 m     -   </div>
-                                        </div>
-                                        
-                                    </div>
                                 </div>
+                                    </div>
+
+
+                                    
                             </div>
 
 
@@ -470,6 +456,19 @@
                                 </div> <hr>
 
                                 <div  id="digimon_stat_block_5"></div>
+                                <hr>
+                                <div>    
+                                        <div id="area_value_div">
+                                            <h6>Area Values:</h6> 
+                                            <div>[Burst]         Radius          1 m     5 m </div>
+                                            <div>[Blast]         Diameter        -       6 m </div>
+                                            <div>[Close Blast]   Radius          2 m     5 m </div>
+                                            <div>[Line]          Dimension       5 x 1 m 11 x 1 m  </div>
+                                            <div>[Cone]          Length          3 m     6 m </div>
+                                            <div>[Pass]          Movement        3 m     -   </div>
+                                        </div>
+                                        
+                                    </div>
                             </div>
 
 
