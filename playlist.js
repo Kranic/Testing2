@@ -1,5 +1,91 @@
 var playlist = JSON.parse(localStorage.getItem('playlist_data')).playlist
 
+function click_edit(playlist_id){
+    console.log(playlist_id)
+    song = playlist.find(song => song.id == playlist_id)
+    console.log(playlist.indexOf(song))
+
+    document.querySelector("#example_video").innerHTML = ""
+    document.querySelector("#example_video").appendChild(create_song_embed(song))
+    document.querySelector("#Edit_Song_Name").value = song.Name
+    document.querySelector("#Edit_Song_Link").value = song.Link
+    document.querySelector("#Edit_Song_Character_old").value =  song.Character_old
+    document.querySelector("#Edit_Song_Character").value = song.Character
+    document.querySelector("#Edit_Song_Tags").value = song.Tags
+    document.querySelector("#Edit_Song_Source").value = song.Source
+    document.querySelector("#edit_save_button").setAttribute("onClick", `save_changes(event, ${playlist.indexOf(song)+2})`)
+}
+
+function save_changes(event, index_id){
+    
+    event.preventDefault();
+
+    let body = {
+        "Name": document.querySelector('#Edit_Song_Name').value,
+        "Link": document.querySelector("#Edit_Song_Link").value,
+        "Character_old": document.querySelector("#Edit_Song_Character_old").value,
+        "Character": document.querySelector("#Edit_Song_Character").value,
+        "Tags": document.querySelector("#Edit_Song_Tags").value,
+        "Source": document.querySelector("#Edit_Song_Source").value
+        }
+
+
+    
+
+    Object.keys(body).forEach(function(k){
+    console.log(body[k])
+    playlist[index_id][k] = body[k]
+});
+
+    updated_song = create_song_a(playlist[index_id])
+    old_song = document.querySelector(`#song-${playlist[index_id-2]["id"]}`)
+
+    console.log(document.querySelector("#playlist-list"))
+    old_song.replaceWith(updated_song)
+
+
+
+    fetch(
+        `https://api.sheetson.com/v2/sheets/playlist/${index_id}`,
+        {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${api_key}`,
+                "X-Spreadsheet-Id": spreadsheet_id,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)})
+            .then(r => console.log(r))
+
+    document.querySelector("#example_video").innerHTML = ""
+    var myModalEl = document.getElementById('edit_song_modal')
+    var modal = bootstrap.Modal.getInstance(myModalEl).hide()
+}
+
+//Need to add validation
+function add_song(event){
+    console.log(event)
+    event.preventDefault();
+    fetch(
+        `https://api.sheetson.com/v2/sheets/playlist/`,
+        {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${api_key}`,
+                "X-Spreadsheet-Id": spreadsheet_id,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(
+                {"Name" : document.querySelector('#Song_Name').value,
+                "Link": document.querySelector("#Song_Link").value,
+                "Character_old": document.querySelector("#Song_Character_old").value,
+                "Character": document.querySelector("#Song_Character").value,
+                "Tags": document.querySelector("#Song_Tags").value,
+                "Source": document.querySelector("#Song_Source").value
+            })})
+            .then(r => console.log(r))
+}
+
 function setup_playlist(tamers, digimon_list){
 
 Promise.all([
@@ -42,6 +128,69 @@ function save_playlist([result, tamers, digimon_list]){
 
 }
 
+function create_song_a(x){
+var song = document.createElement('a')
+            song.setAttribute('id', `song-${x.id}`)
+            song.setAttribute('class', 'list-group-item list-group-item-action overflow-auto')
+            song.setAttribute('style', `display: inline-flex; justify-content: flex-end`)
+
+            var text = document.createElement('div')
+            text.setAttribute("style", "margin-right: auto;")
+            text.setAttribute('onclick', `update_embed(${x.id})`)
+
+            var footer = document.createElement('footer')
+            footer.setAttribute('class', "blockquote-footer")
+            text.textContent = `${x.Name} | ${x.Character_old} ${x.Tags}`
+            song.appendChild(text)
+
+            for(num in tamers){
+                tamer = tamers[num]
+                try{
+                if(x.Character_old.includes(tamer.sheet_name)){
+                   var img = document.createElement('img')
+                   img.setAttribute("class", "rounded-circle icon")
+                   img.setAttribute("style", "height:40px; width:40px;")
+                   img.setAttribute("src", tamer.image_url) 
+            
+                   song.append(img)
+                   }
+               }
+               catch(err){console.log(err)}
+
+            }
+
+            text.appendChild(footer)
+
+
+                 for (num in all_digimon_forms){
+            
+                   digimon = all_digimon_forms[num]
+            
+            
+                   if(x.Character_old.includes(digimon.name)){
+                   var img = document.createElement('img')
+                   img.setAttribute("class", "rounded-circle icon ")
+                   img.setAttribute("style", "height:40px; width:40px;")
+                   img.setAttribute("src", digimon.image_url)
+            
+                   song.append(img)
+                   }
+                 }
+
+            let button = document.createElement('button')
+            button.style = "width:10%;"
+            button.class = "modal fade"
+            button.setAttribute("type", "submit")
+            button.setAttribute("data-bs-toggle", "modal")
+            button.setAttribute("data-bs-target", "#edit_song_modal")
+            button.setAttribute('onclick', `click_edit(${x.id})`)
+            button.innerHTML = "Edit"
+
+
+            song.appendChild(button)
+
+            return song
+}
 
 function setup_music_tab(tamers, digimon_list){
         var parent_container = document.querySelector("#Playlist-Container")
@@ -54,55 +203,7 @@ function setup_music_tab(tamers, digimon_list){
         
 
         playlist.forEach(x => {
-            var song = document.createElement('a')
-            song.setAttribute('id', 'list-settings-list')
-            song.setAttribute('class', 'list-group-item list-group-item-action overflow-auto')
-            song.setAttribute('onclick', `update_embed(${x.id})`)
-
-            var text = document.createElement('div')
-            //                    text.textContent = 
-
-            var footer = document.createElement('footer')
-            footer.setAttribute('class', "blockquote-footer")
-            text.textContent = `${x.Name} | ${x.Character_old} ${x.Tags}`
-            song.appendChild(text)
-
-            for(num in tamers){
-                tamer = tamers[num]
-
-                try{
-                if(x.Character_old.includes(tamer.sheet_name)){
-                   var img = document.createElement('img')
-                   img.setAttribute("class", "rounded-circle icon float-right")
-                   img.setAttribute("style", "height:40px; width:40px;")
-                   img.setAttribute("src", tamer.image_url) 
-            
-                   song.appendChild(img)
-                   }
-               }
-               catch(err){console.log(err)}
-
-            }
-            text.appendChild(footer)
-
-
-                 for (num in digimon_list){
-            
-                   digimon = digimon_list[num]
-            
-            
-                   if(x.Character_old.includes(digimon.name)){
-                   var img = document.createElement('img')
-                   img.setAttribute("class", "rounded-circle icon float-right")
-                   img.setAttribute("style", "height:40px; width:40px;")
-                   img.setAttribute("src", digimon.image_url)
-            
-                   song.appendChild(img)
-                   }
-                 }
-
-
-
+            song = create_song_a(x)
             document.querySelector("#playlist-list").appendChild(song)
         })
 }

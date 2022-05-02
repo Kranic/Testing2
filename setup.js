@@ -665,7 +665,7 @@ function create_other_forms(selected_digimon){
                         float:left;
                         object-fit: cover;
                         object-position: top;
-                        aspect-ratio: 1 / 1"> 
+                        aspect-ratio: 1 / 1" > 
                         <div> ${digimon['name']} </div>
                         <div> ${digimon['stage']} | ${digimon['size']} | ${digimon['attribute']} / ${digimon['type']} / ${digimon['field']} </div>`,
                         {"class": 'list-group-item list-group-item-action overflow-auto',
@@ -1003,7 +1003,7 @@ function create_quality_div (digimon){
         let new_element = create_element('div', `<small>${x.Name}</small> <small>${x.rank}</small>`, {"style":"padding-bottom: 3%;"})
         document.querySelector(`${target_id}`).append(new_element)
 
-        let quality_description = create_element('div', `<div><b>${x.Name} ${x.rank}</b> ${x["Type"]}</div>
+        let quality_description = create_element('div', `<hr><div><b>${x.Name} ${x.rank}</b> ${x["Type"]}</div>
             <div><small>${x.Description}</small></div>`,
             {style: "white-space: pre-line;"})
         document.querySelector(`#quality-description`).append(quality_description)

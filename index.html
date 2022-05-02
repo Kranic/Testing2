@@ -10,6 +10,25 @@
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
+        <script type="text/javascript"> 
+        function disableselect(e){  
+        return false  
+        }  
+
+        function reEnable(){  
+        return true  
+        }  
+
+        //if IE4+  
+        // document.onselectstart=new Function ("return false")  
+        document.oncontextmenu=new Function ("return false")  
+        //if NS6  
+        if (window.sidebar){  
+        // document.onmousedown=disableselect  
+        document.onclick=reEnable  
+        }
+        </script>
+
 
 
 
@@ -309,7 +328,7 @@
                                     <div>
                                         <h5>Attacks</h5>
                                         <ul id = "digimon_attacks" class="list-group"></ul>
-                                        <h5>Dodge</h5>
+                                        <h5>Defense</h5>
                                         <ul id = "digimon_dodges" class="list-group"></ul>
                                         <h5>Misc Notes</h5>
                                         <ul id = "combat_notes_div" class="list-group"></ul>
@@ -404,6 +423,93 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="add_song_modal" tabindex="-1" aria-labelledby="add_song_modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="add_song_modalLabel">Add Song</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+                
+                <!-- //Need to add validation -->
+                <label for="Name" class="col-form-label">Name</label>
+                <input type="text" class="form-control" id="Song_Name">
+
+
+                <label for="Link" class="col-form-label">Link</label>
+                <input type="text" class="form-control" id="Song_Link">
+
+                 <label for="Character_old" class="col-form-label">Character</label>
+                <input type="text" class="form-control" id="Song_Character_old">
+
+                 <label for="Character" class="col-form-label">Character</label>
+                <input type="text" class="form-control" id="Song_Character">
+               
+                
+                <label for="Tags" class="col-form-label">Tags</label>
+                <input type="text" class="form-control" id="Song_Tags">
+
+                <label for="Source" class="col-form-label">Media Source</label>
+                <input type="text" class="form-control" id="Song_Source">
+                
+                
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal" onClick="add_song(event)">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!----------------------------------------------------------------------------->
+    <!----------------------------------------------------------------------------->
+    <!-------------------------------------Edit Modal------------------------------->
+    <!----------------------------------------------------------------------------->
+    <!----------------------------------------------------------------------------->
+
+    <div class="modal fade" id="edit_song_modal" tabindex="-1" aria-labelledby="edit_song_modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="edit_song_modalLabel">Edit Song</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="example_video"></div>
+          <div class="modal-body">
+
+                <label for="Name" class="col-form-label">Name</label>
+                <input type="text" class="form-control" id="Edit_Song_Name">
+
+                <label for="Link" class="col-form-label">Link</label>
+                <input type="text" class="form-control" id="Edit_Song_Link">
+
+                <label for="Character_old" class="col-form-label">Character</label>
+                <input type="text" class="form-control" id="Edit_Song_Character_old">
+                
+                <label for="Character" class="col-form-label">Character</label>
+                <input type="text" class="form-control" id="Edit_Song_Character">
+               
+                
+                <label for="Tags" class="col-form-label">Tags</label>
+                <input type="text" class="form-control" id="Edit_Song_Tags">
+
+                <label for="Source" class="col-form-label">Media Source</label>
+                <input type="text" class="form-control" id="Edit_Song_Source">
+                
+                
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="edit_save_button">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div> 
     <!----------------------------------------------------------------------------->
     <!----------------------------------------------------------------------------->
@@ -424,7 +530,12 @@
 
         <div>
 
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_song_modal">
+          Add Song
+        </button>
+
             <input class="form-control" id="theme_search" type="text" onkeyup="search_filter('theme_search', 'playlist-list')" placeholder="Search...">
+
 
             <div  class="scroll-bar-wrap mt-auto mb-0" style='flex: 1; overflow: scroll;max-height:50vh;' >
                 <div class="list-group overflow-auto " id="playlist-list" role="tablist" >
@@ -441,6 +552,9 @@
             </div>
         </div>
     </div>
+
+    
+
 </template>
 
 <!----------------------------------------------------------------------------->
